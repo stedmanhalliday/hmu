@@ -150,6 +150,8 @@ export default function Preview() {
 
     // get domain from URL
     function processURL(url) {
+        if (!url) return "";
+
         // Use a regex pattern to match the domain
         const domainRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)(?:[^/\n]*)(?:\/.*)?$/i;
         const matches = url.match(domainRegex);
@@ -158,7 +160,8 @@ export default function Preview() {
             // The domain is captured in the second group (index 1) of the matches array
             return matches[1];
         } else {
-            return null;
+            // Fallback to original URL if parsing fails
+            return url;
         }
     }
 

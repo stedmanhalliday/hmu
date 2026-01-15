@@ -53,6 +53,13 @@ export default function LinkForm({ contactId, initialLinkValues }) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        // Validate that contact exists before saving
+        if (contactId !== 'new' && !getContact(contactId)) {
+            console.error('[LinkForm] Cannot save - invalid contact ID:', contactId);
+            router.push('/');
+            return;
+        }
+
         // Process form values to yield display names
         const processedLinks = Object.fromEntries(
             Object.entries(formfield).map(([key, value]) => {
