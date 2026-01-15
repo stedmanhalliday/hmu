@@ -10,6 +10,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Save multiple contacts
 - Delete contact
 
+## [0.1.4] - 2025-01-15
+
+### Added
+
+- User-facing error banner for storage write failures
+- Storage quota and usage logging
+
+### Changed
+
+- Migrated to plain localStorage with improved persistence
+
+### Fixed
+
+- localStorage reliability and crash prevention
+- Privacy modal text
+- Window object check for SSR compatibility
+
 ## [0.1.3] - 2023-12-23
 
 ### Fixed
