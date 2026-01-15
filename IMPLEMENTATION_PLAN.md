@@ -6,15 +6,18 @@
 
 - ✅ Created `/utils/storage.js` with `safeGetItem`, `safeSetItem`, `safeRemoveItem`, and `safeParseVibe` functions
 - ✅ All three JSON.parse crashes fixed using `safeParseVibe` with Anon fallback:
-  - `/pages/index.js` line 128 (JSX render)
-  - `/pages/preview.js` line 164 (useEffect)
-  - `/pages/create.js` line 27 (handleChange callback)
-- ✅ QR code error handling added to both `QRCode.toDataURL` calls in `/pages/preview.js` (lines 123-135 and 165-180)
+  - `/pages/index.js` line 13 (JSX render, uses safeParseVibe via Contacts component)
+  - `/pages/preview.js` line 174 (useEffect)
+  - `/pages/create.js` line 28 (handleChange callback)
+- ✅ QR code error handling added to both `QRCode.toDataURL` calls in `/pages/preview.js` (lines 135-144 and 190-199)
 - ✅ Created `/utils/migration.js` with `migrateFromSecureStorage` that safely attempts to read from react-secure-storage and migrate to plain localStorage
 - ✅ Updated `/pages/_app.js` to remove secureLocalStorage, use new storage utilities, call migration on mount, and request persistent storage
 - ✅ Updated `/components/Form.js` to use new storage utilities for converted flag
 - ✅ Storage diagnostics added to `/pages/_app.js` (quota and usage logging on init)
-- ✅ Build validates successfully - Phase 2 complete
+- ✅ Fixed privacy modal text in `/pages/index.js` line 143 to remove inaccurate "encrypted" claim
+- ✅ Build validates successfully - all Phase 2 items complete
+
+**Deployment Status**: Ready for production deployment. All acceptance criteria met.
 
 **Next steps**: Only remaining work is LOW priority cleanup (removing react-secure-storage package after 2+ weeks)
 

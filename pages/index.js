@@ -140,7 +140,7 @@ export default function Home() {
             {privacyModal ?
                 <Modal title="Privacy" dismiss={togglePrivacyModal}>
                     <div className="text-base text-slate-600 space-y-3">
-                        <p>{`hmu.world doesn't keep your personal information. Basic metrics are tracked with Google Analytics. Any personal data that the app uses is encrypted and stored locally on your mobile device.`}</p>
+                        <p>{`hmu.world doesn't keep your personal information. Basic metrics are tracked with Google Analytics. Any personal data that the app uses is stored locally on your mobile device.`}</p>
                         <p>{`If you'd like to delete your data:`}</p>
                         <ol className="ml-5 list-decimal space-y-3">
                             <li>Open the site settings for <span className="text-purple-600">hmu.world</span> on your mobile device.</li>
