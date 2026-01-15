@@ -8,7 +8,7 @@ Add support for multiple contacts (max 2). Each contact has independent formValu
 
 ## Current Status (as of 2026-01-15)
 
-**95% COMPLETE - 8 Issues Remaining (0 HIGH, 5 MEDIUM, 3 LOW)**
+**97% COMPLETE - 6 Issues Remaining (0 HIGH, 3 MEDIUM, 3 LOW)**
 
 ### Verification Results (18 Agents)
 - **8/9 acceptance criteria** - PASS
@@ -48,18 +48,16 @@ Add support for multiple contacts (max 2). Each contact has independent formValu
 
 ---
 
-## Remaining Issues (8)
+## Remaining Issues (6)
 
 | # | Priority | File:Line | Issue | Fix |
 |---|----------|-----------|-------|-----|
-| 1 | MEDIUM | `pages/create.js:43-48` | Direct URL `/create?id=new` at limit shows form | Add early redirect: `if (id==='new' && !canAddContact) router.replace('/')` |
-| 2 | MEDIUM | `components/Form.js:71,88` | `setContact` returns null at limit, navigates to `/preview?id=new` | Check `savedId !== null` before navigating, show modal error |
-| 3 | MEDIUM | `components/Contact.js:31-37` | Direct `vibe.group[0]` access without checking array length | Add `&& vibe.group.length > 0` guard |
-| 4 | MEDIUM | `components/Contacts.js:39-44` | `vibe.group` could be empty array, causes undefined access | Add `vibe.group.length > 0` guard |
-| 5 | MEDIUM | `pages/_app.js` | No React Error Boundary - unhandled errors crash entire app | Wrap `<Component>` in ErrorBoundary |
-| 6 | LOW | `pages/index.js:150` | Button shows without `canAddContact` check when `hasContacts=false` | Change to conditional render with `canAddContact` |
-| 7 | LOW | `components/LinkForm.js:61` | No error handling for invalid contact ID on save | Validate `getContact(contactId)` before `setContact` |
-| 8 | LOW | `pages/preview.js:240` | `processURL` returns null, sets `displayName` to null | Fallback to original URL or empty string |
+| 1 | MEDIUM | `components/Contact.js:31-37` | Direct `vibe.group[0]` access without checking array length | Add `&& vibe.group.length > 0` guard |
+| 2 | MEDIUM | `components/Contacts.js:39-44` | `vibe.group` could be empty array, causes undefined access | Add `vibe.group.length > 0` guard |
+| 3 | MEDIUM | `pages/_app.js` | No React Error Boundary - unhandled errors crash entire app | Wrap `<Component>` in ErrorBoundary |
+| 4 | LOW | `pages/index.js:150` | Button shows without `canAddContact` check when `hasContacts=false` | Change to conditional render with `canAddContact` |
+| 5 | LOW | `components/LinkForm.js:61` | No error handling for invalid contact ID on save | Validate `getContact(contactId)` before `setContact` |
+| 6 | LOW | `pages/preview.js:240` | `processURL` returns null, sets `displayName` to null | Fallback to original URL or empty string |
 
 ---
 
@@ -100,15 +98,15 @@ contacts: [
 | File | Status | Issues | Notes |
 |------|--------|--------|-------|
 | `utils/storage.js` | Complete | 0 | All helpers working |
-| `pages/_app.js` | Needs Work | 1 | Missing Error Boundary (#6) |
-| `pages/index.js` | Minor Issue | 1 | Empty state button guard (#7) |
-| `pages/preview.js` | Minor Issue | 1 | processURL null handling (#9) |
-| `pages/create.js` | Needs Work | 1 | Max contacts pre-check (#2) |
+| `pages/_app.js` | Needs Work | 1 | Missing Error Boundary (#3) |
+| `pages/index.js` | Minor Issue | 1 | Empty state button guard (#4) |
+| `pages/preview.js` | Minor Issue | 1 | processURL null handling (#6) |
+| `pages/create.js` | Complete | 0 | Max contacts pre-check resolved |
 | `pages/links.js` | Complete | 0 | Passes ID and values |
-| `components/Contacts.js` | Needs Work | 1 | Empty vibe.group guard (#5) |
-| `components/Contact.js` | Needs Work | 1 | Empty vibe.group guard (#4) |
-| `components/Form.js` | Needs Work | 1 | Null return handling (#3) |
-| `components/LinkForm.js` | Minor Issue | 1 | Invalid ID handling (#7) |
+| `components/Contacts.js` | Needs Work | 1 | Empty vibe.group guard (#2) |
+| `components/Contact.js` | Needs Work | 1 | Empty vibe.group guard (#1) |
+| `components/Form.js` | Complete | 0 | Null return handling resolved |
+| `components/LinkForm.js` | Minor Issue | 1 | Invalid ID handling (#5) |
 | `components/EditPane.js` | Complete | 0 | Parent handles navigation |
 
 ---
@@ -124,8 +122,8 @@ contacts: [
 - [x] Existing single-contact users migrated seamlessly
 - [x] Maximum 2 contacts enforced at API level
 - [x] Empty state (0 contacts) works
-- [ ] Direct URL `/create?id=new` at limit handled gracefully (#2)
-- [ ] Form submission at limit shows error (#3)
+- [x] Direct URL `/create?id=new` at limit handled gracefully
+- [x] Form submission at limit shows error
 
 ---
 
@@ -145,21 +143,21 @@ Results:
 
 **2026-01-15 (Issue #1 Fixed)**: LinkForm.js recursive stack overflow resolved. Converted `processDisplayName` from recursive to iterative with 10-iteration safety limit. HIGH priority issue eliminated.
 
+**2026-01-15 (Issues #1-2 Fixed)**: create.js max contacts bypass resolved - added early redirect on mount when `id==='new' && !canAddContact`. Form.js null navigation resolved - added `savedId !== null` check before navigation and modal error display on save failure. 2 MEDIUM priority issues eliminated.
+
 ---
 
 ## Next Steps (Prioritized by Severity)
 
 ### MEDIUM Priority (User-Facing Bugs)
-1. **Fix create.js max contacts bypass** - Add `canAddContact` check on mount
-2. **Fix Form.js null navigation** - Check `savedId` before router.push
-3. **Fix Contact.js empty group access** - Add length check
-4. **Fix Contacts.js empty group access** - Add length check
-5. **Add Error Boundary to _app.js** - Prevent full app crashes
+1. **Fix Contact.js empty group access** - Add length check
+2. **Fix Contacts.js empty group access** - Add length check
+3. **Add Error Boundary to _app.js** - Prevent full app crashes
 
 ### LOW Priority (Edge Cases)
-6. **Fix index.js empty state button** - Add `canAddContact` condition
-7. **Fix LinkForm.js invalid ID** - Validate contact exists before save
-8. **Fix preview.js processURL null** - Add fallback for displayName
+4. **Fix index.js empty state button** - Add `canAddContact` condition
+5. **Fix LinkForm.js invalid ID** - Validate contact exists before save
+6. **Fix preview.js processURL null** - Add fallback for displayName
 
 ---
 

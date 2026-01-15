@@ -70,6 +70,16 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         // Otherwise it updates the existing contact
         const savedId = setContact(contactId, { formValues: finalFormValues });
 
+        // Check if save failed (returns null when at max contacts)
+        if (savedId === null) {
+            setModal(
+                <Modal title="Contact limit reached" dismiss={dismiss}>
+                    You&apos;ve reached the maximum number of contacts. Please edit an existing contact instead.
+                </Modal>
+            );
+            return;
+        }
+
         // Log first time code creation
         if (!safeGetItem(STORAGE_KEYS.CONVERTED)) {
             safeSetItem(STORAGE_KEYS.CONVERTED, true);
@@ -84,8 +94,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         });
 
         // Navigate to preview for this contact
-        // Use savedId which will be the new ID if this was a new contact
-        router.push(`/preview?id=${savedId || contactId}`);
+        router.push(`/preview?id=${savedId}`);
     }
 
     const dismiss = () => {

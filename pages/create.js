@@ -10,7 +10,7 @@ export default function Create() {
     const router = useRouter();
     const { id: contactId } = router.query;
 
-    const { getContact } = useContext(StorageContext);
+    const { getContact, canAddContact } = useContext(StorageContext);
 
     const [emoji, setEmoji] = useState(null);
 
@@ -41,7 +41,15 @@ export default function Create() {
 
     // Load contact data when contactId is available
     useEffect(() => {
-        if (!contactId || contactId === 'new') {
+        if (!contactId) return;
+
+        // Prevent creating new contact when at max limit
+        if (contactId === 'new' && !canAddContact) {
+            router.replace('/');
+            return;
+        }
+
+        if (contactId === 'new') {
             // New contact - no data to load
             setCurrentFormValues(null);
             return;
@@ -55,7 +63,7 @@ export default function Create() {
                 handleChange(contact.formValues.vibe);
             }
         }
-    }, [contactId, getContact]);
+    }, [contactId, getContact, canAddContact, router]);
 
     useEffect(() => {
         const interval = setInterval(updateGradientAngle, 15);
