@@ -36,7 +36,7 @@ export default function Contacts({ id, name, vibe }) {
     }
 
     useEffect(() => {
-        if (vibe && vibe.group) {
+        if (vibe && vibe.group && vibe.group.length > 0) {
             setStops({
                 start: vibe.group[0],
                 end: vibe.group[vibe.group.length - 1],

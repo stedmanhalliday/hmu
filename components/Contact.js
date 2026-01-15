@@ -28,7 +28,7 @@ export default function Contact(props) {
     }
 
     useEffect(() => {
-        if (props.vibe.group) {
+        if (props.vibe.group && props.vibe.group.length > 0) {
             setStops({
                 start: props.vibe.group[0],
                 end: props.vibe.group[props.vibe.group.length - 1],

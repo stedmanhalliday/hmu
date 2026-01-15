@@ -1,6 +1,7 @@
 import '../styles/reset.css';
 import '../dist/main.css';
 import Analytics from '../components/Analytics';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import { createContext, useEffect, useState, useCallback } from 'react';
 import { 
@@ -240,7 +241,9 @@ function MyApp({ Component, pageProps }) {
             </button>
           </div>
         )}
-        <Component {...pageProps} />
+        <ErrorBoundary>
+          <Component {...pageProps} />
+        </ErrorBoundary>
       </StorageContext.Provider>
   )
 }
