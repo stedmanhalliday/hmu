@@ -149,4 +149,3 @@ Results:
 
 ## Future Work
 - Delete contact UI - deleteContact exists in context, no UI yet
-- Error Boundary component with recovery UI
