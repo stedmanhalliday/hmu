@@ -11,17 +11,38 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from "react";
 import QRCode from "qrcode";
 
+const DEFAULT_LINK_ORDER = ['twitter', 'linkedin', 'github', 'telegram', 'instagram', 'venmo', 'custom'];
+const ORDER_STORAGE_KEY = 'linkOrder';
+
 export default function Preview() {
     const router = useRouter();
     const { id: contactId } = router.query;
 
     const { contacts, getContact } = useContext(StorageContext);
 
+    // Load link order from localStorage
+    const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
+
+    useEffect(() => {
+        const saved = localStorage.getItem(ORDER_STORAGE_KEY);
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                const allKeys = new Set([...parsed, ...DEFAULT_LINK_ORDER]);
+                setLinkOrder([...allKeys].filter(k => DEFAULT_LINK_ORDER.includes(k)));
+            } catch {
+                // Use default on parse error
+            }
+        }
+    }, []);
+
     const [data, setData] = useState({
         src: "",
         displayName: "",
         label: "",
         vibe: "",
+        url: "",
+        photo: "",
     });
 
     const [contact, setContact] = useState({
@@ -30,19 +51,12 @@ export default function Preview() {
     });
 
     const [links, setLinks] = useState({
-        instagram: {
-            label: "Instagram",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://instagram.com/"
-        },
         twitter: {
             label: "X (Twitter)",
             displayName: "",
             displayNamePrepend: "@",
             url: "",
-            urlPrepend: "https://twitter.com/"
+            urlPrepend: "https://x.com/"
         },
         linkedin: {
             label: "LinkedIn",
@@ -50,6 +64,27 @@ export default function Preview() {
             displayNamePrepend: "@",
             url: "",
             urlPrepend: "https://linkedin.com/in/"
+        },
+        github: {
+            label: "GitHub",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://github.com/"
+        },
+        telegram: {
+            label: "Telegram",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://t.me/"
+        },
+        instagram: {
+            label: "Instagram",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://instagram.com/"
         },
         venmo: {
             label: "Venmo",
@@ -98,7 +133,8 @@ export default function Preview() {
             ...prevData,
             displayName: contact.name,
             src: contact.src,
-            label: "Contact"
+            label: "Contact",
+            url: "",
         }));
     }
 
@@ -135,6 +171,7 @@ export default function Preview() {
                         src: dataUrl,
                         displayName: displayName,
                         label: label,
+                        url: url,
                     }));
                 }).catch((error) => {
                     console.error('[QR] Failed to generate QR code:', error);
@@ -143,6 +180,7 @@ export default function Preview() {
                         src: "",
                         displayName: displayName,
                         label: label,
+                        url: url,
                     }));
                 });
         }
@@ -205,7 +243,8 @@ export default function Preview() {
 
         const name = formValues.name;
         const vibe = safeParseVibe(formValues.vibe);
-        
+        const photo = formValues.photo || "";
+
         QRCode.toDataURL(vCardValues(formValues),
             {
                 width: 168,
@@ -216,6 +255,7 @@ export default function Preview() {
                     displayName: name,
                     label: "Contact",
                     vibe: vibe,
+                    photo: photo,
                 });
                 setContact({
                     name: name,
@@ -228,6 +268,7 @@ export default function Preview() {
                     displayName: name,
                     label: "Contact",
                     vibe: vibe,
+                    photo: photo,
                 });
                 setContact({
                     name: name,
@@ -264,17 +305,17 @@ export default function Preview() {
                     : "opacity-30 transition-opacity duration-100 socialLink contactLink"}
                 onClick={showContact}
             />
-            {Object.entries(links)
-                .filter(([key, value]) => value.url !== "")
-                .map(([key, value]) => (
+            {linkOrder
+                .filter(key => links[key] && links[key].url !== "")
+                .map(key => (
                     <SocialLink key={key}
                         className={activeLink == key ?
                             `transition-opacity duration-100 socialLink ${key}`
                             : `opacity-30 transition-opacity duration-100 socialLink ${key}`}
                         type={key}
-                        displayName={value.displayName}
-                        label={value.label}
-                        url={value.url}
+                        displayName={links[key].displayName}
+                        label={links[key].label}
+                        url={links[key].url}
                         onClick={toggleActiveLink} />
                 ))}
         </div>;
@@ -291,7 +332,9 @@ export default function Preview() {
             </nav>
             <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
                 style={editing ? { "opacity": 0 } : null}
-                activeLink={activeLink} />
+                activeLink={activeLink}
+                url={data.url || ""}
+                photo={data.photo || ""} />
             <div className="z-10 mt-12 flex justify-center max-w-20
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
