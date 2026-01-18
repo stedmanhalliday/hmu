@@ -4,16 +4,18 @@ import Input from "./Input.js";
 import Modal from "./Modal.js";
 import TextButton from "./TextButton.js";
 import vibes from "../utils/vibes.json";
+import { resizeImage } from "../utils/image.js";
 
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { safeGetItem, safeSetItem, STORAGE_KEYS } from "../utils/storage.js";
 
-export default function Form({ contactId, initialFormValues, handleChange: onVibeChange }) {
+export default function Form({ contactId, initialFormValues, handleChange: onVibeChange, onPhotoChange }) {
     const router = useRouter();
     const { editing } = router.query;
 
     const { setContact, getContact } = useContext(StorageContext);
+    const fileInputRef = useRef(null);
 
     const [formfield, setFormfield] = useState({
         name: "",
@@ -21,9 +23,11 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         email: "",
         url: "",
         vibe: "",
+        photo: "",
     });
 
     const [modal, setModal] = useState(null);
+    const [photoLoading, setPhotoLoading] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -33,6 +37,48 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         }));
         if (event.target.name == "vibe" && onVibeChange) {
             onVibeChange(event.target.value);
+        }
+    }
+
+    const handlePhotoSelect = async (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        // Validate it's an image
+        if (!file.type.startsWith('image/')) {
+            setModal(
+                <Modal title="Invalid file" dismiss={dismiss}>
+                    Please select an image file.
+                </Modal>
+            );
+            return;
+        }
+
+        setPhotoLoading(true);
+        try {
+            const base64 = await resizeImage(file, 150, 0.8);
+            setFormfield(prev => ({ ...prev, photo: base64 }));
+            if (onPhotoChange) {
+                onPhotoChange(base64);
+            }
+        } catch (error) {
+            console.error('[Form] Failed to process image:', error);
+            setModal(
+                <Modal title="Error" dismiss={dismiss}>
+                    Failed to process the image. Please try another.
+                </Modal>
+            );
+        }
+        setPhotoLoading(false);
+    }
+
+    const removePhoto = () => {
+        setFormfield(prev => ({ ...prev, photo: "" }));
+        if (onPhotoChange) {
+            onPhotoChange("");
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
         }
     }
 
@@ -64,7 +110,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         if (finalFormValues.vibe == "") {
             finalFormValues.vibe = JSON.stringify(vibes.filter(vibe => vibe.label === "Anon")[0]);
         }
-        
+
         // Save contact using new API
         // If contactId is 'new', this creates a new contact and returns the new ID
         // Otherwise it updates the existing contact
@@ -118,8 +164,13 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                 phone: initialFormValues.phone || "",
                 email: initialFormValues.email || "",
                 url: initialFormValues.url || "",
-                vibe: initialFormValues.vibe || ""
+                vibe: initialFormValues.vibe || "",
+                photo: initialFormValues.photo || ""
             });
+            // Notify parent of initial photo
+            if (initialFormValues.photo && onPhotoChange) {
+                onPhotoChange(initialFormValues.photo);
+            }
         }
     }, [initialFormValues]);
 
@@ -130,6 +181,46 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
             <Input name="phone" label="Phone" type="tel" value={formfield.phone} placeholder="+16789998212" onChange={handleChange} />
             <Input name="email" label="Email" type="email" value={formfield.email} placeholder="swag@hmu.world" onChange={handleChange} />
             <Input name="url" label="Website" type="text" value={formfield.url} placeholder="https://hmu.world" onChange={handleChange} />
+            <label className="mb-4">
+                <div className="mb-1 text-slate-600">Photo</div>
+                <div className="flex items-center gap-3">
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoSelect}
+                        className="hidden"
+                        id="photo-input"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={photoLoading}
+                        className="px-4 py-2 text-sm rounded-md border border-slate-300 text-slate-600
+                        hover:border-purple-400 hover:text-purple-600
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        transition-colors"
+                    >
+                        {photoLoading ? "Processing..." : formfield.photo ? "Change photo" : "Add photo"}
+                    </button>
+                    {formfield.photo && (
+                        <>
+                            <img
+                                src={formfield.photo}
+                                alt="Preview"
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <button
+                                type="button"
+                                onClick={removePhoto}
+                                className="text-sm text-slate-400 hover:text-red-500 transition-colors"
+                            >
+                                Remove
+                            </button>
+                        </>
+                    )}
+                </div>
+            </label>
             <label className="mb-4">
                 <div className="mb-1 text-slate-600">Theme</div>
                 <select className="select" value={formfield.vibe} onChange={handleChange} name="vibe">
