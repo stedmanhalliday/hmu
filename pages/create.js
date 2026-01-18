@@ -13,6 +13,7 @@ export default function Create() {
     const { getContact, canAddContact } = useContext(StorageContext);
 
     const [emoji, setEmoji] = useState(null);
+    const [photo, setPhoto] = useState(null);
 
     const [stops, setStops] = useState({
         start: "",
@@ -30,13 +31,18 @@ export default function Create() {
     };
 
     // Change vibe preview on selection
-    const handleChange = (selectedVibe) => {
+    const handleVibeChange = (selectedVibe) => {
         const vibe = safeParseVibe(selectedVibe);
         setEmoji(vibe.emoji);
         setStops({
             start: vibe.group[0],
             end: vibe.group[vibe.group.length - 1],
         });
+    }
+
+    // Handle photo change from form
+    const handlePhotoChange = (photoData) => {
+        setPhoto(photoData);
     }
 
     // Load contact data when contactId is available
@@ -60,7 +66,11 @@ export default function Create() {
             setCurrentFormValues(contact.formValues);
             // Update preview if vibe exists
             if (contact.formValues.vibe) {
-                handleChange(contact.formValues.vibe);
+                handleVibeChange(contact.formValues.vibe);
+            }
+            // Update photo preview if exists
+            if (contact.formValues.photo) {
+                setPhoto(contact.formValues.photo);
             }
         }
     }, [contactId, getContact, canAddContact, router]);
@@ -76,21 +86,28 @@ export default function Create() {
                 style={{ "background": `linear-gradient(-${angle}deg, ${stops.start}, ${stops.end})` }}></div>
             <header className="flex flex-col items-center space-y-6 mb-6">
                 <div className="w-20 h-20 rounded-full
-                flex justify-center items-center shrink-0 
-                bg-white shadow-md
+                flex justify-center items-center shrink-0
+                bg-white shadow-md overflow-hidden
                 text-5xl">
-                    <img src={emoji ? `/emoji/${emoji}.png` : "/emoji/👤.png"}
-                        width={48} height={48}
-                        alt={emoji || "👤"} />
+                    {photo ? (
+                        <img src={photo}
+                            className="w-full h-full object-cover"
+                            alt="Profile" />
+                    ) : (
+                        <img src={emoji ? `/emoji/${emoji}.png` : "/emoji/👤.png"}
+                            width={48} height={48}
+                            alt={emoji || "👤"} />
+                    )}
                 </div>
                 <h1 className="text-center text-4xl leading-tight text-slate-600">
-                    {contactId === 'new' ? 'Create a new contact' : 'Enter your contact\u00A0info'}
+                    {contactId === 'new' ? 'Create a new contact' : 'Edit your contact'}
                 </h1>
             </header>
-            <Form 
-                contactId={contactId} 
+            <Form
+                contactId={contactId}
                 initialFormValues={currentFormValues}
-                handleChange={handleChange} 
+                handleChange={handleVibeChange}
+                onPhotoChange={handlePhotoChange}
             />
         </Page>
     );

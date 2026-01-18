@@ -11,6 +11,9 @@
     "watch": "npx tailwindcss -i ./styles/main.css -o ./dist/main.css --watch"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "canvas-txt": "^3.0.0",
     "color-convert": "^2.0.1",
     "image-downloader": "^4.3.0",
