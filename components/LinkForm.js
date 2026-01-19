@@ -91,7 +91,8 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         gtag("event", "form_submit", {
             "form_id": "linkForm",
             "form_name": "Link form",
-            "destination": "/links"
+            "destination": "/links",
+            "contact_id": savedId
         });
 
         router.push(`/preview?id=${savedId}`);

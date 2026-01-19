@@ -24,22 +24,19 @@
 
 ### LOW Priority - Polish & Improvements
 
-1. **Analytics events don't include contact ID**
+1. **Analytics events now include contact ID** ✅ COMPLETED
    - File: `/components/LinkForm.js` lines 78-82
    - File: `/components/Form.js` lines 90-94
-   - Could add `contact_id` to gtag event parameters for better tracking
-   - Impact: Minimal - analytics still work, just less granular
+   - Added `contact_id` to gtag event parameters for better tracking
 
-2. **EditPane receives unused contactId prop**
+2. **EditPane unused contactId prop removed** ✅ COMPLETED
    - File: `/pages/preview.js` line 303
    - File: `/components/EditPane.js`
-   - The `contactId` prop is passed but not used (navigation handled by callbacks)
-   - Impact: None - code works correctly, just slightly redundant
+   - Removed redundant `contactId` prop (navigation handled by callbacks)
 
-3. **preview.js dependency array includes getContact**
+3. **preview.js dependency array fixed** ✅ COMPLETED
    - File: `/pages/preview.js` line 257
-   - `getContact` in useEffect dependency array could cause extra re-renders
-   - Impact: Negligible - function reference is stable from context
+   - Removed `getContact` from useEffect dependency array to prevent unnecessary re-renders
 
 ---
 

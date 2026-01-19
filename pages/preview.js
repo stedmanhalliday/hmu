@@ -256,7 +256,7 @@ export default function Preview() {
                 return updatedLinks;
             });
         }
-    }, [contacts, contactId, getContact, router]);
+    }, [contacts, contactId, router]);
 
     const filteredLinks =
         <div className="flex flex-wrap justify-center">
@@ -302,7 +302,7 @@ export default function Preview() {
                 active:bg-black/[.15] !border-none"
                         onClick={editLinks}>Add links</TextButton> : filteredLinks}
             </div>
-            {editing ? <EditPane contactId={contactId} editContact={editContact} editLinks={editLinks} /> : null}
+            {editing ? <EditPane editContact={editContact} editLinks={editLinks} /> : null}
             <p className="absolute bottom-6 text-lg tracking-wide text-slate-600/50">hmu.world</p>
         </Page>
     );

@@ -90,7 +90,8 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         gtag("event", "form_submit", {
             "form_id": "contactForm",
             "form_name": "Contact form",
-            "destination": "/create"
+            "destination": "/create",
+            "contact_id": savedId
         });
 
         // Navigate to preview for this contact
