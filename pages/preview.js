@@ -75,13 +75,15 @@ export default function Preview() {
     const [currentContact, setCurrentContact] = useState(null);
 
     const vCardValues = (formValues) => {
+        // Include contact-specific URL in NOTE field so scanned contacts can return to this preview
+        const noteUrl = contactId ? `https://hmu.world/preview?id=${contactId}` : 'https://hmu.world';
         let vCard =
             "BEGIN:VCARD\nVERSION:4.0" +
             "\nFN:" + formValues.name +
             "\nTEL:" + formValues.phone +
             "\nEMAIL:" + formValues.email +
             "\nURL:" + formValues.url +
-            "\nNOTE:https://hmu.world" +
+            "\nNOTE:" + noteUrl +
             "\nEND:VCARD";
         return vCard;
     }
