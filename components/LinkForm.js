@@ -1,6 +1,7 @@
 import { StorageContext } from "../pages/_app.js";
 import Button from './Button.js';
 import Input from './Input.js';
+import Modal from './Modal.js';
 import TextButton from './TextButton.js';
 
 import { useRouter } from 'next/router';
@@ -18,6 +19,8 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         venmo: "",
         custom: ""
     });
+
+    const [modal, setModal] = useState(null);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -72,7 +75,17 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         );
 
         // Save links to specific contact using new API
-        setContact(contactId, { linkValues: processedLinks });
+        const savedId = setContact(contactId, { linkValues: processedLinks });
+
+        // Check if save failed (returns null when at max contacts or storage error)
+        if (savedId === null) {
+            setModal(
+                <Modal title="Save failed" dismiss={dismiss}>
+                    Unable to save links. Please try again.
+                </Modal>
+            );
+            return;
+        }
 
         // Log form submission
         gtag("event", "form_submit", {
@@ -81,7 +94,11 @@ export default function LinkForm({ contactId, initialLinkValues }) {
             "destination": "/links"
         });
 
-        router.push(`/preview?id=${contactId}`);
+        router.push(`/preview?id=${savedId}`);
+    }
+
+    const dismiss = () => {
+        setModal(null);
     }
 
     const cancel = () => {
@@ -111,6 +128,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
             <Input name="custom" label="Link" type="text" value={formfield.custom} placeholder="https://hmu.world" onChange={handleChange} />
             <Button type="submit" className="self-center my-4 shadow-none">Save links</Button>
             <TextButton onClick={cancel} className="self-center">Cancel</TextButton>
+            {modal}
         </form>
     );
 }

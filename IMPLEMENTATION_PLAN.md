@@ -24,25 +24,19 @@
 
 ### LOW Priority - Polish & Improvements
 
-1. **LinkForm doesn't check setContact return value**
-   - File: `/components/LinkForm.js` line 75
-   - Current: `setContact(contactId, { linkValues: processedLinks });`
-   - Should: Check return value and handle failure gracefully
-   - Impact: Minimal - storage failures are rare and context already logs errors
-
-2. **Analytics events don't include contact ID**
+1. **Analytics events don't include contact ID**
    - File: `/components/LinkForm.js` lines 78-82
    - File: `/components/Form.js` lines 90-94
    - Could add `contact_id` to gtag event parameters for better tracking
    - Impact: Minimal - analytics still work, just less granular
 
-3. **EditPane receives unused contactId prop**
+2. **EditPane receives unused contactId prop**
    - File: `/pages/preview.js` line 303
    - File: `/components/EditPane.js`
    - The `contactId` prop is passed but not used (navigation handled by callbacks)
    - Impact: None - code works correctly, just slightly redundant
 
-4. **preview.js dependency array includes getContact**
+3. **preview.js dependency array includes getContact**
    - File: `/pages/preview.js` line 257
    - `getContact` in useEffect dependency array could cause extra re-renders
    - Impact: Negligible - function reference is stable from context
