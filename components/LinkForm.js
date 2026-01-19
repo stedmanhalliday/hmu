@@ -116,6 +116,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
 
     const [modal, setModal] = useState(null);
     const [linkOrder, setLinkOrder] = useState(DEFAULT_ORDER);
+    const [modal, setModal] = useState(null);
 
     // Load saved order from localStorage
     useEffect(() => {
