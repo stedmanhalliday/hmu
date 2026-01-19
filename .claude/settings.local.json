@@ -5,7 +5,8 @@
       "Bash(ls:*)",
       "Bash(git show:*)",
       "Bash(./loop.sh plan:*)",
-      "Bash(./loop.sh:*)"
+      "Bash(./loop.sh:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
