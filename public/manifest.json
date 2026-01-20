@@ -1,5 +1,6 @@
 {
     "name": "hmu.world",
+    "short_name": "hmu",
     "icons": [
         {
             "src": "/icons/any_icon_x192.png",

@@ -45,18 +45,22 @@ export default function Home() {
             showCursor: false
         });
 
-        // Check if app install prompt was shown
-        window.addEventListener('beforeinstallprompt', (e) => {
+        // Capture the install prompt event when it fires
+        const handleBeforeInstallPrompt = (e) => {
             // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later.
+            // Stash the event so it can be triggered later
             setInstallPrompt(e);
-        });
+            // Only set promptable when event actually fires (not just API support)
+            setIsPromptable(true);
+        };
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-        window.addEventListener('appinstalled', () => {
+        const handleAppInstalled = () => {
             // Install analytics
             gtag("event", "android_install");
-        });
+        };
+        window.addEventListener('appinstalled', handleAppInstalled);
 
         // Standalone mode media query
         if (window.matchMedia("(display-mode: standalone)").matches) {
@@ -69,16 +73,16 @@ export default function Home() {
                 // Android check
             } else if (/android/.test(userAgentString)) {
                 setOs("android");
-                // Prompt flow check
-                if (("onbeforeinstallprompt" in window)) {
-                    setIsPromptable(true);
-                }
+                // Note: isPromptable is set by beforeinstallprompt event handler, not API detection
             }
         }
 
         return () => {
             // Destroy Typed instance during cleanup to stop animation
             typed.destroy();
+            // Clean up PWA event listeners
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+            window.removeEventListener('appinstalled', handleAppInstalled);
         };
     }, [])
 
@@ -107,7 +111,12 @@ export default function Home() {
     const pressInstallButton = () => {
         // Log install button press
         gtag("event", "install_button");
-        isPromptable ? showPrompt() : toggleInstallModal();
+        // Use installPrompt directly as the source of truth (defense-in-depth)
+        if (installPrompt) {
+            showPrompt();
+        } else {
+            toggleInstallModal();
+        }
     }
 
     const toggleInstallModal = () => { setInstallModal(!installModal) }
