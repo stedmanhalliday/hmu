@@ -180,13 +180,19 @@ export default function Home() {
                 </Modal>
                 : null}
             {feedbackModal ?
-                <Modal title="Feedback" dismiss={toggleFeedbackModal}>
+                <Modal title="Contribute" dismiss={toggleFeedbackModal}>
                     <div className="text-base text-slate-600 space-y-3">
-                        <p>Questions, comments, or bug reports?</p>
+                        <p>Help improve hmu.world by submitting feedback or contributing code.</p>
                         <ol>
-                            <li>Email me: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
+                            <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
                                 className="text-purple-600 transition-all duration-150
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
+                            <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-150
+                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
+                            <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-150
+                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
                         </ol>
                     </div>
                 </Modal>
