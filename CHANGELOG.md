@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Delete contact UI
+### Added
+
+- Delete contact feature with confirmation modal
+- Delete button on contact edit screen (red styling for destructive action)
+- ConfirmModal component for destructive action confirmations
+- Post-deletion navigation (redirects to remaining contact or home if none left)
 
 ## [0.1.5] - 2026-01-15
 
