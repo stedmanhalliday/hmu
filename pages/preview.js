@@ -208,7 +208,7 @@ export default function Preview() {
     // Load contact data when contacts or contactId changes
     useEffect(() => {
         if (!contacts || contacts.length === 0) {
-            setLoading(false);
+            router.push('/');
             return;
         }
 
