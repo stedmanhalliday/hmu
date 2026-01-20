@@ -10,7 +10,7 @@ export default function EditPane(props) {
         const paneNode = pane.current;
         paneNode.style.opacity = 1;
 
-        return () => { 
+        return () => {
             paneNode.style.opacity = 0;
         }
     }, [])
@@ -30,6 +30,12 @@ export default function EditPane(props) {
                 active:bg-black/[.15] transition-all duration-100
                 text-xl !border-none"
                     onClick={props.editLinks}>Edit links</TextButton>
+            </div>
+            <div className={`relative grow flex items-center justify-center animate-pulse deleteContact`}>
+                <TextButton className="px-8 py-5 rounded-full bg-red-500/10
+                active:bg-red-500/[.15] transition-all duration-100
+                text-xl !border-none !text-red-600"
+                    onClick={props.deleteContact}>Delete contact</TextButton>
             </div>
         </div>
     )

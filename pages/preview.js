@@ -2,6 +2,7 @@ import { StorageContext } from "./_app.js";
 import Page from "../components/Page.js";
 import Contact from "../components/Contact.js";
 import EditPane from "../components/EditPane.js";
+import ConfirmModal from "../components/ConfirmModal.js";
 import SocialLink from "../components/SocialLink.js";
 import TextButton from "../components/TextButton.js";
 import styles from "../styles/Preview.module.css";
@@ -15,7 +16,7 @@ export default function Preview() {
     const router = useRouter();
     const { id: contactId } = router.query;
 
-    const { contacts, getContact } = useContext(StorageContext);
+    const { contacts, getContact, deleteContact, storageError } = useContext(StorageContext);
 
     const [data, setData] = useState({
         src: "",
@@ -71,6 +72,10 @@ export default function Preview() {
 
     const [editing, setEditing] = useState(false);
 
+    // Delete confirmation modal state
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     // Current contact data
     const [currentContact, setCurrentContact] = useState(null);
 
@@ -114,6 +119,39 @@ export default function Preview() {
 
     const editLinks = () => {
         router.push(`/links?id=${contactId}`);
+    }
+
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    }
+
+    const handleDeleteCancel = () => {
+        setShowDeleteModal(false);
+    }
+
+    const handleDeleteConfirm = () => {
+        if (!contactId) return;
+
+        setIsDeleting(true);
+
+        // Perform deletion
+        deleteContact(contactId);
+
+        // Check if there are remaining contacts after deletion
+        const remainingContacts = contacts.filter(c => c.id !== contactId);
+
+        setIsDeleting(false);
+        setShowDeleteModal(false);
+        setEditing(false);
+
+        // Navigate appropriately
+        if (remainingContacts.length > 0) {
+            // Go to the first remaining contact
+            router.push(`/preview?id=${remainingContacts[0].id}`);
+        } else {
+            // No contacts left, go to home (empty state)
+            router.push('/');
+        }
     }
 
     const toggleActiveLink = (e) => {
@@ -302,7 +340,25 @@ export default function Preview() {
                 active:bg-black/[.15] !border-none"
                         onClick={editLinks}>Add links</TextButton> : filteredLinks}
             </div>
-            {editing ? <EditPane editContact={editContact} editLinks={editLinks} /> : null}
+            {editing ? <EditPane editContact={editContact} editLinks={editLinks} deleteContact={handleDeleteClick} /> : null}
+            {showDeleteModal && (
+                <ConfirmModal
+                    title="Delete Contact"
+                    confirmLabel="Delete"
+                    cancelLabel="Cancel"
+                    onConfirm={handleDeleteConfirm}
+                    onCancel={handleDeleteCancel}
+                    isLoading={isDeleting}
+                    confirmDestructive={true}
+                >
+                    <p className="text-slate-600 mb-2">
+                        Are you sure you want to delete this contact?
+                    </p>
+                    <p className="text-slate-500 text-sm">
+                        This action cannot be undone.
+                    </p>
+                </ConfirmModal>
+            )}
             <p className="absolute bottom-6 text-lg tracking-wide text-slate-600/50">hmu.world</p>
         </Page>
     );
