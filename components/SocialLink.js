@@ -1,6 +1,6 @@
 export default function SocialLink(props) {
     return (
-        <div className={`w-14 h-14 mb-4 mx-2 rounded-full
+        <div className={`w-16 h-16 mb-6 mx-3 rounded-full
             flex justify-center items-center shrink-0
             bg-white shadow-md
             text-5xl ${props.className}`}

@@ -90,11 +90,10 @@ export default function Contact(props) {
             <div className="-z-10 fixed top-0 right-0 bottom-0 left-0 opacity-20"
                 style={{ "background": `linear-gradient(-${angle}deg, ${stops.start}, ${stops.end})` }}>
             </div>
-            {/* Avatar and Name */}
-            <header className="flex flex-col items-center
+            <header className="flex flex-col items-center space-y-6
             transition-opacity duration-300"
                 style={props.style}>
-                <div className="w-28 h-28 rounded-full
+                <div className="w-20 h-20 rounded-full
                 flex justify-center items-center shrink-0
                 bg-white shadow-md text-5xl overflow-hidden">
                     {props.photo ? (
@@ -103,43 +102,42 @@ export default function Contact(props) {
                             alt="Profile" />
                     ) : props.vibe.emoji && (
                         <img src={`/emoji/${props.vibe.emoji}.png`} alt={props.vibe.emoji}
-                            width={64} height={64} className="h-16" />
+                            width={48} height={48} className="h-12" />
                     )}
                 </div>
-                <h1 className="mt-3 text-3xl leading-tight max-w-sm text-slate-800 text-center">{props.displayName}</h1>
+                <div className="text-center">
+                    <h1 className="text-3xl leading-tight max-w-sm text-slate-800">{props.displayName}</h1>
+                    <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
+                        <img src={imageAttributes.src} alt={imageAttributes.alt}
+                            width={16} height={16} className="h-4 opacity-60" />
+                        <span>{props.label}</span>
+                    </div>
+                </div>
             </header>
-            {/* QR Code */}
-            <div className="mt-8 transition-opacity duration-300" style={props.style}>
-                <div className="p-3 flex items-center justify-center rounded-[24px]"
-                    style={{
-                        "background": `linear-gradient(${angle}deg, ${stops.start}, ${stops.end})`,
-                        "boxShadow": `0 -4px 16px 0 ${stops.startRGBA}, 0 4px 16px 0 ${stops.endRGBA}`
-                    }}>
-                    {props.url ? (
-                        <a href={props.url} target="_blank" rel="noopener noreferrer"
-                            className="flex p-1.5 rounded-[16px] bg-white cursor-pointer
-                            active:scale-[0.98] transition-transform">
-                            {props.src &&
-                                <img src={props.src} width={168} height={168}
-                                    alt={`${props.label} QR code for ${props.displayName}`} />
-                            }
-                        </a>
-                    ) : (
-                        <div className="flex p-1.5 rounded-[16px] bg-white">
-                            {props.src &&
-                                <img src={props.src} width={168} height={168}
-                                    alt={`${props.label} QR code for ${props.displayName}`} />
-                            }
-                        </div>
-                    )}
-                </div>
-            </div>
-            {/* Label with icon below QR code */}
-            <div className="mt-6 flex items-center gap-2 text-lg text-slate-600 transition-opacity duration-300"
-                style={props.style}>
-                <img src={imageAttributes.src} alt={imageAttributes.alt}
-                    width={18} height={18} className="h-[18px] opacity-60" />
-                <span>{props.label}</span>
+            <div className="p-3 flex items-center justify-center mt-8 rounded-[24px]
+            transition-opacity duration-300"
+                style={{
+                    ...props.style,
+                    "background": `linear-gradient(${angle}deg, ${stops.start}, ${stops.end})`,
+                    "boxShadow": `0 -4px 16px 0 ${stops.startRGBA}, 0 4px 16px 0 ${stops.endRGBA}`
+                }}>
+                {props.url ? (
+                    <a href={props.url} target="_blank" rel="noopener noreferrer"
+                        className="flex p-1.5 rounded-[16px] bg-white cursor-pointer
+                        active:scale-[0.98] transition-transform">
+                        {props.src &&
+                            <img src={props.src} width={168} height={168}
+                                alt={`${props.label} QR code for ${props.displayName}`} />
+                        }
+                    </a>
+                ) : (
+                    <div className="flex p-1.5 rounded-[16px] bg-white">
+                        {props.src &&
+                            <img src={props.src} width={168} height={168}
+                                alt={`${props.label} QR code for ${props.displayName}`} />
+                        }
+                    </div>
+                )}
             </div>
         </div>
     )

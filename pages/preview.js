@@ -338,7 +338,7 @@ export default function Preview() {
     }, [contacts, contactId, router]);
 
     const filteredLinks =
-        <div className="flex flex-wrap justify-center w-full px-6">
+        <div className="flex flex-wrap justify-center">
             <SocialLink
                 className={!activeLink ?
                     "transition-opacity duration-100 socialLink contactLink"
@@ -361,7 +361,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-20 opacity-0"
+        <Page className="pt-24 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
             <nav className="fixed z-10 top-0 w-full p-6 flex justify-between">
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
@@ -375,15 +375,13 @@ export default function Preview() {
                 activeLink={activeLink}
                 url={data.url || ""}
                 photo={data.photo || ""} />
-            <div className="z-10 mt-10 w-full pb-10
+            <div className="z-10 mt-12 flex justify-center
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
-                    <div className="flex justify-center">
-                        <TextButton className="mt-6 px-8 py-5 rounded-full bg-black/10
-                    active:bg-black/[.15] !border-none"
-                            onClick={editLinks}>Add links</TextButton>
-                    </div> : filteredLinks}
+                    <TextButton className="mt-8 px-8 py-5 rounded-full bg-black/10
+                active:bg-black/[.15] !border-none"
+                        onClick={editLinks}>Add links</TextButton> : filteredLinks}
             </div>
             {editing ? <EditPane editContact={editContact} editLinks={editLinks} deleteContact={handleDeleteClick} /> : null}
             {showDeleteModal && (
@@ -404,7 +402,7 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-6 text-base tracking-wide text-slate-600/40">hmu.world</p>
+            <p className="absolute bottom-6 text-lg tracking-wide text-slate-600/50">hmu.world</p>
         </Page>
     );
 };
