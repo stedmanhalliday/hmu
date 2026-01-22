@@ -338,7 +338,7 @@ export default function Preview() {
     }, [contacts, contactId, router]);
 
     const filteredLinks =
-        <div className="flex flex-wrap justify-center max-w-[360px]">
+        <div className="flex flex-wrap justify-center w-full px-6">
             <SocialLink
                 className={!activeLink ?
                     "transition-opacity duration-100 socialLink contactLink"
@@ -375,13 +375,15 @@ export default function Preview() {
                 activeLink={activeLink}
                 url={data.url || ""}
                 photo={data.photo || ""} />
-            <div className="z-10 mt-12 flex justify-center w-full
+            <div className="z-10 mt-10 w-full pb-10
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
-                    <TextButton className="mt-8 px-8 py-5 rounded-full bg-black/10
-                active:bg-black/[.15] !border-none"
-                        onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                    <div className="flex justify-center">
+                        <TextButton className="mt-6 px-8 py-5 rounded-full bg-black/10
+                    active:bg-black/[.15] !border-none"
+                            onClick={editLinks}>Add links</TextButton>
+                    </div> : filteredLinks}
             </div>
             {editing ? <EditPane editContact={editContact} editLinks={editLinks} deleteContact={handleDeleteClick} /> : null}
             {showDeleteModal && (
@@ -402,7 +404,7 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-2 text-lg tracking-wide text-slate-600/50">hmu.world</p>
+            <p className="absolute bottom-4 text-base tracking-wide text-slate-600/40">hmu.world</p>
         </Page>
     );
 };

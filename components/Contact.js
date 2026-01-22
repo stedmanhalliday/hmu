@@ -134,16 +134,16 @@ export default function Contact(props) {
                     )}
                 </div>
                 {/* Icon overlay at bottom of QR code */}
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2
-                w-16 h-16 rounded-full bg-white shadow-lg
+                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2
+                w-14 h-14 rounded-full bg-white shadow-md
                 ring-2 ring-slate-100
                 flex items-center justify-center">
                     <img src={imageAttributes.src} alt={imageAttributes.alt}
-                        width={32} height={32} className="h-8" />
+                        width={28} height={28} className="h-7" />
                 </div>
             </div>
             {/* Label below QR code */}
-            <p className="mt-8 text-xl text-slate-600 transition-opacity duration-300"
+            <p className="mt-7 text-lg text-slate-600 transition-opacity duration-300"
                 style={props.style}>{props.label}</p>
         </div>
     )
