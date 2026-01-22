@@ -182,6 +182,17 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
             <Input name="email" label="Email" type="email" value={formfield.email} placeholder="swag@hmu.world" onChange={handleChange} />
             <Input name="url" label="Website" type="text" value={formfield.url} placeholder="https://hmu.world" onChange={handleChange} />
             <label className="mb-4">
+                <div className="mb-1 text-slate-600">Theme</div>
+                <select className="select" value={formfield.vibe} onChange={handleChange} name="vibe">
+                    <option value="" disabled>Choose a vibe</option>
+                    {vibes.sort((a, b) => (
+                        a.label.localeCompare(b.label)
+                    )).map((option) => (
+                        <option key={option.label} value={JSON.stringify(option)}>{option.emoji + " " + option.label}</option>
+                    ))}
+                </select>
+            </label>
+            <label className="mb-4">
                 <div className="mb-1 text-slate-600">Photo</div>
                 <div className="flex items-center gap-3">
                     <input
@@ -220,17 +231,6 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                         </>
                     )}
                 </div>
-            </label>
-            <label className="mb-4">
-                <div className="mb-1 text-slate-600">Theme</div>
-                <select className="select" value={formfield.vibe} onChange={handleChange} name="vibe">
-                    <option value="" disabled>Choose a vibe</option>
-                    {vibes.sort((a, b) => (
-                        a.label.localeCompare(b.label)
-                    )).map((option) => (
-                        <option key={option.label} value={JSON.stringify(option)}>{option.emoji + " " + option.label}</option>
-                    ))}
-                </select>
             </label>
             <Button type="submit" className="self-center my-4 shadow-none">Save contact</Button>
             <TextButton onClick={cancel} className="self-center">Cancel</TextButton>

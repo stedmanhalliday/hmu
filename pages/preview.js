@@ -404,7 +404,7 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-4 text-base tracking-wide text-slate-600/40">hmu.world</p>
+            <p className="absolute bottom-6 text-base tracking-wide text-slate-600/40">hmu.world</p>
         </Page>
     );
 };

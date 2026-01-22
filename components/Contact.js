@@ -108,8 +108,8 @@ export default function Contact(props) {
                 </div>
                 <h1 className="mt-3 text-3xl leading-tight max-w-sm text-slate-800 text-center">{props.displayName}</h1>
             </header>
-            {/* QR Code with icon overlay */}
-            <div className="relative mt-6 transition-opacity duration-300" style={props.style}>
+            {/* QR Code */}
+            <div className="mt-8 transition-opacity duration-300" style={props.style}>
                 <div className="p-3 flex items-center justify-center rounded-[24px]"
                     style={{
                         "background": `linear-gradient(${angle}deg, ${stops.start}, ${stops.end})`,
@@ -133,18 +133,14 @@ export default function Contact(props) {
                         </div>
                     )}
                 </div>
-                {/* Icon overlay at bottom of QR code */}
-                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2
-                w-14 h-14 rounded-full bg-white shadow-md
-                ring-2 ring-slate-100
-                flex items-center justify-center">
-                    <img src={imageAttributes.src} alt={imageAttributes.alt}
-                        width={28} height={28} className="h-7" />
-                </div>
             </div>
-            {/* Label below QR code */}
-            <p className="mt-7 text-lg text-slate-600 transition-opacity duration-300"
-                style={props.style}>{props.label}</p>
+            {/* Label with icon below QR code */}
+            <div className="mt-6 flex items-center gap-2 text-lg text-slate-600 transition-opacity duration-300"
+                style={props.style}>
+                <img src={imageAttributes.src} alt={imageAttributes.alt}
+                    width={18} height={18} className="h-[18px] opacity-60" />
+                <span>{props.label}</span>
+            </div>
         </div>
     )
 }
