@@ -338,7 +338,7 @@ export default function Preview() {
     }, [contacts, contactId, router]);
 
     const filteredLinks =
-        <div className="flex flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center max-w-[360px]">
             <SocialLink
                 className={!activeLink ?
                     "transition-opacity duration-100 socialLink contactLink"
@@ -361,7 +361,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-24 opacity-0"
+        <Page className="pt-20 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
             <nav className="fixed z-10 top-0 w-full p-6 flex justify-between">
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
@@ -375,7 +375,7 @@ export default function Preview() {
                 activeLink={activeLink}
                 url={data.url || ""}
                 photo={data.photo || ""} />
-            <div className="z-10 mt-12 flex justify-center max-w-20
+            <div className="z-10 mt-12 flex justify-center w-full
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
@@ -402,7 +402,7 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-6 text-lg tracking-wide text-slate-600/50">hmu.world</p>
+            <p className="absolute bottom-2 text-lg tracking-wide text-slate-600/50">hmu.world</p>
         </Page>
     );
 };

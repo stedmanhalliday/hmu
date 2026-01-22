@@ -135,7 +135,7 @@ export default function Contact(props) {
                 </div>
                 {/* Icon overlay at bottom of QR code */}
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2
-                w-14 h-14 rounded-full bg-white shadow-lg
+                w-16 h-16 rounded-full bg-white shadow-lg
                 ring-2 ring-slate-100
                 flex items-center justify-center">
                     <img src={imageAttributes.src} alt={imageAttributes.alt}
