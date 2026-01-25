@@ -419,7 +419,7 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute text-lg tracking-wide text-slate-600/50"
+            <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
                 style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
         </Page>
     );
