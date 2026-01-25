@@ -370,16 +370,18 @@ export default function Preview() {
                     {editing ? "Cancel" : "Edit"}
                 </TextButton>
             </nav>
-            <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
-                style={editing ? { "opacity": 0 } : null}
-                activeLink={activeLink}
-                url={data.url || ""}
-                photo={data.photo || ""} />
-            <div className="z-10 mt-10 flex justify-center
+            <div className="flex-1 flex items-center justify-center">
+                <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
+                    style={editing ? { "opacity": 0 } : null}
+                    activeLink={activeLink}
+                    url={data.url || ""}
+                    photo={data.photo || ""} />
+            </div>
+            <div className="absolute bottom-16 left-0 right-0 z-10 flex justify-center
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
-                    <TextButton className="mt-8 px-8 py-5 rounded-full bg-black/10
+                    <TextButton className="px-8 py-5 rounded-full bg-black/10
                 active:bg-black/[.15] !border-none"
                         onClick={editLinks}>Add links</TextButton> : filteredLinks}
             </div>
