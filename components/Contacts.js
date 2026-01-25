@@ -1,52 +1,17 @@
 import styles from "../styles/Preview.module.css";
+import { useGradientAnimation } from "../hooks/useGradientAnimation.js";
 
-import * as convert from 'color-convert';
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { memo } from "react";
 
-export default function Contacts({ id, name, vibe, photo }) {
-
-    const [stops, setStops] = useState({
-        start: "",
-        startRGBA: "",
-        end: "",
-        endRGBA: ""
-    });
-
-    const [angle, setAngle] = useState(180);
-
-    // Increment gradient angle
-    const updateGradientAngle = () => {
-        setAngle((prevAngle) => (prevAngle + 1) % 360);
-    };
-
-    // Convert hex to rgba
-    const rgbaColor = (hexColor, alpha) => {
-        const stop = convert.hex.rgb(hexColor);
-        const rgbaColor = "rgba(" + stop.join(",") + "," + alpha + ")";
-        return rgbaColor;
-    }
-
-    // Initialize router
+function Contacts({ id, name, vibe, photo }) {
+    const { angle, stops } = useGradientAnimation(vibe);
     const router = useRouter();
 
     // Navigate to QR code for this specific contact
     const preview = () => {
         router.push(`/preview?id=${id}`);
     }
-
-    useEffect(() => {
-        if (vibe && vibe.group && vibe.group.length > 0) {
-            setStops({
-                start: vibe.group[0],
-                end: vibe.group[vibe.group.length - 1],
-                startRGBA: rgbaColor(vibe.group[0], 0.5),
-                endRGBA: rgbaColor(vibe.group[vibe.group.length - 1], 0.5)
-            });
-        }
-        const interval = setInterval(updateGradientAngle, 15);
-        return () => clearInterval(interval);
-    }, [vibe]);
 
     return (
         <div className={`${styles.miniCard} relative rounded-xl
@@ -75,3 +40,5 @@ export default function Contacts({ id, name, vibe, photo }) {
         </div>
     );
 }
+
+export default memo(Contacts);

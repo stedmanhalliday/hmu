@@ -6,14 +6,14 @@ export default function Header() {
             <title>hmu.world | Personal QR codes for what matters to you</title>
             <meta content="text/html; charset=UTF-8" name="Content-Type" />
             <meta name="description" content="Connect faster IRL with personal QR codes for what matters to you." />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
             <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
             <meta name="apple-mobile-web-app-title" content="hmu" />
-            <meta name="theme-color" content="#9333ea" />
+            <meta name="theme-color" content="#000000" />
             <meta name="format-detection" content="telephone=no" />
 
             <meta property="og:title" content="hmu.world | Personal QR codes for what matters to you" />

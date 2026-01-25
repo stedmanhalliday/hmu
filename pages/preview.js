@@ -7,10 +7,10 @@ import SocialLink from "../components/SocialLink.js";
 import TextButton from "../components/TextButton.js";
 import styles from "../styles/Preview.module.css";
 import { safeParseVibe } from "../utils/storage.js";
+import logger from "../utils/logger.js";
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from "react";
-import QRCode from "qrcode";
+import { useContext, useEffect, useState, useRef } from "react";
 
 const DEFAULT_LINK_ORDER = ['twitter', 'linkedin', 'github', 'telegram', 'instagram', 'venmo', 'custom'];
 const ORDER_STORAGE_KEY = 'linkOrder';
@@ -20,6 +20,16 @@ export default function Preview() {
     const { id: contactId } = router.query;
 
     const { contacts, getContact, deleteContact, storageError } = useContext(StorageContext);
+
+    // Lazy-loaded QRCode reference
+    const qrCodeRef = useRef(null);
+    const getQRCode = async () => {
+        if (!qrCodeRef.current) {
+            const qrModule = await import('qrcode');
+            qrCodeRef.current = qrModule.default;
+        }
+        return qrCodeRef.current;
+    };
 
     // Load link order from localStorage
     const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
@@ -196,33 +206,35 @@ export default function Preview() {
         const label = e.target.getAttribute("data-label");
         const url = e.target.getAttribute("data-url");
 
-        if (activeLink == type) {
+        if (activeLink === type) {
             setActiveLink("");
             showContact()
         } else {
             setActiveLink(type);
-            QRCode.toDataURL(url,
-                {
-                    width: 168,
-                    errorCorrectionLevel: 'L',
-                }).then((dataUrl) => {
-                    setData((prevData) => ({
-                        ...prevData,
-                        src: dataUrl,
-                        displayName: displayName,
-                        label: label,
-                        url: url,
-                    }));
-                }).catch((error) => {
-                    console.error('[QR] Failed to generate QR code:', error);
-                    setData((prevData) => ({
-                        ...prevData,
-                        src: "",
-                        displayName: displayName,
-                        label: label,
-                        url: url,
-                    }));
-                });
+            getQRCode().then((QRCode) => {
+                QRCode.toDataURL(url,
+                    {
+                        width: 168,
+                        errorCorrectionLevel: 'L',
+                    }).then((dataUrl) => {
+                        setData((prevData) => ({
+                            ...prevData,
+                            src: dataUrl,
+                            displayName: displayName,
+                            label: label,
+                            url: url,
+                        }));
+                    }).catch((error) => {
+                        logger.error('[QR] Failed to generate QR code:', error);
+                        setData((prevData) => ({
+                            ...prevData,
+                            src: "",
+                            displayName: displayName,
+                            label: label,
+                            url: url,
+                        }));
+                    });
+            });
         }
     }
 
@@ -285,42 +297,44 @@ export default function Preview() {
         const vibe = safeParseVibe(formValues.vibe);
         const photo = formValues.photo || "";
 
-        QRCode.toDataURL(vCardValues(formValues),
-            {
-                width: 168,
-                errorCorrectionLevel: 'L',
-            }).then((url) => {
-                setData({
-                    src: url,
-                    displayName: name,
-                    label: "Contact",
-                    vibe: vibe,
-                    photo: photo,
+        getQRCode().then((QRCode) => {
+            QRCode.toDataURL(vCardValues(formValues),
+                {
+                    width: 168,
+                    errorCorrectionLevel: 'L',
+                }).then((url) => {
+                    setData({
+                        src: url,
+                        displayName: name,
+                        label: "Contact",
+                        vibe: vibe,
+                        photo: photo,
+                    });
+                    setContact({
+                        name: name,
+                        src: url
+                    });
+                }).catch((error) => {
+                    logger.error('[QR] Failed to generate contact QR code:', error);
+                    setData({
+                        src: "",
+                        displayName: name,
+                        label: "Contact",
+                        vibe: vibe,
+                        photo: photo,
+                    });
+                    setContact({
+                        name: name,
+                        src: ""
+                    });
                 });
-                setContact({
-                    name: name,
-                    src: url
-                });
-            }).catch((error) => {
-                console.error('[QR] Failed to generate contact QR code:', error);
-                setData({
-                    src: "",
-                    displayName: name,
-                    label: "Contact",
-                    vibe: vibe,
-                    photo: photo,
-                });
-                setContact({
-                    name: name,
-                    src: ""
-                });
-            });
+        });
 
         if (linkValues) {
             setLinks(prevLinks => {
                 const updatedLinks = { ...prevLinks };
                 for (const key in linkValues) {
-                    if (key == "custom") {
+                    if (key === "custom") {
                         updatedLinks[key].displayName = processURL(linkValues[key]);
                         updatedLinks[key].url = linkValues[key];
                     }
@@ -349,7 +363,7 @@ export default function Preview() {
                 .filter(key => links[key] && links[key].url !== "")
                 .map(key => (
                     <SocialLink key={key}
-                        className={activeLink == key ?
+                        className={activeLink === key ?
                             `transition-opacity duration-100 socialLink ${key}`
                             : `opacity-30 transition-opacity duration-100 socialLink ${key}`}
                         type={key}
@@ -363,7 +377,8 @@ export default function Preview() {
     return (
         <Page className="pt-8 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
-            <nav className="fixed z-10 top-0 w-full p-4 flex justify-between">
+            <nav className="fixed z-10 top-0 w-full p-4 flex justify-between"
+                style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
                 <TextButton className={editing ? `${styles.edit} ${styles.editing}` : styles.edit}
                     onClick={edit}>
@@ -404,7 +419,8 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-4 text-lg tracking-wide text-slate-600/50">hmu.world</p>
+            <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
+                style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
         </Page>
     );
 };

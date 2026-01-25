@@ -29,10 +29,10 @@
     ],
     "id": "/",
     "start_url": "/",
-    "background_color": "#ffffff",
+    "background_color": "#f1f5f9",
     "display": "standalone",
     "scope": "/",
-    "theme_color": "#9333ea",
+    "theme_color": "#000000",
     "description": "Connect faster IRL with personal QR codes for what matters to you.",
     "screenshots": [
         {
@@ -71,8 +71,7 @@
             "sizes": "498x1080"
         }
     ],
-    "//": "For use with multiple contacts",
-    "//shortcuts": [
+    "shortcuts": [
         {
             "name": "Share contact",
             "short_name": "Contact",
@@ -80,7 +79,7 @@
             "url": "/preview",
             "icons": [
                 {
-                    "src": "/icons/icon_x192.png",
+                    "src": "/icons/any_icon_x192.png",
                     "sizes": "192x192"
                 }
             ]

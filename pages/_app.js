@@ -2,6 +2,7 @@ import '../styles/reset.css';
 import '../dist/main.css';
 import Analytics from '../components/Analytics';
 import ErrorBoundary from '../components/ErrorBoundary';
+import logger from '../utils/logger.js';
 
 import { createContext, useEffect, useState, useCallback } from 'react';
 import { 
@@ -29,14 +30,14 @@ export const StorageContext = createContext(null);
 function migrateToMultiContact() {
   // Skip if already migrated
   if (safeGetItem(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE)) {
-    console.log('[Migration] Multi-contact migration already complete');
+    logger.log('[Migration] Multi-contact migration already complete');
     return;
   }
 
   // Skip if contacts array already exists (shouldn't happen, but be safe)
   const existingContacts = safeGetItem(STORAGE_KEYS.CONTACTS);
   if (existingContacts && Array.isArray(existingContacts) && existingContacts.length > 0) {
-    console.log('[Migration] Contacts array already exists, skipping migration');
+    logger.log('[Migration] Contacts array already exists, skipping migration');
     safeSetItem(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE, true);
     return;
   }
@@ -47,7 +48,7 @@ function migrateToMultiContact() {
 
   // If no old data, nothing to migrate - start fresh
   if (!oldFormValues || oldFormValues === "") {
-    console.log('[Migration] No existing contact data to migrate');
+    logger.log('[Migration] No existing contact data to migrate');
     safeSetItem(STORAGE_KEYS.CONTACTS, []);
     safeSetItem(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE, true);
     return;
@@ -64,11 +65,11 @@ function migrateToMultiContact() {
   
   const success = safeSetItem(STORAGE_KEYS.CONTACTS, contacts);
   if (success) {
-    console.log('[Migration] Successfully migrated to multi-contact structure');
+    logger.log('[Migration] Successfully migrated to multi-contact structure');
     safeSetItem(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE, true);
     // Note: We keep old keys for now in case rollback is needed
   } else {
-    console.error('[Migration] Failed to save migrated contacts');
+    logger.error('[Migration] Failed to save migrated contacts');
   }
 }
 
@@ -113,7 +114,7 @@ function MyApp({ Component, pageProps }) {
     if (id === 'new') {
       // Create new contact
       if (contacts.length >= MAX_CONTACTS) {
-        console.warn('[Contacts] Max contacts reached, cannot add more');
+        logger.warn('[Contacts] Max contacts reached, cannot add more');
         return null;
       }
       const newContact = createEmptyContact();
@@ -121,7 +122,7 @@ function MyApp({ Component, pageProps }) {
       if (data.linkValues) newContact.linkValues = data.linkValues;
       updatedContacts = [...contacts, newContact];
       contactId = newContact.id;
-      console.log(`[Contacts] Created new contact: ${contactId}`);
+      logger.log(`[Contacts] Created new contact: ${contactId}`);
     } else {
       // Update existing contact
       updatedContacts = contacts.map(contact => {
@@ -134,7 +135,7 @@ function MyApp({ Component, pageProps }) {
         }
         return contact;
       });
-      console.log(`[Contacts] Updated contact: ${id}`);
+      logger.log(`[Contacts] Updated contact: ${id}`);
     }
 
     setContacts(updatedContacts);
@@ -148,7 +149,7 @@ function MyApp({ Component, pageProps }) {
   const deleteContact = useCallback((id) => {
     const updatedContacts = contacts.filter(c => c.id !== id);
     setContacts(updatedContacts);
-    console.log(`[Contacts] Deleted contact: ${id}`);
+    logger.log(`[Contacts] Deleted contact: ${id}`);
   }, [contacts, setContacts]);
 
   /**
@@ -157,7 +158,7 @@ function MyApp({ Component, pageProps }) {
    */
   const reorderContacts = useCallback((newContacts) => {
     setContacts(newContacts);
-    console.log(`[Contacts] Reordered contacts`);
+    logger.log(`[Contacts] Reordered contacts`);
   }, [setContacts]);
 
   /**
@@ -180,7 +181,7 @@ function MyApp({ Component, pageProps }) {
     // Request persistent storage to reduce eviction risk on Android
     if (navigator.storage?.persist) {
       navigator.storage.persist().then(granted => {
-        console.log(`[Storage] Persistence ${granted ? 'granted' : 'denied'}`);
+        logger.log(`[Storage] Persistence ${granted ? 'granted' : 'denied'}`);
       });
     }
 
@@ -190,7 +191,7 @@ function MyApp({ Component, pageProps }) {
         const usedMB = (estimate.usage / 1024 / 1024).toFixed(2);
         const quotaMB = (estimate.quota / 1024 / 1024).toFixed(2);
         const percentUsed = ((estimate.usage / estimate.quota) * 100).toFixed(1);
-        console.log(`[Storage] Quota: ${quotaMB}MB, Used: ${usedMB}MB (${percentUsed}%)`);
+        logger.log(`[Storage] Quota: ${quotaMB}MB, Used: ${usedMB}MB (${percentUsed}%)`);
       });
     }
 
