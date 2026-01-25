@@ -29,10 +29,10 @@
     ],
     "id": "/",
     "start_url": "/",
-    "background_color": "#ffffff",
+    "background_color": "#f1f5f9",
     "display": "standalone",
     "scope": "/",
-    "theme_color": "#9333ea",
+    "theme_color": "#f1f5f9",
     "description": "Connect faster IRL with personal QR codes for what matters to you.",
     "screenshots": [
         {
