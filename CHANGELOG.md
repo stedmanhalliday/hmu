@@ -13,6 +13,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Delete button on contact edit screen (red styling for destructive action)
 - ConfirmModal component for destructive action confirmations
 - Post-deletion navigation (redirects to remaining contact or home if none left)
+- iOS PWA safe area support and splash screens
+- Drag-and-drop reordering for contacts on home screen
+- Donation link in feedback dialog
+- Profile photos support
+- New social link types
+- Install prompt analytics with separate accepted/dismissed events
+
+### Changed
+
+- Increased max contacts from 2 to 3
+- Improved header fluid typography and vertical spacing
+- Refined preview layout spacing and stability
+- Repositioned links to bottom of preview card
+- Centered card content
+- Adjusted label icon sizing
+
+### Fixed
+
+- Upgraded Next.js and React with security vulnerability fixes
+- Spacing between QR code and link buttons
+- Links flex flow to prevent overlap with centered content
+- Suppressed img element warnings for base64/data URI images
+- Empty state routing redirects to home when no contacts
+- Android install prompt with service worker and state logic
+- Error handling for setContact failures in LinkForm
 
 ## [0.1.5] - 2026-01-15
 
