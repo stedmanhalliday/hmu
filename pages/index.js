@@ -148,6 +148,7 @@ export default function Home() {
                                     id={contact.id}
                                     name={contact.formValues.name}
                                     vibe={safeParseVibe(contact.formValues.vibe)}
+                                    photo={contact.formValues.photo}
                                 />
                             ))
                         }

@@ -4,7 +4,7 @@ import * as convert from 'color-convert';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function Contacts({ id, name, vibe }) {
+export default function Contacts({ id, name, vibe, photo }) {
 
     const [stops, setStops] = useState({
         start: "",
@@ -59,10 +59,14 @@ export default function Contacts({ id, name, vibe }) {
             <div className="w-80 pl-4 pr-10 py-4 flex items-center rounded-xl
             bg-white shadow-md">
                 <span className="mr-3 text-2xl flex items-center">
-                    {vibe?.emoji &&
+                    {photo ? (
+                        <img src={photo}
+                            className="w-6 h-6 rounded-full object-cover"
+                            alt="Profile" />
+                    ) : vibe?.emoji && (
                         <img src={`/emoji/${vibe.emoji}.png`} alt={vibe.emoji}
                             width={24} height={24} />
-                    }
+                    )}
                 </span>
                 <p className="text-lg truncate text-slate-800">{name}</p>
             </div>
