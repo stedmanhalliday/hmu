@@ -8,9 +8,13 @@ export default function EditPane(props) {
 
     useEffect(() => {
         const paneNode = pane.current;
-        paneNode.style.opacity = 1;
+        // Delay fade-in to let Contact fade out first (300ms duration)
+        const timer = setTimeout(() => {
+            paneNode.style.opacity = 1;
+        }, 150);
 
         return () => {
+            clearTimeout(timer);
             paneNode.style.opacity = 0;
         }
     }, [])
