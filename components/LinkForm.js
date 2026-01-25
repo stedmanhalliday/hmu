@@ -68,7 +68,7 @@ function SortableInput({ id, name, label, type, value, placeholder, onChange }) 
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="flex items-start gap-2 mb-4">
+        <div ref={setNodeRef} style={style} className="flex items-start gap-2 mb-4 -ml-3">
             {/* Drag handle */}
             <button
                 type="button"
