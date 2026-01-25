@@ -90,10 +90,12 @@ export default function Create() {
                 bg-white shadow-md overflow-hidden
                 text-5xl">
                     {photo ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={photo}
                             className="w-full h-full object-cover"
                             alt="Profile" />
                     ) : (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={emoji ? `/emoji/${emoji}.png` : "/emoji/👤.png"}
                             width={48} height={48}
                             alt={emoji || "👤"} />

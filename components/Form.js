@@ -216,6 +216,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                     </button>
                     {formfield.photo && (
                         <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={formfield.photo}
                                 alt="Preview"

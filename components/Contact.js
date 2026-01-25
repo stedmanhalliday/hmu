@@ -97,10 +97,12 @@ export default function Contact(props) {
                 flex justify-center items-center shrink-0
                 bg-white shadow-md text-5xl overflow-hidden">
                     {props.photo ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={props.photo}
                             className="w-full h-full object-cover"
                             alt="Profile" />
                     ) : props.vibe.emoji && (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={`/emoji/${props.vibe.emoji}.png`} alt={props.vibe.emoji}
                             width={48} height={48} className="h-12" />
                     )}
@@ -109,6 +111,7 @@ export default function Contact(props) {
                     <h1 className="leading-tight max-w-sm text-slate-800 truncate"
                         style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{props.displayName}</h1>
                     <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={imageAttributes.src} alt={imageAttributes.alt}
                             width={16} height={16} className="h-4 opacity-60 relative -top-[2px]" />
                         <span>{props.label}</span>
@@ -127,6 +130,7 @@ export default function Contact(props) {
                         className="flex p-1.5 rounded-[16px] bg-white cursor-pointer
                         active:scale-[0.98] transition-transform">
                         {props.src &&
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={props.src} width={168} height={168}
                                 alt={`${props.label} QR code for ${props.displayName}`} />
                         }
@@ -134,6 +138,7 @@ export default function Contact(props) {
                 ) : (
                     <div className="flex p-1.5 rounded-[16px] bg-white">
                         {props.src &&
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={props.src} width={168} height={168}
                                 alt={`${props.label} QR code for ${props.displayName}`} />
                         }
