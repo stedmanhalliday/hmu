@@ -76,12 +76,12 @@ export default function Create() {
     }, [contactId, getContact, canAddContact, router]);
 
     useEffect(() => {
-        const interval = setInterval(updateGradientAngle, 15);
+        const interval = setInterval(updateGradientAngle, 100);
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <Page className={stops.start != "" ? "justify-center z-0" : "justify-center bg-slate-100"}>
+        <Page className={stops.start !== "" ? "justify-center z-0" : "justify-center bg-slate-100"}>
             <div className="-z-10 fixed top-0 right-0 bottom-0 left-0 opacity-20"
                 style={{ "background": `linear-gradient(-${angle}deg, ${stops.start}, ${stops.end})` }}></div>
             <header className="flex flex-col items-center space-y-6 mb-6">

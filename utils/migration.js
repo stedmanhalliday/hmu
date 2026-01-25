@@ -23,6 +23,7 @@
  */
 
 import { safeGetItem, safeSetItem, safeRemoveItem, STORAGE_KEYS } from './storage.js';
+import logger from './logger.js';
 
 /**
  * Attempt to migrate data from react-secure-storage to plain localStorage.
@@ -30,11 +31,11 @@ import { safeGetItem, safeSetItem, safeRemoveItem, STORAGE_KEYS } from './storag
  * @returns {Object} Migration result with migrated/failed/skipped arrays
  */
 export function migrateFromSecureStorage() {
-  console.log('[Migration] Starting storage migration check');
+  logger.log('[Migration] Starting storage migration check');
 
   // Check if already migrated - avoid running multiple times
   if (safeGetItem(STORAGE_KEYS.MIGRATION_COMPLETE)) {
-    console.log('[Migration] Already completed, skipping');
+    logger.log('[Migration] Already completed, skipping');
     return { migrated: [], failed: [], skipped: true };
   }
 
@@ -44,7 +45,7 @@ export function migrateFromSecureStorage() {
     safeGetItem(STORAGE_KEYS.LINK_VALUES) !== null;
 
   if (hasPlainData) {
-    console.log('[Migration] Plain localStorage data exists, skipping secure storage read');
+    logger.log('[Migration] Plain localStorage data exists, skipping secure storage read');
     safeSetItem(STORAGE_KEYS.MIGRATION_COMPLETE, true);
     return { migrated: [], failed: [], skipped: true };
   }
@@ -64,7 +65,7 @@ export function migrateFromSecureStorage() {
   try {
     secureLocalStorage = require('react-secure-storage').default;
   } catch (error) {
-    console.log('[Migration] react-secure-storage not available, skipping migration');
+    logger.log('[Migration] react-secure-storage not available, skipping migration');
     safeSetItem(STORAGE_KEYS.MIGRATION_COMPLETE, true);
     return { migrated: [], failed: [], skipped: true };
   }
@@ -76,7 +77,7 @@ export function migrateFromSecureStorage() {
       const secureValue = secureLocalStorage.getItem(key);
 
       if (secureValue === null || secureValue === undefined) {
-        console.log(`[Migration] Key "${key}" not found in secure storage`);
+        logger.log(`[Migration] Key "${key}" not found in secure storage`);
         continue;
       }
 
@@ -103,20 +104,20 @@ export function migrateFromSecureStorage() {
         // Successfully migrated - remove from secure storage to save space
         try {
           secureLocalStorage.removeItem(key);
-          console.log(`[Migration] Successfully migrated "${key}"`);
+          logger.log(`[Migration] Successfully migrated "${key}"`);
           migrated.push(key);
         } catch (removeError) {
-          console.warn(`[Migration] Migrated "${key}" but couldn't remove old copy:`, removeError.message);
+          logger.warn(`[Migration] Migrated "${key}" but couldn't remove old copy:`, removeError.message);
           migrated.push(key);
         }
       } else {
-        console.error(`[Migration] Failed to write "${key}" to plain storage`);
+        logger.error(`[Migration] Failed to write "${key}" to plain storage`);
         failed.push(key);
       }
 
     } catch (error) {
       // Read failed - likely fingerprint changed, data is undecryptable
-      console.error(`[Migration] Could not read "${key}" from secure storage:`, error.message);
+      logger.error(`[Migration] Could not read "${key}" from secure storage:`, error.message);
       failed.push(key);
     }
   }
@@ -125,6 +126,6 @@ export function migrateFromSecureStorage() {
   // This prevents infinite retry loops
   safeSetItem(STORAGE_KEYS.MIGRATION_COMPLETE, true);
 
-  console.log('[Migration] Completed:', { migrated, failed });
+  logger.log('[Migration] Completed:', { migrated, failed });
   return { migrated, failed, skipped: false };
 }

@@ -10,6 +10,8 @@
  * lock screen is the security boundary. Encryption adds fragility without security benefit.
  */
 
+import logger from './logger.js';
+
 // Storage keys used throughout the app
 export const STORAGE_KEYS = {
   // Legacy keys (single contact) - kept for migration
@@ -44,16 +46,16 @@ export function safeGetItem(key) {
   try {
     const item = localStorage.getItem(key);
     if (item === null) {
-      console.log(`[Storage] Key "${key}" not found`);
+      logger.log(`[Storage] Key "${key}" not found`);
       return null;
     }
 
     // Parse the JSON - will throw if corrupted
     const parsed = JSON.parse(item);
-    console.log(`[Storage] Successfully read "${key}"`);
+    logger.log(`[Storage] Successfully read "${key}"`);
     return parsed;
   } catch (error) {
-    console.error(`[Storage] Failed to read "${key}":`, error.message);
+    logger.error(`[Storage] Failed to read "${key}":`, error.message);
     return null;
   }
 }
@@ -73,14 +75,14 @@ export function safeSetItem(key, value) {
     // Stringify once - avoids double-stringify bug from previous implementation
     const serialized = JSON.stringify(value);
     localStorage.setItem(key, serialized);
-    console.log(`[Storage] Successfully wrote "${key}"`, `(${serialized.length} bytes)`);
+    logger.log(`[Storage] Successfully wrote "${key}"`, `(${serialized.length} bytes)`);
     return true;
   } catch (error) {
     // Detect quota exceeded specifically
     if (error.name === 'QuotaExceededError') {
-      console.error(`[Storage] Quota exceeded writing "${key}"`);
+      logger.error(`[Storage] Quota exceeded writing "${key}"`);
     } else {
-      console.error(`[Storage] Failed to write "${key}":`, error.message);
+      logger.error(`[Storage] Failed to write "${key}":`, error.message);
     }
     return false;
   }
@@ -95,10 +97,10 @@ export function safeSetItem(key, value) {
 export function safeRemoveItem(key) {
   try {
     localStorage.removeItem(key);
-    console.log(`[Storage] Removed "${key}"`);
+    logger.log(`[Storage] Removed "${key}"`);
     return true;
   } catch (error) {
-    console.error(`[Storage] Failed to remove "${key}":`, error.message);
+    logger.error(`[Storage] Failed to remove "${key}":`, error.message);
     return false;
   }
 }
@@ -128,7 +130,7 @@ const ANON_VIBE = {
 export function safeParseVibe(vibeString) {
   // Handle null/undefined/empty string
   if (!vibeString) {
-    console.log('[Storage] Vibe string is empty, using Anon fallback');
+    logger.log('[Storage] Vibe string is empty, using Anon fallback');
     return ANON_VIBE;
   }
 
@@ -136,12 +138,12 @@ export function safeParseVibe(vibeString) {
     const vibe = JSON.parse(vibeString);
     // Validate structure to catch partial corruption
     if (!vibe.label || !vibe.emoji || !Array.isArray(vibe.group)) {
-      console.warn('[Storage] Vibe missing required fields, using Anon fallback');
+      logger.warn('[Storage] Vibe missing required fields, using Anon fallback');
       return ANON_VIBE;
     }
     return vibe;
   } catch (error) {
-    console.error('[Storage] Failed to parse vibe:', error.message);
+    logger.error('[Storage] Failed to parse vibe:', error.message);
     return ANON_VIBE;
   }
 }

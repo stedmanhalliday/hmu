@@ -9,6 +9,7 @@ import { resizeImage } from "../utils/image.js";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState, useRef } from "react";
 import { safeGetItem, safeSetItem, STORAGE_KEYS } from "../utils/storage.js";
+import logger from "../utils/logger.js";
 
 export default function Form({ contactId, initialFormValues, handleChange: onVibeChange, onPhotoChange }) {
     const router = useRouter();
@@ -35,7 +36,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
             ...prevState,
             [name]: value,
         }));
-        if (event.target.name == "vibe" && onVibeChange) {
+        if (event.target.name === "vibe" && onVibeChange) {
             onVibeChange(event.target.value);
         }
     }
@@ -62,7 +63,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                 onPhotoChange(base64);
             }
         } catch (error) {
-            console.error('[Form] Failed to process image:', error);
+            logger.error('[Form] Failed to process image:', error);
             setModal(
                 <Modal title="Error" dismiss={dismiss}>
                     Failed to process the image. Please try another.
@@ -86,7 +87,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         event.preventDefault();
 
         // Check for name
-        if (formfield.name == "") {
+        if (formfield.name === "") {
             setModal(
                 <Modal title="No name" dismiss={dismiss}>
                     Please enter your name.
@@ -96,7 +97,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         }
 
         //Check for contact info
-        if (formfield.phone == "" && formfield.email == "" && formfield.url == "") {
+        if (formfield.phone === "" && formfield.email === "" && formfield.url === "") {
             setModal(
                 <Modal title="No contact info" dismiss={dismiss}>
                     Please enter your contact info.
@@ -107,7 +108,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
 
         // Anon vibe if not set
         let finalFormValues = { ...formfield };
-        if (finalFormValues.vibe == "") {
+        if (finalFormValues.vibe === "") {
             finalFormValues.vibe = JSON.stringify(vibes.filter(vibe => vibe.label === "Anon")[0]);
         }
 

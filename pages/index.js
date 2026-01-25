@@ -10,7 +10,6 @@ import { safeParseVibe } from "../utils/storage.js";
 
 import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import Typed from "typed.js";
 
 import {
     DndContext,
@@ -114,7 +113,7 @@ export default function Home() {
     const [feedbackModal, setFeedbackModal] = useState(false);
 
     // Create reference to store the DOM element containing the animation
-    const el = useRef("#shuffle");
+    const el = useRef(null);
 
     useEffect(() => {
         if (contacts !== null) {
@@ -123,14 +122,17 @@ export default function Home() {
     }, [contacts])
 
     useEffect(() => {
-        // Initialize headline shuffle
-        const typed = new Typed(el.current, {
-            strings: ["instantly.", "flexibly.", "tactfully."],
-            startDelay: 5000,
-            backDelay: 5000,
-            typeSpeed: 20,
-            backSpeed: 20,
-            showCursor: false
+        // Initialize headline shuffle (lazy loaded)
+        let typed = null;
+        import('typed.js').then((Typed) => {
+            typed = new Typed.default(el.current, {
+                strings: ["instantly.", "flexibly.", "tactfully."],
+                startDelay: 5000,
+                backDelay: 5000,
+                typeSpeed: 20,
+                backSpeed: 20,
+                showCursor: false
+            });
         });
 
         // Capture the install prompt event when it fires
@@ -167,7 +169,7 @@ export default function Home() {
 
         return () => {
             // Destroy Typed instance during cleanup to stop animation
-            typed.destroy();
+            if (typed) typed.destroy();
             // Clean up PWA event listeners
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
             window.removeEventListener('appinstalled', handleAppInstalled);
@@ -222,7 +224,7 @@ export default function Home() {
             <div className={styles.siteCode}></div>
             <header className="text-center text-slate-600">
                 <p className="mt-8 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
-                    <span id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
+                    <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
                 </p>
                 <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
             </header>

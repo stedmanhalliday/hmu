@@ -1,7 +1,7 @@
 import Modal from "./Modal.js";
 
 function Instructions({ os }) {
-    if (os == "ios") {
+    if (os === "ios") {
         return (
             <div className="text-base text-slate-600 space-y-3">
                 <ol className="ml-5 list-decimal space-y-3">
@@ -11,7 +11,7 @@ function Instructions({ os }) {
                 <p>Make sure you&apos;re using the lastest version of Safari or Chrome.</p>
             </div>
         );
-    } else if (os == "android") {
+    } else if (os === "android") {
         return (
             <div className="text-base text-slate-600 space-y-3">
                 <ol className="ml-5 list-decimal space-y-3">

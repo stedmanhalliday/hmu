@@ -6,6 +6,7 @@ import TextButton from './TextButton.js';
 
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import logger from '../utils/logger.js';
 
 import {
     DndContext,
@@ -197,7 +198,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
 
         // Validate that contact exists before saving
         if (contactId !== 'new' && !getContact(contactId)) {
-            console.error('[LinkForm] Cannot save - invalid contact ID:', contactId);
+            logger.error('[LinkForm] Cannot save - invalid contact ID:', contactId);
             router.push('/');
             return;
         }
@@ -205,7 +206,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         // Process form values to yield display names
         const processedLinks = Object.fromEntries(
             Object.entries(formfield).map(([key, value]) => {
-                if (key == "custom") {
+                if (key === "custom") {
                     return [key, value];
                 } else {
                     return [key, processDisplayName(value)];

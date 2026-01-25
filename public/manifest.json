@@ -71,8 +71,7 @@
             "sizes": "498x1080"
         }
     ],
-    "//": "For use with multiple contacts",
-    "//shortcuts": [
+    "shortcuts": [
         {
             "name": "Share contact",
             "short_name": "Contact",
@@ -80,7 +79,7 @@
             "url": "/preview",
             "icons": [
                 {
-                    "src": "/icons/icon_x192.png",
+                    "src": "/icons/any_icon_x192.png",
                     "sizes": "192x192"
                 }
             ]

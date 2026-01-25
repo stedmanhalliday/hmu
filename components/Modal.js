@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 
 export default function Modal({ title, children, dismiss }) {
 
-    const shim = useRef(0);
-    const modal = useRef(1);
+    const shim = useRef(null);
+    const modal = useRef(null);
 
     useEffect(() => {
 
