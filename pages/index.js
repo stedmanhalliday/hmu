@@ -180,10 +180,12 @@ export default function Home() {
         installPrompt.prompt();
         // Wait for the user to respond to the prompt ("accepted" | "dismissed")
         const { outcome } = await installPrompt.userChoice;
-        // Prompt install analytics
-        gtag("event", "android_install_prompt", {
-            "outcome": outcome
-        });
+        // Log install prompt outcome as separate metrics
+        if (outcome === 'accepted') {
+            gtag("event", "install_prompt_accepted");
+        } else if (outcome === 'dismissed') {
+            gtag("event", "install_prompt_dismissed");
+        }
         // Discard used prompt
         setInstallPrompt(null);
     }
