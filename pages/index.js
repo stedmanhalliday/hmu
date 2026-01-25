@@ -48,7 +48,7 @@ function SortableContact({ contact }) {
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="flex items-center gap-2 -ml-3">
+        <div ref={setNodeRef} style={style} className="flex items-center gap-2 -ml-2">
             {/* Drag handle */}
             <button
                 type="button"
