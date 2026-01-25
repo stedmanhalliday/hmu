@@ -152,6 +152,15 @@ function MyApp({ Component, pageProps }) {
   }, [contacts, setContacts]);
 
   /**
+   * Reorder contacts array.
+   * WHY: Allow drag-and-drop reordering of contacts on the index page.
+   */
+  const reorderContacts = useCallback((newContacts) => {
+    setContacts(newContacts);
+    console.log(`[Contacts] Reordered contacts`);
+  }, [setContacts]);
+
+  /**
    * Check if user can add more contacts.
    */
   const canAddContact = contacts.length < MAX_CONTACTS;
@@ -196,6 +205,7 @@ function MyApp({ Component, pageProps }) {
     getContact,
     setContact,
     deleteContact,
+    reorderContacts,
     canAddContact,
     // Error state
     storageError,

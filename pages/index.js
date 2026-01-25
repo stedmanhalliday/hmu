@@ -12,8 +12,96 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Typed from "typed.js";
 
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// Sortable contact wrapper component
+function SortableContact({ contact }) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: contact.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} className="flex items-center gap-2 -ml-3">
+            {/* Drag handle */}
+            <button
+                type="button"
+                className="p-1 cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 touch-none"
+                {...attributes}
+                {...listeners}
+            >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <circle cx="4" cy="3" r="1.5" />
+                    <circle cx="12" cy="3" r="1.5" />
+                    <circle cx="4" cy="8" r="1.5" />
+                    <circle cx="12" cy="8" r="1.5" />
+                    <circle cx="4" cy="13" r="1.5" />
+                    <circle cx="12" cy="13" r="1.5" />
+                </svg>
+            </button>
+            <Contacts
+                id={contact.id}
+                name={contact.formValues.name}
+                vibe={safeParseVibe(contact.formValues.vibe)}
+                photo={contact.formValues.photo}
+            />
+        </div>
+    );
+}
+
 export default function Home() {
-    const { contacts, canAddContact } = useContext(StorageContext);
+    const { contacts, canAddContact, reorderContacts } = useContext(StorageContext);
+
+    // Configure sensors for drag-and-drop
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 200,
+                tolerance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+    const handleDragEnd = (event) => {
+        const { active, over } = event;
+
+        if (over && active.id !== over.id) {
+            const oldIndex = contacts.findIndex(c => c.id === active.id);
+            const newIndex = contacts.findIndex(c => c.id === over.id);
+            const newContacts = arrayMove(contacts, oldIndex, newIndex);
+            reorderContacts(newContacts);
+        }
+    };
 
     const [loading, setLoading] = useState(true);
 
@@ -139,19 +227,29 @@ export default function Home() {
             {isStandalone ?
                 hasContacts ?
                     <div className="mt-12 flex flex-col items-center space-y-4">
-                        {/* Render all contacts that have data */}
-                        {contacts
-                            .filter(c => c.formValues?.name && c.formValues?.vibe)
-                            .map(contact => (
-                                <Contacts
-                                    key={contact.id}
-                                    id={contact.id}
-                                    name={contact.formValues.name}
-                                    vibe={safeParseVibe(contact.formValues.vibe)}
-                                    photo={contact.formValues.photo}
-                                />
-                            ))
-                        }
+                        {/* Render all contacts that have data with drag-and-drop */}
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <SortableContext
+                                items={contacts.filter(c => c.formValues?.name && c.formValues?.vibe).map(c => c.id)}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                <div className="flex flex-col items-center space-y-4">
+                                    {contacts
+                                        .filter(c => c.formValues?.name && c.formValues?.vibe)
+                                        .map(contact => (
+                                            <SortableContact
+                                                key={contact.id}
+                                                contact={contact}
+                                            />
+                                        ))
+                                    }
+                                </div>
+                            </SortableContext>
+                        </DndContext>
                         {/* Show add button if under max contacts */}
                         {canAddContact && (
                             <Button className="mt-4" onClick={create}>+ New contact</Button>
