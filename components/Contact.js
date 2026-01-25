@@ -107,7 +107,7 @@ export default function Contact(props) {
                 </div>
                 <div className="text-center w-80">
                     <h1 className="leading-tight max-w-sm text-slate-800 truncate"
-                        style={{ fontSize: 'clamp(1.125rem, 5vw, 1.875rem)' }}>{props.displayName}</h1>
+                        style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{props.displayName}</h1>
                     <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
                         <img src={imageAttributes.src} alt={imageAttributes.alt}
                             width={16} height={16} className="h-4 opacity-60" />
@@ -115,7 +115,7 @@ export default function Contact(props) {
                     </div>
                 </div>
             </header>
-            <div className="p-3 flex items-center justify-center mt-8 rounded-[24px]
+            <div className="p-3 flex items-center justify-center mt-4 rounded-[24px]
             transition-opacity duration-300"
                 style={{
                     ...props.style,
