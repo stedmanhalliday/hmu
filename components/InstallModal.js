@@ -8,7 +8,7 @@ function Instructions({ os }) {
                     <li>Tap the <em className="relative font-medium uppercase tracking-wide pl-5 ml-1 mr-0.5 safariShare">share</em> icon in Safari or Chrome.</li>
                     <li>Tap the <em className="font-medium uppercase tracking-wide">Add to home screen</em> option to install.</li>
                 </ol>
-                <p>Having trouble? Check inside <code className="px-1 py-0.5 bg-slate-200 rounded text-sm">...</code> More menus, look in the address bar, and scroll down to find the correct options.</p>
+                <p>Having trouble? Check inside <code className="px-1 py-0.5 bg-slate-200 rounded text-sm">... More</code> menus. Look in the address bar. Scroll down to find the correct options.</p>
             </div>
         );
     } else if (os === "android") {
