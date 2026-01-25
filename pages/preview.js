@@ -370,7 +370,7 @@ export default function Preview() {
                     {editing ? "Cancel" : "Edit"}
                 </TextButton>
             </nav>
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 flex items-center justify-center pb-12">
                 <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
                     style={editing ? { "opacity": 0 } : null}
                     activeLink={activeLink}
