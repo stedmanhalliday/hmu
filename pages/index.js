@@ -195,6 +195,9 @@ export default function Home() {
                                 className="text-purple-600 transition-all duration-150
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
                         </ol>
+                        <p>Support me with a <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
+                            className="text-purple-600 transition-all duration-150
+                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">donation.</a></p>
                     </div>
                 </Modal>
                 : null}
