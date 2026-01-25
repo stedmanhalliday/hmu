@@ -138,7 +138,7 @@ export default function Home() {
             </header>
             {isStandalone ?
                 hasContacts ?
-                    <div className="mt-16 flex flex-col items-center space-y-4">
+                    <div className="mt-12 flex flex-col items-center space-y-4">
                         {/* Render all contacts that have data */}
                         {contacts
                             .filter(c => c.formValues?.name && c.formValues?.vibe)
