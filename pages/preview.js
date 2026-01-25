@@ -377,7 +377,7 @@ export default function Preview() {
                     url={data.url || ""}
                     photo={data.photo || ""} />
             </div>
-            <div className="absolute bottom-16 left-0 right-0 z-10 flex justify-center
+            <div className="z-10 mb-16 flex justify-center
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
