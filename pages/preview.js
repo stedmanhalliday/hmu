@@ -361,7 +361,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-24 opacity-0"
+        <Page className="pt-20 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
             <nav className="fixed z-10 top-0 w-full p-6 flex justify-between">
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
