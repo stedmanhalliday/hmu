@@ -6,12 +6,15 @@ export default function Header() {
             <title>hmu.world | Personal QR codes for what matters to you</title>
             <meta content="text/html; charset=UTF-8" name="Content-Type" />
             <meta name="description" content="Connect faster IRL with personal QR codes for what matters to you." />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
             <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+            <meta name="apple-mobile-web-app-title" content="hmu" />
+            <meta name="theme-color" content="#9333ea" />
+            <meta name="format-detection" content="telephone=no" />
 
             <meta property="og:title" content="hmu.world | Personal QR codes for what matters to you" />
             <meta property="og:description" content="Connect faster IRL with personal QR codes for what matters to you." />
@@ -33,7 +36,16 @@ export default function Header() {
 
             <link rel="icon" href="/favicon.ico" />
             <link rel="manifest" href="/manifest.json" />
-            <link rel="apple-touch-icon" href="/icons/apple_icon_x192.png" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple_icon_x180.png" />
+            <link rel="apple-touch-icon" sizes="167x167" href="/icons/apple_icon_x167.png" />
+            <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple_icon_x152.png" />
+
+            {/* iPhone 16 Pro Max */}
+            <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/splash_screens/iPhone_16_Pro_Max_landscape.png" />
+            <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash_screens/iPhone_16_Pro_Max_portrait.png" />
+            {/* iPhone 16 Pro */}
+            <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/splash_screens/iPhone_16_Pro_landscape.png" />
+            <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash_screens/iPhone_16_Pro_portrait.png" />
 
             <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/splash_screens/iPhone_15_Pro_Max__iPhone_15_Plus__iPhone_14_Pro_Max_landscape.png" />
             <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/splash_screens/iPhone_15_Pro__iPhone_15__iPhone_14_Pro_landscape.png" />
