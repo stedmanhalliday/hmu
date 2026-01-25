@@ -13,7 +13,7 @@ export default function Header() {
             <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
             <meta name="apple-mobile-web-app-title" content="hmu" />
-            <meta name="theme-color" content="#0f172a" />
+            <meta name="theme-color" content="#000000" />
             <meta name="format-detection" content="telephone=no" />
 
             <meta property="og:title" content="hmu.world | Personal QR codes for what matters to you" />
