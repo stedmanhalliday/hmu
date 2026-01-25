@@ -113,7 +113,7 @@ export default function Contact(props) {
                     <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={imageAttributes.src} alt={imageAttributes.alt}
-                            width={16} height={16} className="h-4 opacity-60 relative -top-[2px]" />
+                            width={18} height={18} className="h-[18px] opacity-60" />
                         <span>{props.label}</span>
                     </div>
                 </div>
