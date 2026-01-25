@@ -138,7 +138,7 @@ export default function Home() {
             </header>
             {isStandalone ?
                 hasContacts ?
-                    <div className="mt-16 flex flex-col items-center space-y-4">
+                    <div className="mt-8 flex flex-col items-center space-y-4">
                         {/* Render all contacts that have data */}
                         {contacts
                             .filter(c => c.formValues?.name && c.formValues?.vibe)
@@ -157,8 +157,8 @@ export default function Home() {
                             <Button className="mt-4" onClick={create}>+ New contact</Button>
                         )}
                     </div>
-                    : canAddContact ? <Button className="mt-16" onClick={create}>+ New contact</Button> : null
-                : <div className="mt-16 flex flex-col items-center">
+                    : canAddContact ? <Button className="mt-8" onClick={create}>+ New contact</Button> : null
+                : <div className="mt-8 flex flex-col items-center">
                     <Button className="mb-4" onClick={pressInstallButton}>Install app</Button>
                     <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
                 </div>

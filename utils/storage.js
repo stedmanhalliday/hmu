@@ -184,4 +184,4 @@ export function createEmptyContact() {
  * Maximum number of contacts allowed.
  * WHY: Keep initial implementation simple. Can increase later.
  */
-export const MAX_CONTACTS = 2;
+export const MAX_CONTACTS = 3;
