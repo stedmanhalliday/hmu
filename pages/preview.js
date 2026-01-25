@@ -377,7 +377,8 @@ export default function Preview() {
     return (
         <Page className="pt-8 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
-            <nav className="fixed z-10 top-0 w-full p-4 flex justify-between">
+            <nav className="fixed z-10 top-0 w-full p-4 flex justify-between"
+                style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
                 <TextButton className={editing ? `${styles.edit} ${styles.editing}` : styles.edit}
                     onClick={edit}>
@@ -418,7 +419,8 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="absolute bottom-4 text-lg tracking-wide text-slate-600/50">hmu.world</p>
+            <p className="absolute text-lg tracking-wide text-slate-600/50"
+                style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
         </Page>
     );
 };
