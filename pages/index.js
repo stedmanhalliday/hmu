@@ -265,12 +265,8 @@ export default function Home() {
                     <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
                 </div>
             }
-            <a className="fixed w-6 h-6 flex items-center justify-center rounded-full
+            <a className="fixed bottom-6 right-6 w-6 h-6 flex items-center justify-center rounded-full
             bg-purple-200 text-purple-400 cursor-pointer"
-                style={{
-                    bottom: 'max(env(safe-area-inset-bottom), 1.5rem)',
-                    right: 'max(env(safe-area-inset-right), 1.5rem)'
-                }}
                 onClick={toggleFeedbackModal}>?</a>
             {installModal ? <InstallModal os={os} dismiss={toggleInstallModal} /> : null}
             {privacyModal ?
