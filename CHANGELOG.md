@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- iOS initial page load now matches subsequent navigation layout (removed redundant opacity transition)
 - Gradient rotation animation speed restored to 15ms
 - Upgraded Next.js and React with security vulnerability fixes
 - Spacing between QR code and link buttons
