@@ -392,7 +392,7 @@ export default function Preview() {
                     url={data.url || ""}
                     photo={data.photo || ""} />
             </div>
-            <div className="z-10 mb-16 flex justify-center
+            <div className="z-10 mb-20 flex justify-center
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
@@ -420,7 +420,7 @@ export default function Preview() {
                 </ConfirmModal>
             )}
             <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
-                style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
+                style={{ bottom: '1rem' }}>hmu.world</p>
         </Page>
     );
 };
