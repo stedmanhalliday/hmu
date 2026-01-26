@@ -1,3 +1,8 @@
 .textGlow {
     text-shadow: 0px 2px 1rem rgba(197, 84, 231, 0.66);
 }
+
+.min-h-dynamic {
+    min-height: 100vh;  /* fallback for older browsers */
+    min-height: 100dvh; /* modern browsers that support dynamic viewport */
+}

@@ -4,7 +4,7 @@ export default function Page({ className, style, children }) {
     return (
         <div>
             <Header></Header>
-            <main className={`box-border min-h-screen flex flex-col items-center
+            <main className={`box-border min-h-dynamic flex flex-col items-center
             transition-opacity duration-300 ${className}`}
                 style={{
                     ...style,
