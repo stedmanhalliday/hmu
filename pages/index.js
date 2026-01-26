@@ -102,6 +102,8 @@ export default function Home() {
         }
     };
 
+    const [loading, setLoading] = useState(true);
+
     const [isStandalone, setIsStandalone] = useState(false);
     const [os, setOs] = useState(null);
     const [isPromptable, setIsPromptable] = useState(false);
@@ -112,6 +114,12 @@ export default function Home() {
 
     // Create reference to store the DOM element containing the animation
     const el = useRef(null);
+
+    useEffect(() => {
+        if (contacts !== null) {
+            setLoading(false);
+        }
+    }, [contacts])
 
     useEffect(() => {
         // Initialize headline shuffle (lazy loaded)
@@ -211,7 +219,8 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <Page className="justify-center bg-slate-100">
+        <Page className="justify-center bg-slate-100 opacity-0"
+            style={loading ? null : { "opacity": 1 }}>
             <div className={styles.siteCode}></div>
             <header className="text-center text-slate-600">
                 <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info

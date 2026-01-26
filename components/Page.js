@@ -4,10 +4,11 @@ export default function Page({ className, style, children }) {
     return (
         <div>
             <Header></Header>
-            <main className={`box-border min-h-screen flex flex-col items-center
+            <main className={`box-border flex flex-col items-center
             transition-opacity duration-300 ${className}`}
                 style={{
                     ...style,
+                    minHeight: '100dvh',
                     paddingTop: 'max(env(safe-area-inset-top), 2rem)',
                     paddingBottom: 'max(env(safe-area-inset-bottom), 2rem)',
                     paddingLeft: 'max(env(safe-area-inset-left), 2rem)',
