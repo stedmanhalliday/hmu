@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- iOS PWA initial load layout inconsistency (content positioning now matches navigation state)
 - Gradient rotation animation speed restored to 15ms
 - Upgraded Next.js and React with security vulnerability fixes
 - Spacing between QR code and link buttons
