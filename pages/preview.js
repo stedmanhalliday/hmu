@@ -375,7 +375,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-8 opacity-0"
+        <Page className="pt-8 h-screen overflow-hidden opacity-0"
             style={loading ? null : { "opacity": 1 }}>
             <nav className="fixed z-10 top-0 w-full p-4 flex justify-between"
                 style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
@@ -385,14 +385,14 @@ export default function Preview() {
                     {editing ? "Cancel" : "Edit"}
                 </TextButton>
             </nav>
-            <div className="flex-1 flex items-center justify-center pb-12">
+            <div className="flex-1 flex items-center justify-center pb-6">
                 <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
                     style={editing ? { "opacity": 0 } : null}
                     activeLink={activeLink}
                     url={data.url || ""}
                     photo={data.photo || ""} />
             </div>
-            <div className="z-10 mb-20 flex justify-center
+            <div className="z-10 mb-12 flex justify-center
             opacity-75 transition-all duration-300"
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
