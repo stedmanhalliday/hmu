@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Client-side form validation for edit contact form (name, phone, email, URL formats; requires at least one contact method)
 - Delete contact feature with confirmation modal
 - Delete button on contact edit screen (red styling for destructive action)
 - ConfirmModal component for destructive action confirmations
@@ -22,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Reduced header margin on index screen
+- Conditional margins for empty vs full link states on preview
 - Increased max contacts from 2 to 3
 - Improved header fluid typography and vertical spacing
 - Refined preview layout spacing and stability
@@ -31,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Gradient rotation animation speed restored to 15ms
 - Upgraded Next.js and React with security vulnerability fixes
 - Spacing between QR code and link buttons
 - Links flex flow to prevent overlap with centered content
