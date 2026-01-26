@@ -375,7 +375,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-8 h-screen overflow-hidden opacity-0"
+        <Page className="pt-8 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
             <nav className="fixed z-10 top-0 w-full p-4 flex justify-between"
                 style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
