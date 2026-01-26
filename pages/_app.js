@@ -20,6 +20,15 @@ import { migrateFromSecureStorage } from '../utils/migration.js';
 export const StorageContext = createContext(null);
 
 /**
+ * Check if running in standalone (PWA) mode.
+ * Must be checked on client-side only.
+ */
+function checkIsStandalone() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia("(display-mode: standalone)").matches;
+}
+
+/**
  * Migrate from old single-contact structure to new multi-contact array.
  * 
  * WHY: Existing users have data in formValues/linkValues keys. We need to
@@ -77,6 +86,7 @@ function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
   const [contacts, _setContacts] = useState([]);
   const [storageError, setStorageError] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   /**
    * Save contacts to storage and update state.
@@ -168,9 +178,12 @@ function MyApp({ Component, pageProps }) {
 
   // Load storage and set state once on mount
   useEffect(() => {
+    // Check standalone mode first (before any async operations)
+    setIsStandalone(checkIsStandalone());
+
     // Run legacy migration first (react-secure-storage → plain localStorage)
     migrateFromSecureStorage();
-    
+
     // Run multi-contact migration (single contact → array)
     migrateToMultiContact();
 
@@ -202,6 +215,7 @@ function MyApp({ Component, pageProps }) {
   const contextValue = {
     // Data
     contacts,
+    isStandalone,
     // Operations
     getContact,
     setContact,

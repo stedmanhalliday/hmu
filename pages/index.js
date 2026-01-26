@@ -75,7 +75,7 @@ function SortableContact({ contact }) {
 }
 
 export default function Home() {
-    const { contacts, canAddContact, reorderContacts } = useContext(StorageContext);
+    const { contacts, canAddContact, reorderContacts, isStandalone } = useContext(StorageContext);
 
     // Configure sensors for drag-and-drop
     const sensors = useSensors(
@@ -102,7 +102,7 @@ export default function Home() {
         }
     };
 
-    const [isStandalone, setIsStandalone] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const [os, setOs] = useState(null);
     const [isPromptable, setIsPromptable] = useState(false);
     const [installPrompt, setInstallPrompt] = useState(null);
@@ -114,6 +114,8 @@ export default function Home() {
     const el = useRef(null);
 
     useEffect(() => {
+        // Trigger fade-in after mount
+        setMounted(true);
         // Initialize headline shuffle (lazy loaded)
         let typed = null;
         import('typed.js').then((Typed) => {
@@ -144,10 +146,8 @@ export default function Home() {
         };
         window.addEventListener('appinstalled', handleAppInstalled);
 
-        // Standalone mode media query
-        if (window.matchMedia("(display-mode: standalone)").matches) {
-            setIsStandalone(true);
-        } else {
+        // Detect OS for install instructions (only needed when not in standalone mode)
+        if (!window.matchMedia("(display-mode: standalone)").matches) {
             const userAgentString = window.navigator.userAgent.toLowerCase();
             // iOS check
             if (/iphone|ipad|ipod/.test(userAgentString)) {
@@ -211,7 +211,8 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <Page className="justify-center bg-slate-100">
+        <Page className="justify-center bg-slate-100 opacity-0"
+            style={mounted ? { opacity: 1 } : null}>
             <div className={styles.siteCode}></div>
             <header className="text-center text-slate-600">
                 <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
