@@ -223,7 +223,7 @@ export default function Home() {
             style={loading ? null : { "opacity": 1 }}>
             <div className={styles.siteCode}></div>
             <header className="text-center text-slate-600">
-                <p className="mt-8 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
+                <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
                     <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
                 </p>
                 <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>

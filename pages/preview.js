@@ -385,15 +385,14 @@ export default function Preview() {
                     {editing ? "Cancel" : "Edit"}
                 </TextButton>
             </nav>
-            <div className="flex-1 flex items-center justify-center pb-12">
+            <div className="flex-1 flex items-center justify-center pb-2">
                 <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
                     style={editing ? { "opacity": 0 } : null}
                     activeLink={activeLink}
                     url={data.url || ""}
                     photo={data.photo || ""} />
             </div>
-            <div className="z-10 mb-16 flex justify-center
-            opacity-75 transition-all duration-300"
+            <div className={`z-10 flex justify-center opacity-75 transition-all duration-300 ${Object.values(links).every(value => value.url === "") ? 'mb-16' : 'mb-8'}`}
                 style={editing ? { "opacity": 0 } : null}>
                 {Object.values(links).every(value => value.url === "") ?
                     <TextButton className="px-8 py-5 rounded-full bg-black/10
@@ -420,7 +419,7 @@ export default function Preview() {
                 </ConfirmModal>
             )}
             <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
-                style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
+                style={{ bottom: '1rem' }}>hmu.world</p>
         </Page>
     );
 };
