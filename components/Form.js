@@ -27,8 +27,56 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
         photo: "",
     });
 
+    const [errors, setErrors] = useState({});
     const [modal, setModal] = useState(null);
     const [photoLoading, setPhotoLoading] = useState(false);
+
+    // Validation helpers
+    const validators = {
+        name: (value) => {
+            if (!value.trim()) return "Name is required";
+            return "";
+        },
+        phone: (value) => {
+            if (!value) return "";
+            // Allow digits, spaces, dashes, parentheses, plus sign, dots
+            // Must start with +, digit, or opening paren
+            const phoneRegex = /^[+\d(][\d\s().-]*$/;
+            const digitCount = value.replace(/\D/g, '').length;
+            if (!phoneRegex.test(value) || digitCount < 7 || digitCount > 15) {
+                return "Enter a valid phone number";
+            }
+            return "";
+        },
+        email: (value) => {
+            if (!value) return "";
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                return "Enter a valid email address";
+            }
+            return "";
+        },
+        url: (value) => {
+            if (!value) return "";
+            // Accept URLs with or without protocol
+            const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
+            if (!urlRegex.test(value)) {
+                return "Enter a valid URL";
+            }
+            return "";
+        }
+    };
+
+    const validateField = (name, value) => {
+        const validator = validators[name];
+        return validator ? validator(value) : "";
+    };
+
+    const handleBlur = (event) => {
+        const { name, value } = event.target;
+        const error = validateField(name, value);
+        setErrors(prev => ({ ...prev, [name]: error }));
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -36,6 +84,10 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
             ...prevState,
             [name]: value,
         }));
+        // Clear error when user starts typing
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: "" }));
+        }
         if (event.target.name === "vibe" && onVibeChange) {
             onVibeChange(event.target.value);
         }
@@ -86,23 +138,33 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        // Validate all fields
+        const newErrors = {};
+        for (const field of ['name', 'phone', 'email', 'url']) {
+            const error = validateField(field, formfield[field]);
+            if (error) {
+                newErrors[field] = error;
+            }
+        }
+
         // Check for name
-        if (formfield.name === "") {
+        if (!formfield.name.trim()) {
+            newErrors.name = "Name is required";
+        }
+
+        // Check for contact info
+        if (!formfield.phone && !formfield.email && !formfield.url) {
             setModal(
-                <Modal title="No name" dismiss={dismiss}>
-                    Please enter your name.
+                <Modal title="No contact info" dismiss={dismiss}>
+                    Please enter at least one way to contact you (phone, email, or website).
                 </Modal>
             );
             return;
         }
 
-        //Check for contact info
-        if (formfield.phone === "" && formfield.email === "" && formfield.url === "") {
-            setModal(
-                <Modal title="No contact info" dismiss={dismiss}>
-                    Please enter your contact info.
-                </Modal>
-            );
+        // If there are validation errors, show them and stop
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
 
@@ -178,10 +240,10 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
     return (
         <form id="contactForm" className="w-full max-w-md flex flex-col px-2"
             onSubmit={handleSubmit}>
-            <Input name="name" label="Name" type="text" required={true} value={formfield.name} placeholder="Soulja Boy" onChange={handleChange} />
-            <Input name="phone" label="Phone" type="tel" value={formfield.phone} placeholder="+16789998212" onChange={handleChange} />
-            <Input name="email" label="Email" type="email" value={formfield.email} placeholder="swag@hmu.world" onChange={handleChange} />
-            <Input name="url" label="Website" type="text" value={formfield.url} placeholder="https://hmu.world" onChange={handleChange} />
+            <Input name="name" label="Name" type="text" required={true} value={formfield.name} placeholder="Soulja Boy" onChange={handleChange} onBlur={handleBlur} error={errors.name} />
+            <Input name="phone" label="Phone" type="tel" value={formfield.phone} placeholder="+16789998212" onChange={handleChange} onBlur={handleBlur} error={errors.phone} />
+            <Input name="email" label="Email" type="email" value={formfield.email} placeholder="swag@hmu.world" onChange={handleChange} onBlur={handleBlur} error={errors.email} />
+            <Input name="url" label="Website" type="text" value={formfield.url} placeholder="https://hmu.world" onChange={handleChange} onBlur={handleBlur} error={errors.url} />
             <label className="mb-4">
                 <div className="mb-1 text-slate-600">Theme</div>
                 <select className="select" value={formfield.vibe} onChange={handleChange} name="vibe">
