@@ -28,13 +28,9 @@
 /* Text buttons */
 
 .textButton {
-    transition: border 0.25s linear;
-    border-bottom: 2px solid transparent;
-
     &:focus,
     &:hover {
         outline: none;
-        border-bottom: 2px solid rgba(71, 85, 105, 0.5);
     }
 }
 

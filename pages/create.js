@@ -84,7 +84,8 @@ export default function Create() {
         <Page className={stops.start !== "" ? "justify-center z-0" : "justify-center bg-slate-100"}>
             <div className="-z-10 fixed top-0 right-0 bottom-0 left-0 opacity-20"
                 style={{ "background": `linear-gradient(-${angle}deg, ${stops.start}, ${stops.end})` }}></div>
-            <header className="flex flex-col items-center space-y-6 mb-6">
+            <header className="flex flex-col items-center space-y-6 mb-6"
+                style={{ paddingTop: 'env(safe-area-inset-top)' }}>
                 <div className="w-20 h-20 rounded-full
                 flex justify-center items-center shrink-0
                 bg-white shadow-md overflow-hidden
@@ -101,7 +102,8 @@ export default function Create() {
                             alt={emoji || "👤"} />
                     )}
                 </div>
-                <h1 className="text-center text-4xl leading-tight text-slate-600">
+                <h1 className="text-center leading-tight text-slate-600"
+                    style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>
                     {contactId === 'new' ? 'Create a new contact' : 'Edit your contact'}
                 </h1>
             </header>

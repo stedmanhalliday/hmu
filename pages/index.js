@@ -233,7 +233,8 @@ export default function Home() {
                 <div className="flex flex-col items-center">
                     <div className={styles.siteCode}></div>
                     <header className="text-center text-slate-600">
-                        <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
+                        <p className="mt-6 mb-6 leading-tight"
+                            style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>Share your contact&nbsp;info
                             <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
                         </p>
                         <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
