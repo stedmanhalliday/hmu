@@ -22,7 +22,7 @@
  * 5. Partial plain storage: some keys exist in plain localStorage → merge, prefer plain
  */
 
-import { safeGetItem, safeSetItem, safeRemoveItem, STORAGE_KEYS } from './storage.js';
+import { safeGetItem, safeSetItem, STORAGE_KEYS } from './storage.js';
 import logger from './logger.js';
 
 /**
@@ -64,7 +64,7 @@ export function migrateFromSecureStorage() {
   let secureLocalStorage;
   try {
     secureLocalStorage = require('react-secure-storage').default;
-  } catch (error) {
+  } catch {
     logger.log('[Migration] react-secure-storage not available, skipping migration');
     safeSetItem(STORAGE_KEYS.MIGRATION_COMPLETE, true);
     return { migrated: [], failed: [], skipped: true };

@@ -15,8 +15,14 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
     const router = useRouter();
     const { editing } = router.query;
 
-    const { setContact, getContact } = useContext(StorageContext);
+    const { setContact } = useContext(StorageContext);
     const fileInputRef = useRef(null);
+    
+    // Use ref to track onPhotoChange callback to avoid useEffect dependency issues
+    const onPhotoChangeRef = useRef(onPhotoChange);
+    useEffect(() => {
+        onPhotoChangeRef.current = onPhotoChange;
+    }, [onPhotoChange]);
 
     const [formfield, setFormfield] = useState({
         name: "",
@@ -230,9 +236,9 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                 vibe: initialFormValues.vibe || "",
                 photo: initialFormValues.photo || ""
             });
-            // Notify parent of initial photo
-            if (initialFormValues.photo && onPhotoChange) {
-                onPhotoChange(initialFormValues.photo);
+            // Notify parent of initial photo via ref to avoid dependency issues
+            if (initialFormValues.photo && onPhotoChangeRef.current) {
+                onPhotoChangeRef.current(initialFormValues.photo);
             }
         }
     }, [initialFormValues]);
@@ -280,7 +286,6 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                     </button>
                     {formfield.photo && (
                         <>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={formfield.photo}
                                 alt="Preview"

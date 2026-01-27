@@ -32,7 +32,6 @@ export default function Links() {
                 flex justify-center items-center shrink-0 
                 bg-white shadow-md
                 text-5xl">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={"/emoji/🔗.png"}
                         width={48} height={48}
                         alt={"🔗"} />

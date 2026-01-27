@@ -25,12 +25,10 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
             <div className="w-20 h-20 rounded-full flex justify-center items-center shrink-0
                 bg-white shadow-md text-5xl overflow-hidden">
                 {photo ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img src={photo}
                         className="w-full h-full object-cover"
                         alt="Profile" />
                 ) : vibe?.emoji && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
                     <img src={`/emoji/${vibe.emoji}.png`} alt={vibe.emoji}
                         width={48} height={48} className="h-12" />
                 )}
@@ -39,7 +37,6 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
                 <h1 className="leading-tight max-w-sm text-slate-800 truncate"
                     style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{displayName}</h1>
                 <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={imageAttributes.src} alt={imageAttributes.alt}
                         width={18} height={18} className="h-[18px] opacity-60" />
                     <span>{label}</span>
@@ -61,7 +58,6 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
                     className="flex p-1.5 rounded-[16px] bg-white cursor-pointer
                     active:scale-[0.98] transition-transform">
                     {src &&
-                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={src} width={168} height={168}
                             alt={`${label} QR code for ${displayName}`} />
                     }
@@ -69,7 +65,6 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
             ) : (
                 <div className="flex p-1.5 rounded-[16px] bg-white">
                     {src &&
-                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={src} width={168} height={168}
                             alt={`${label} QR code for ${displayName}`} />
                     }

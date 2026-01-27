@@ -25,12 +25,10 @@ function Contacts({ id, name, vibe, photo }) {
             bg-white shadow-md">
                 <span className="mr-3 text-2xl flex items-center">
                     {photo ? (
-                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={photo}
                             className="w-6 h-6 rounded-full object-cover"
                             alt="Profile" />
                     ) : vibe?.emoji && (
-                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img src={`/emoji/${vibe.emoji}.png`} alt={vibe.emoji}
                             width={24} height={24} />
                     )}

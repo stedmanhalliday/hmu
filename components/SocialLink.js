@@ -12,8 +12,7 @@ export default function SocialLink(props) {
             data-displayname={props.displayName}
             data-label={props.label}
             data-url={props.url}
-            data-type={props.type} >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            data-type={props.type}>
             <img src={icon.src} alt={icon.alt}
                 className="w-[46%] h-[46%] pointer-events-none" />
         </div>

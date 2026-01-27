@@ -12,7 +12,6 @@ import {
   generateContactId,
   createEmptyContact,
   MAX_CONTACTS,
-  EMPTY_FORM_VALUES,
   EMPTY_LINK_VALUES
 } from '../utils/storage.js';
 import { migrateFromSecureStorage } from '../utils/migration.js';

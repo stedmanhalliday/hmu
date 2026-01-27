@@ -10,16 +10,14 @@ import { safeParseVibe } from "../utils/storage.js";
 import logger from "../utils/logger.js";
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState, useRef } from "react";
-
-const DEFAULT_LINK_ORDER = ['twitter', 'linkedin', 'github', 'telegram', 'instagram', 'venmo', 'custom'];
-const ORDER_STORAGE_KEY = 'linkOrder';
+import { useContext, useEffect, useState, useRef, useCallback } from "react";
+import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY } from '../lib/constants.js';
 
 export default function Preview() {
     const router = useRouter();
     const { id: contactId } = router.query;
 
-    const { contacts, getContact, deleteContact, storageError } = useContext(StorageContext);
+    const { contacts, getContact, deleteContact } = useContext(StorageContext);
 
     // Lazy-loaded QRCode reference
     const qrCodeRef = useRef(null);
@@ -35,14 +33,14 @@ export default function Preview() {
     const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
 
     useEffect(() => {
-        const saved = localStorage.getItem(ORDER_STORAGE_KEY);
+        const saved = localStorage.getItem(LINK_ORDER_STORAGE_KEY);
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
                 const allKeys = new Set([...parsed, ...DEFAULT_LINK_ORDER]);
                 setLinkOrder([...allKeys].filter(k => DEFAULT_LINK_ORDER.includes(k)));
             } catch {
-                // Use default on parse error
+                // Intentionally empty - use default order on parse error
             }
         }
     }, []);
@@ -121,10 +119,10 @@ export default function Preview() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    // Current contact data
-    const [currentContact, setCurrentContact] = useState(null);
+    // Current contact data (used in useEffect for data loading)
+    const [, setCurrentContact] = useState(null);
 
-    const vCardValues = (formValues) => {
+    const vCardValues = useCallback((formValues) => {
         // Include contact-specific URL in NOTE field so scanned contacts can return to this preview
         const noteUrl = contactId ? `https://hmu.world/preview?id=${contactId}` : 'https://hmu.world';
         let vCard =
@@ -136,7 +134,7 @@ export default function Preview() {
             "\nNOTE:" + noteUrl +
             "\nEND:VCARD";
         return vCard;
-    }
+    }, [contactId]);
 
     // Show the edit pane
     const edit = () => {
@@ -202,7 +200,7 @@ export default function Preview() {
 
     const toggleActiveLink = (e) => {
         const type = e.target.getAttribute("data-type");
-        const displayName = e.target.getAttribute("data-displayName");
+        const displayName = e.target.getAttribute("data-displayname");
         const label = e.target.getAttribute("data-label");
         const url = e.target.getAttribute("data-url");
 

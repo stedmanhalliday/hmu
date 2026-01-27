@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Jest testing framework with 150+ unit and integration tests
+- Test coverage reporting with Codecov integration
+- GitHub Actions CI workflow for automated testing, linting, and builds
+- Component tests for Page, Modal, ErrorBoundary, Form, LinkForm, Contact, SocialLink, EditPane
+- Integration tests for index, create, preview, and _app pages
+- Utility tests for storage, image resize, and gradient animation hook
+- ESLint 9 flat config migration from deprecated next lint
+- Centralized constants file (lib/constants.js) for shared values
 - Client-side form validation for edit contact form (name, phone, email, URL formats; requires at least one contact method)
 - Delete contact feature with confirmation modal
 - Delete button on contact edit screen (red styling for destructive action)
@@ -20,6 +28,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile photos support
 - New social link types
 - Install prompt analytics with separate accepted/dismissed events
+
+### Changed
+
+- Optimized useGradientAnimation hook by moving rgbaColor outside component
+- Memoized SortableContact and SortableInput components for better performance
+- Wrapped vCardValues in useCallback for stable reference
+- Fixed inconsistent data attribute casing (data-displayname)
+- Removed unused imports and variables throughout codebase
+- Removed obsolete eslint-disable comments for @next/next/no-img-element
+
+### Fixed
+
+- Google Analytics URL (removed erroneous GA_ prefix in tag ID)
+
+### Removed
+
+- Unused dependencies: react-secure-storage, typescript, eslint-config-next
+
+### Developer Experience
+
+- Added npm scripts: test, test:coverage, test:watch, lint:fix
+- Coverage thresholds configured (20-30% minimum)
+- Jest setup with Next.js preset and jsdom environment
+- Codecov configuration for PR coverage comments
+
+## [0.1.6] - 2025-01-20
 
 ### Changed
 

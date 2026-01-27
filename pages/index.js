@@ -8,7 +8,7 @@ import TextButton from "../components/TextButton";
 import styles from "../styles/Home.module.css";
 import { safeParseVibe } from "../utils/storage.js";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, memo } from "react";
 import { useRouter } from "next/router";
 
 import {
@@ -29,8 +29,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-// Sortable contact wrapper component
-function SortableContact({ contact }) {
+// Sortable contact wrapper component - memoized to prevent unnecessary re-renders
+const SortableContact = memo(function SortableContact({ contact }) {
     const {
         attributes,
         listeners,
@@ -72,7 +72,7 @@ function SortableContact({ contact }) {
             />
         </div>
     );
-}
+});
 
 export default function Home() {
     const { contacts, canAddContact, reorderContacts } = useContext(StorageContext);
@@ -106,7 +106,7 @@ export default function Home() {
 
     const [isStandalone, setIsStandalone] = useState(false);
     const [os, setOs] = useState(null);
-    const [isPromptable, setIsPromptable] = useState(false);
+    const [, setIsPromptable] = useState(false);
     const [installPrompt, setInstallPrompt] = useState(null);
     const [installModal, setInstallModal] = useState(false);
     const [privacyModal, setPrivacyModal] = useState(false);

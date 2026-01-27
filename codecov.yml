@@ -1,0 +1,35 @@
+# Codecov Configuration
+# https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  # Set overall project coverage targets
+  status:
+    project:
+      default:
+        # Set target to current coverage, allow small decreases
+        target: auto
+        threshold: 1%
+        # Only post status after n builds
+        if_ci_failed: error
+    patch:
+      default:
+        # Require new code to have some coverage
+        target: 50%
+        threshold: 5%
+
+# Comment settings for PRs
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true
+  require_base: false
+  require_head: true
+
+# Ignore certain files from coverage
+ignore:
+  - "**/*.test.js"
+  - "**/__tests__/**"
+  - "coverage/**"
+  - ".next/**"
+  - "node_modules/**"
+  - "dist/**"

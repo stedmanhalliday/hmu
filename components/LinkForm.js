@@ -5,8 +5,9 @@ import Modal from './Modal.js';
 import TextButton from './TextButton.js';
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, memo } from 'react';
 import logger from '../utils/logger.js';
+import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY, LINK_LABELS, LINK_PLACEHOLDERS } from '../lib/constants.js';
 
 import {
     DndContext,
@@ -26,33 +27,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const DEFAULT_ORDER = ['twitter', 'linkedin', 'github', 'telegram', 'instagram', 'venmo', 'custom'];
-const ORDER_STORAGE_KEY = 'linkOrder';
-
-// Labels for each link type
-const LINK_LABELS = {
-    twitter: 'X (Twitter)',
-    linkedin: 'LinkedIn',
-    github: 'GitHub',
-    telegram: 'Telegram',
-    instagram: 'Instagram',
-    venmo: 'Venmo',
-    custom: 'Link'
-};
-
-// Placeholders for each link type
-const LINK_PLACEHOLDERS = {
-    twitter: 'snoopdogg',
-    linkedin: 'snoopdogg',
-    github: 'snoopdogg',
-    telegram: 'snoopdogg',
-    instagram: 'snoopdogg',
-    venmo: 'snoopdogg',
-    custom: 'https://hmu.world'
-};
-
-// Sortable input wrapper component
-function SortableInput({ id, name, label, type, value, placeholder, onChange }) {
+// Sortable input wrapper component - memoized to prevent unnecessary re-renders
+const SortableInput = memo(function SortableInput({ id, name, label, type, value, placeholder, onChange }) {
     const {
         attributes,
         listeners,
@@ -98,7 +74,7 @@ function SortableInput({ id, name, label, type, value, placeholder, onChange }) 
             </div>
         </div>
     );
-}
+});
 
 export default function LinkForm({ contactId, initialLinkValues }) {
     const router = useRouter();
@@ -116,19 +92,19 @@ export default function LinkForm({ contactId, initialLinkValues }) {
     });
 
     const [modal, setModal] = useState(null);
-    const [linkOrder, setLinkOrder] = useState(DEFAULT_ORDER);
+    const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
 
     // Load saved order from localStorage
     useEffect(() => {
-        const saved = localStorage.getItem(ORDER_STORAGE_KEY);
+        const saved = localStorage.getItem(LINK_ORDER_STORAGE_KEY);
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
                 // Ensure all keys are present (in case new links were added)
-                const allKeys = new Set([...parsed, ...DEFAULT_ORDER]);
-                setLinkOrder([...allKeys].filter(k => DEFAULT_ORDER.includes(k)));
+                const allKeys = new Set([...parsed, ...DEFAULT_LINK_ORDER]);
+                setLinkOrder([...allKeys].filter(k => DEFAULT_LINK_ORDER.includes(k)));
             } catch {
-                // Use default on parse error
+                // Intentionally empty - use default order on parse error
             }
         }
     }, []);
@@ -156,7 +132,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
                 const newIndex = items.indexOf(over.id);
                 const newOrder = arrayMove(items, oldIndex, newIndex);
                 // Persist order to localStorage
-                localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(newOrder));
+                localStorage.setItem(LINK_ORDER_STORAGE_KEY, JSON.stringify(newOrder));
                 return newOrder;
             });
         }

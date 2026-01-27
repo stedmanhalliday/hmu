@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react';
 import * as convert from 'color-convert';
 
 /**
+ * Convert hex color to rgba string.
+ * Defined outside hook to prevent recreation on each render.
+ */
+const rgbaColor = (hexColor, alpha) => {
+  const stop = convert.hex.rgb(hexColor);
+  return `rgba(${stop.join(",")},${alpha})`;
+};
+
+/**
  * Hook for animated gradient backgrounds.
  *
  * @param {object} vibe - Vibe object with group array of hex colors
@@ -16,12 +25,6 @@ export function useGradientAnimation(vibe, intervalMs = 15) {
     end: "",
     endRGBA: ""
   });
-
-  // Convert hex to rgba
-  const rgbaColor = (hexColor, alpha) => {
-    const stop = convert.hex.rgb(hexColor);
-    return `rgba(${stop.join(",")},${alpha})`;
-  };
 
   // Update gradient colors when vibe changes
   useEffect(() => {
