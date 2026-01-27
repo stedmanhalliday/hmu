@@ -375,7 +375,7 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="!p-0 opacity-0"
+        <Page className="!p-0 overflow-hidden overscroll-none opacity-0"
             style={loading ? null : { opacity: 1 }}>
             {/* Fixed nav */}
             <nav className="fixed z-10 top-0 left-0 right-0 p-4 flex justify-between"
