@@ -54,7 +54,9 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
 
     const headerElement = (
         <header className="flex flex-col items-center space-y-4 shrink-0 transition-opacity duration-300"
-            style={style}>
+            style={style?.opacity === 0
+                ? { ...style, visibility: 'hidden', pointerEvents: 'none' }
+                : style}>
             <div className="w-20 h-20 rounded-full flex justify-center items-center shrink-0
                 bg-white shadow-md text-5xl overflow-hidden">
                 {photo ? (
@@ -85,6 +87,7 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
         <div className="p-3 flex items-center justify-center rounded-[24px] transition-opacity duration-300"
             style={{
                 ...style,
+                ...(style?.opacity === 0 && { visibility: 'hidden', pointerEvents: 'none' }),
                 background: `linear-gradient(${angle}deg, ${stops.start}, ${stops.end})`,
                 boxShadow: `0 -4px 16px 0 ${stops.startRGBA}, 0 4px 16px 0 ${stops.endRGBA}`
             }}>
