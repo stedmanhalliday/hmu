@@ -271,7 +271,7 @@ export default function Home() {
                                 </DndContext>
                                 {/* Show add button if under max contacts */}
                                 {canAddContact && (
-                                    <Button className="mt-4" onClick={create}>+ New contact</Button>
+                                    <Button className="mt-8" onClick={create}>+ New contact</Button>
                                 )}
                             </div>
                             : canAddContact ? <Button onClick={create}>+ New contact</Button> : null
