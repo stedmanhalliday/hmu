@@ -219,7 +219,7 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <Page className="!p-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
+        <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
 
             {/* Main content - 2 groups evenly spaced */}
