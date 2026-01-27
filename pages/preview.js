@@ -375,9 +375,10 @@ export default function Preview() {
         </div>;
 
     return (
-        <Page className="pt-8 opacity-0"
-            style={loading ? null : { "opacity": 1 }}>
-            <nav className="fixed z-10 top-0 w-full p-4 flex justify-between"
+        <Page className="!p-0 opacity-0"
+            style={loading ? null : { opacity: 1 }}>
+            {/* Fixed nav */}
+            <nav className="fixed z-10 top-0 left-0 right-0 p-4 flex justify-between"
                 style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
                 <TextButton className={editing ? `${styles.edit} ${styles.editing}` : styles.edit}
@@ -385,20 +386,38 @@ export default function Preview() {
                     {editing ? "Cancel" : "Edit"}
                 </TextButton>
             </nav>
-            <div className="flex-1 flex items-center justify-center pb-2">
-                <Contact src={data.src || ""} displayName={data.displayName || ""} vibe={data.vibe || ""} label={data.label || ""}
-                    style={editing ? { "opacity": 0 } : null}
+
+            {/* Main content - 3 groups evenly spaced */}
+            <div className="h-screen w-full flex flex-col justify-evenly items-center"
+                style={{
+                    paddingTop: 'calc(max(env(safe-area-inset-top), 1rem) + 3rem)',
+                    paddingBottom: 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)'
+                }}>
+                <Contact
+                    separated
+                    src={data.src || ""}
+                    displayName={data.displayName || ""}
+                    vibe={data.vibe || ""}
+                    label={data.label || ""}
+                    style={editing ? { opacity: 0 } : null}
                     activeLink={activeLink}
                     url={data.url || ""}
                     photo={data.photo || ""} />
+
+                {/* Links section */}
+                <div className="z-10 flex justify-center opacity-75 transition-all duration-300"
+                    style={editing ? { opacity: 0 } : null}>
+                    {Object.values(links).every(value => value.url === "") ?
+                        <TextButton className="px-8 py-5 rounded-full bg-black/10
+                            active:bg-black/[.15] !border-none"
+                            onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                </div>
             </div>
-            <div className={`z-10 flex justify-center opacity-75 transition-all duration-300 ${Object.values(links).every(value => value.url === "") ? 'mb-16' : 'mb-8'}`}
-                style={editing ? { "opacity": 0 } : null}>
-                {Object.values(links).every(value => value.url === "") ?
-                    <TextButton className="px-8 py-5 rounded-full bg-black/10
-                active:bg-black/[.15] !border-none"
-                        onClick={editLinks}>Add links</TextButton> : filteredLinks}
-            </div>
+
+            {/* Fixed footer */}
+            <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
+                style={{ bottom: 'max(env(safe-area-inset-bottom), 1rem)' }}>hmu.world</p>
+
             {editing ? <EditPane editContact={editContact} editLinks={editLinks} deleteContact={handleDeleteClick} /> : null}
             {showDeleteModal && (
                 <ConfirmModal
@@ -418,8 +437,6 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
-            <p className="fixed left-0 right-0 text-center text-lg tracking-wide text-slate-600/50"
-                style={{ bottom: '1rem' }}>hmu.world</p>
         </Page>
     );
 };
