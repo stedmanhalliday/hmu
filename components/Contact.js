@@ -37,7 +37,7 @@ const SOCIAL_ICONS = {
     }
 };
 
-function Contact({ separated = false, src, displayName, vibe, label, style, activeLink, url, photo }) {
+function Contact({ src, displayName, vibe, label, style, activeLink, url, photo }) {
     const { angle, stops } = useGradientAnimation(vibe);
     const [imageAttributes, setImageAttributes] = useState(SOCIAL_ICONS.contact);
 
@@ -110,17 +110,14 @@ function Contact({ separated = false, src, displayName, vibe, label, style, acti
         </div>
     );
 
-    if (separated) {
-        return <>{gradientBackground}{headerElement}{qrElement}</>;
-    }
-
-    // Default: current combined layout
     return (
-        <div className="flex flex-col items-center justify-center z-0">
+        <>
             {gradientBackground}
-            {headerElement}
-            <div className="mt-2">{qrElement}</div>
-        </div>
+            <div className="flex flex-col items-center">
+                {headerElement}
+                <div className="mt-8">{qrElement}</div>
+            </div>
+        </>
     );
 }
 

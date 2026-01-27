@@ -387,14 +387,13 @@ export default function Preview() {
                 </TextButton>
             </nav>
 
-            {/* Main content - 3 groups evenly spaced */}
+            {/* Main content - 2 groups evenly spaced */}
             <div className="h-screen w-full flex flex-col justify-evenly items-center"
                 style={{
                     paddingTop: 'calc(max(env(safe-area-inset-top), 1rem) + 3rem)',
                     paddingBottom: 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)'
                 }}>
                 <Contact
-                    separated
                     src={data.src || ""}
                     displayName={data.displayName || ""}
                     vibe={data.vibe || ""}
