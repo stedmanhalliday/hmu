@@ -355,8 +355,9 @@ export default function Preview() {
         <div className="flex flex-wrap justify-center">
             <SocialLink
                 className={!activeLink ?
-                    "transition-opacity duration-100 socialLink contactLink"
-                    : "opacity-30 transition-opacity duration-100 socialLink contactLink"}
+                    "transition-opacity duration-100"
+                    : "opacity-30 transition-opacity duration-100"}
+                type="contact"
                 onClick={showContact}
             />
             {linkOrder
@@ -364,8 +365,8 @@ export default function Preview() {
                 .map(key => (
                     <SocialLink key={key}
                         className={activeLink === key ?
-                            `transition-opacity duration-100 socialLink ${key}`
-                            : `opacity-30 transition-opacity duration-100 socialLink ${key}`}
+                            "transition-opacity duration-100"
+                            : "opacity-30 transition-opacity duration-100"}
                         type={key}
                         displayName={links[key].displayName}
                         label={links[key].label}
