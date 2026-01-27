@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- additional social links: 
+  - facebook
+  - youtube
+  - tiktok
+  - snapchat
+  - twitch
+  - discord
+
+## [0.1.6] - 2025-01-20
+
 ### Added
 
 - Jest testing framework with 150+ unit and integration tests
