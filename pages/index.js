@@ -219,54 +219,76 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <Page className="justify-center bg-slate-100 opacity-0"
+        <Page className="!p-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
-            <div className={styles.siteCode}></div>
-            <header className="text-center text-slate-600">
-                <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
-                    <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
-                </p>
-                <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
-            </header>
-            {isStandalone ?
-                hasContacts ?
-                    <div className="mt-12 flex flex-col items-center space-y-4">
-                        {/* Render all contacts that have data with drag-and-drop */}
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}
-                        >
-                            <SortableContext
-                                items={contacts.filter(c => c.formValues?.name && c.formValues?.vibe).map(c => c.id)}
-                                strategy={verticalListSortingStrategy}
-                            >
-                                <div className="flex flex-col items-center space-y-4">
-                                    {contacts
-                                        .filter(c => c.formValues?.name && c.formValues?.vibe)
-                                        .map(contact => (
-                                            <SortableContact
-                                                key={contact.id}
-                                                contact={contact}
-                                            />
-                                        ))
-                                    }
-                                </div>
-                            </SortableContext>
-                        </DndContext>
-                        {/* Show add button if under max contacts */}
-                        {canAddContact && (
-                            <Button className="mt-4" onClick={create}>+ New contact</Button>
-                        )}
-                    </div>
-                    : canAddContact ? <Button className="mt-16" onClick={create}>+ New contact</Button> : null
-                : <div className="mt-16 flex flex-col items-center">
-                    <Button className="mb-4" onClick={pressInstallButton}>Install app</Button>
-                    <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
+
+            {/* Main content - 2 groups evenly spaced */}
+            <div className="h-screen w-full flex flex-col justify-evenly items-center"
+                style={{
+                    paddingTop: 'max(env(safe-area-inset-top), 1rem)',
+                    paddingBottom: 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)'
+                }}>
+
+                {/* Group 1: Header section (QR + headline + subheader) */}
+                <div className="flex flex-col items-center">
+                    <div className={styles.siteCode}></div>
+                    <header className="text-center text-slate-600">
+                        <p className="mt-6 mb-6 text-4xl leading-tight">Share your contact&nbsp;info
+                            <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
+                        </p>
+                        <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
+                    </header>
                 </div>
-            }
-            <a className="fixed bottom-6 right-6 w-6 h-6 flex items-center justify-center rounded-full
-            bg-purple-200 text-purple-400 cursor-pointer"
+
+                {/* Group 2: Content (contacts or install) */}
+                <div className="flex flex-col items-center">
+                    {isStandalone ?
+                        hasContacts ?
+                            <div className="flex flex-col items-center space-y-4">
+                                {/* Render all contacts that have data with drag-and-drop */}
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <SortableContext
+                                        items={contacts.filter(c => c.formValues?.name && c.formValues?.vibe).map(c => c.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        <div className="flex flex-col items-center space-y-4">
+                                            {contacts
+                                                .filter(c => c.formValues?.name && c.formValues?.vibe)
+                                                .map(contact => (
+                                                    <SortableContact
+                                                        key={contact.id}
+                                                        contact={contact}
+                                                    />
+                                                ))
+                                            }
+                                        </div>
+                                    </SortableContext>
+                                </DndContext>
+                                {/* Show add button if under max contacts */}
+                                {canAddContact && (
+                                    <Button className="mt-4" onClick={create}>+ New contact</Button>
+                                )}
+                            </div>
+                            : canAddContact ? <Button onClick={create}>+ New contact</Button> : null
+                        : <div className="flex flex-col items-center">
+                            <Button className="mb-4" onClick={pressInstallButton}>Install app</Button>
+                            <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            {/* Fixed question mark - bottom right with safe-area */}
+            <a className="fixed z-10 w-6 h-6 flex items-center justify-center rounded-full
+                bg-purple-200 text-purple-400 cursor-pointer"
+                style={{
+                    bottom: 'max(env(safe-area-inset-bottom), 1rem)',
+                    right: 'max(env(safe-area-inset-right), 1.5rem)'
+                }}
                 onClick={toggleFeedbackModal}>?</a>
             {installModal ? <InstallModal os={os} dismiss={toggleInstallModal} /> : null}
             {privacyModal ?
