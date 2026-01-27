@@ -378,7 +378,7 @@ export default function Preview() {
         <Page className="!p-0 overflow-hidden overscroll-none opacity-0"
             style={loading ? null : { opacity: 1 }}>
             {/* Fixed nav */}
-            <nav className="fixed z-10 top-0 left-0 right-0 p-4 flex justify-between"
+            <nav className="fixed z-20 top-0 left-0 right-0 p-4 flex justify-between"
                 style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
                 <TextButton className={styles.home} onClick={home}>Home</TextButton>
                 <TextButton className={editing ? `${styles.edit} ${styles.editing}` : styles.edit}
