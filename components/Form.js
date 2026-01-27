@@ -298,7 +298,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                 </div>
             </label>
             <Button type="submit" className="self-center my-4 shadow-none">Save contact</Button>
-            <TextButton onClick={cancel} className="self-center">Cancel</TextButton>
+            <TextButton type="button" onClick={cancel} className="self-center">Cancel</TextButton>
             {modal}
         </form>
     );
