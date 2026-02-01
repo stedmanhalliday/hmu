@@ -165,8 +165,14 @@ export const EMPTY_LINK_VALUES = {
   twitter: "",
   linkedin: "",
   github: "",
-  telegram: "",
   instagram: "",
+  facebook: "",
+  snapchat: "",
+  tiktok: "",
+  youtube: "",
+  twitch: "",
+  telegram: "",
+  discord: "",
   venmo: "",
   custom: ""
 };

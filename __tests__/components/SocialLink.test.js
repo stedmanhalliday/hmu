@@ -112,6 +112,42 @@ describe('SocialLink', () => {
       expect(icon).toHaveAttribute('alt', 'instagram');
     });
 
+    it('should render facebook type', () => {
+      render(<SocialLink type="facebook" displayName="johndoe" label="Facebook" url="https://facebook.com/johndoe" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'facebook');
+    });
+
+    it('should render snapchat type', () => {
+      render(<SocialLink type="snapchat" displayName="@johndoe" label="Snapchat" url="https://snapchat.com/add/johndoe" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'snapchat');
+    });
+
+    it('should render tiktok type', () => {
+      render(<SocialLink type="tiktok" displayName="@johndoe" label="TikTok" url="https://tiktok.com/@johndoe" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'tiktok');
+    });
+
+    it('should render youtube type', () => {
+      render(<SocialLink type="youtube" displayName="@johndoe" label="YouTube" url="https://youtube.com/@johndoe" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'youtube');
+    });
+
+    it('should render twitch type', () => {
+      render(<SocialLink type="twitch" displayName="johndoe" label="Twitch" url="https://twitch.tv/johndoe" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'twitch');
+    });
+
+    it('should render discord type', () => {
+      render(<SocialLink type="discord" displayName="abc123" label="Discord" url="https://discord.gg/abc123" onClick={jest.fn()} />);
+      const icon = screen.getByRole('img');
+      expect(icon).toHaveAttribute('alt', 'discord');
+    });
+
     it('should render venmo type', () => {
       render(<SocialLink type="venmo" displayName="@johndoe" label="Venmo" url="https://venmo.com/johndoe" onClick={jest.fn()} />);
       const icon = screen.getByRole('img');

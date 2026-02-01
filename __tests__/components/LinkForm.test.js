@@ -72,11 +72,21 @@ describe('LinkForm', () => {
     it('should render all link input fields', () => {
       renderLinkForm();
 
+      // Professional / Tech-Forward
       expect(screen.getByLabelText(/x \(twitter\)/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/linkedin/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/github/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/telegram/i)).toBeInTheDocument();
+      // Social Media
       expect(screen.getByLabelText(/instagram/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/facebook/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/snapchat/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/tiktok/i)).toBeInTheDocument();
+      // Video / Streaming
+      expect(screen.getByLabelText(/youtube/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/twitch/i)).toBeInTheDocument();
+      // Community / Utility
+      expect(screen.getByLabelText(/telegram/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/discord/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/venmo/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/^link$/i)).toBeInTheDocument();
     });
@@ -146,8 +156,14 @@ describe('LinkForm', () => {
         twitter: 'twitteruser',
         linkedin: 'linkedinuser',
         github: 'githubuser',
-        telegram: 'telegramuser',
         instagram: 'instagramuser',
+        facebook: 'facebookuser',
+        snapchat: 'snapchatuser',
+        tiktok: 'tiktokuser',
+        youtube: 'youtubeuser',
+        twitch: 'twitchuser',
+        telegram: 'telegramuser',
+        discord: 'discordcode',
         venmo: 'venmouser',
         custom: 'https://custom.com'
       };
@@ -157,8 +173,14 @@ describe('LinkForm', () => {
       expect(screen.getByLabelText(/x \(twitter\)/i).value).toBe('twitteruser');
       expect(screen.getByLabelText(/linkedin/i).value).toBe('linkedinuser');
       expect(screen.getByLabelText(/github/i).value).toBe('githubuser');
-      expect(screen.getByLabelText(/telegram/i).value).toBe('telegramuser');
       expect(screen.getByLabelText(/instagram/i).value).toBe('instagramuser');
+      expect(screen.getByLabelText(/facebook/i).value).toBe('facebookuser');
+      expect(screen.getByLabelText(/snapchat/i).value).toBe('snapchatuser');
+      expect(screen.getByLabelText(/tiktok/i).value).toBe('tiktokuser');
+      expect(screen.getByLabelText(/youtube/i).value).toBe('youtubeuser');
+      expect(screen.getByLabelText(/twitch/i).value).toBe('twitchuser');
+      expect(screen.getByLabelText(/telegram/i).value).toBe('telegramuser');
+      expect(screen.getByLabelText(/discord/i).value).toBe('discordcode');
       expect(screen.getByLabelText(/venmo/i).value).toBe('venmouser');
       expect(screen.getByLabelText(/^link$/i).value).toBe('https://custom.com');
     });
@@ -168,8 +190,14 @@ describe('LinkForm', () => {
         twitter: 'onlytwitter',
         linkedin: '',
         github: '',
-        telegram: '',
         instagram: '',
+        facebook: '',
+        snapchat: '',
+        tiktok: '',
+        youtube: '',
+        twitch: '',
+        telegram: '',
+        discord: '',
         venmo: '',
         custom: ''
       };
@@ -192,8 +220,8 @@ describe('LinkForm', () => {
         btn.querySelector('svg') && btn.classList.contains('cursor-grab')
       );
       
-      // Should have 7 drag handles (one for each link type)
-      expect(actualDragHandles.length).toBe(7);
+      // Should have 13 drag handles (one for each link type)
+      expect(actualDragHandles.length).toBe(13);
     });
   });
 

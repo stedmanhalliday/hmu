@@ -85,8 +85,14 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         twitter: "",
         linkedin: "",
         github: "",
-        telegram: "",
         instagram: "",
+        facebook: "",
+        snapchat: "",
+        tiktok: "",
+        youtube: "",
+        twitch: "",
+        telegram: "",
+        discord: "",
         venmo: "",
         custom: ""
     });
@@ -229,8 +235,14 @@ export default function LinkForm({ contactId, initialLinkValues }) {
                 twitter: initialLinkValues.twitter || "",
                 linkedin: initialLinkValues.linkedin || "",
                 github: initialLinkValues.github || "",
-                telegram: initialLinkValues.telegram || "",
                 instagram: initialLinkValues.instagram || "",
+                facebook: initialLinkValues.facebook || "",
+                snapchat: initialLinkValues.snapchat || "",
+                tiktok: initialLinkValues.tiktok || "",
+                youtube: initialLinkValues.youtube || "",
+                twitch: initialLinkValues.twitch || "",
+                telegram: initialLinkValues.telegram || "",
+                discord: initialLinkValues.discord || "",
                 venmo: initialLinkValues.venmo || "",
                 custom: initialLinkValues.custom || ""
             });

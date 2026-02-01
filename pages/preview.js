@@ -81,6 +81,49 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://github.com/"
         },
+        instagram: {
+            label: "Instagram",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://instagram.com/"
+        },
+        facebook: {
+            label: "Facebook",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://facebook.com/"
+        },
+        snapchat: {
+            label: "Snapchat",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://snapchat.com/add/"
+        },
+        tiktok: {
+            label: "TikTok",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://tiktok.com/@"
+        },
+        youtube: {
+            label: "YouTube",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            // URL is dynamically determined based on input (channel ID vs username)
+            urlPrepend: "https://youtube.com/@"
+        },
+        twitch: {
+            label: "Twitch",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://twitch.tv/"
+        },
         telegram: {
             label: "Telegram",
             displayName: "",
@@ -88,12 +131,13 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://t.me/"
         },
-        instagram: {
-            label: "Instagram",
+        discord: {
+            label: "Discord",
             displayName: "",
-            displayNamePrepend: "@",
+            displayNamePrepend: "",
             url: "",
-            urlPrepend: "https://instagram.com/"
+            // URL is dynamically determined based on input (user ID vs invite code)
+            urlPrepend: "https://discord.gg/"
         },
         venmo: {
             label: "Venmo",
@@ -335,6 +379,31 @@ export default function Preview() {
                     if (key === "custom") {
                         updatedLinks[key].displayName = processURL(linkValues[key]);
                         updatedLinks[key].url = linkValues[key];
+                    }
+                    else if (key === "youtube" && linkValues[key]) {
+                        // Smart YouTube URL handling: detect channel ID vs username
+                        const value = linkValues[key].replace(/^@/, '');
+                        const isChannelId = value.startsWith('UC') && value.length === 24;
+                        if (isChannelId) {
+                            updatedLinks[key].displayName = value;
+                            updatedLinks[key].url = `https://youtube.com/channel/${value}`;
+                        } else {
+                            updatedLinks[key].displayName = "@" + value;
+                            updatedLinks[key].url = `https://youtube.com/@${value}`;
+                        }
+                    }
+                    else if (key === "discord" && linkValues[key]) {
+                        // Smart Discord URL handling: detect user ID vs invite code
+                        const value = linkValues[key];
+                        const isUserId = /^\d{17,19}$/.test(value);
+                        if (isUserId) {
+                            // Show friendlier display for long user IDs
+                            updatedLinks[key].displayName = `User ...${value.slice(-4)}`;
+                            updatedLinks[key].url = `https://discord.com/users/${value}`;
+                        } else {
+                            updatedLinks[key].displayName = value;
+                            updatedLinks[key].url = `https://discord.gg/${value}`;
+                        }
                     }
                     else if (linkValues[key]) {
                         updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + linkValues[key];

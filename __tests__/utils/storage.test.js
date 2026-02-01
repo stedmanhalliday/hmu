@@ -276,8 +276,14 @@ describe('storage utilities', () => {
         twitter: '',
         linkedin: '',
         github: '',
-        telegram: '',
         instagram: '',
+        facebook: '',
+        snapchat: '',
+        tiktok: '',
+        youtube: '',
+        twitch: '',
+        telegram: '',
+        discord: '',
         venmo: '',
         custom: ''
       });
