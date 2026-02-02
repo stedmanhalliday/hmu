@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - 6 new social link types: Facebook, YouTube, TikTok, Snapchat, Twitch, Discord
+- Links carousel with horizontal swipe and dot indicators when >8 links (#55)
+
+### Changed
+
+- Replaced 9 social icons with cleaner SVGs (WhatsApp, Spotify, SoundCloud, Apple Music, GitHub, Facebook, YouTube, Snapchat, Twitch)
+- Optical adjustments for icon sizing (TikTok, SoundCloud, Twitch)
+- Preview layout: contact group moved higher, speed dial centered in bottom section
 
 ## [0.1.7] - 2026-01-27
 
