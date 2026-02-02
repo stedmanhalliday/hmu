@@ -288,13 +288,9 @@ export default function Home() {
                 </div>
             </div>
 
-            {/* Fixed question mark - bottom right with safe-area */}
-            <a className="fixed z-10 w-6 h-6 flex items-center justify-center rounded-full
+            {/* Fixed question mark - bottom right */}
+            <a className="fixed z-10 bottom-4 right-6 w-6 h-6 flex items-center justify-center rounded-full
                 bg-purple-200 text-purple-400 cursor-pointer"
-                style={{
-                    bottom: hasMounted ? 'max(env(safe-area-inset-bottom), 1rem)' : '1rem',
-                    right: hasMounted ? 'max(env(safe-area-inset-right), 1.5rem)' : '1.5rem'
-                }}
                 onClick={toggleFeedbackModal}>?</a>
             {installModal ? <InstallModal os={os} dismiss={toggleInstallModal} /> : null}
             {privacyModal ?
