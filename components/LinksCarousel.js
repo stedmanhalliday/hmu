@@ -54,7 +54,7 @@ export default function LinksCarousel({ children }) {
                 {pages.map((pageItems, pageIndex) => (
                     <div
                         key={pageIndex}
-                        className="flex-shrink-0 w-full snap-start"
+                        className="flex-shrink-0 w-full snap-start snap-always"
                     >
                         <div className="flex flex-wrap justify-center">
                             {pageItems}
