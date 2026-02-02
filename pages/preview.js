@@ -524,29 +524,34 @@ export default function Preview() {
                 </TextButton>
             </nav>
 
-            {/* Main content - 2 groups evenly spaced */}
-            <div className="h-screen w-full flex flex-col justify-evenly items-center"
+            {/* Main content - top section + centered bottom section */}
+            <div className="h-screen w-full flex flex-col items-center"
                 style={{
                     paddingTop: 'calc(max(env(safe-area-inset-top), 1rem) + 3rem)',
                     paddingBottom: 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)'
                 }}>
-                <Contact
-                    src={data.src || ""}
-                    displayName={data.displayName || ""}
-                    vibe={data.vibe || ""}
-                    label={data.label || ""}
-                    style={editing ? { opacity: 0 } : null}
-                    activeLink={activeLink}
-                    url={data.url || ""}
-                    photo={data.photo || ""} />
+                {/* Top section - avatar, header, QR */}
+                <div className="pt-4">
+                    <Contact
+                        src={data.src || ""}
+                        displayName={data.displayName || ""}
+                        vibe={data.vibe || ""}
+                        label={data.label || ""}
+                        style={editing ? { opacity: 0 } : null}
+                        activeLink={activeLink}
+                        url={data.url || ""}
+                        photo={data.photo || ""} />
+                </div>
 
-                {/* Links section */}
-                <div className="z-10 flex justify-center opacity-75 transition-all duration-300"
-                    style={editing ? { opacity: 0 } : null}>
-                    {Object.values(links).every(value => value.url === "") ?
-                        <TextButton className="px-8 py-5 rounded-full bg-black/10
-                            active:bg-black/[.15] !border-none"
-                            onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                {/* Bottom section - speed dial centered */}
+                <div className="flex-1 w-full flex items-center justify-center">
+                    <div className="z-10 w-full flex justify-center opacity-75 transition-all duration-300"
+                        style={editing ? { opacity: 0 } : null}>
+                        {Object.values(links).every(value => value.url === "") ?
+                            <TextButton className="px-8 py-5 rounded-full bg-black/10
+                                active:bg-black/[.15] !border-none"
+                                onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                    </div>
                 </div>
             </div>
 
