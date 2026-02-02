@@ -225,8 +225,8 @@ export default function Home() {
 
     return (
         <>
-        <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
-            style={loading ? null : { "opacity": 1 }}>
+        <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100"
+            style={{ visibility: loading ? 'hidden' : 'visible' }}>
 
             {/* Main content - 2 groups evenly spaced */}
             <div className="h-screen w-full flex flex-col justify-evenly items-center"
