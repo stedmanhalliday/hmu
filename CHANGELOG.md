@@ -18,6 +18,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optical adjustments for icon sizing (TikTok, SoundCloud, Twitch)
 - Preview layout: contact group moved higher, speed dial centered in bottom section
 
+## [0.1.8] - 2026-02-01
+
+### Fixed
+
+- iOS PWA help button tap target issues
+- Modal can now be dismissed by tapping backdrop
+- Safe area inset handling for iOS PWA
+
+### Changed
+
+- Help button changed from `<a>` to `<button>` for accessibility
+- Help button moved inline below app description
+- Page loading uses visibility instead of opacity to avoid stacking context bugs
+- Removed unnecessary Fragment wrapper in index page
+
 ## [0.1.7] - 2026-01-27
 
 ### Added

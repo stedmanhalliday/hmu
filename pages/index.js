@@ -224,7 +224,6 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <>
         <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100"
             style={{ visibility: loading ? 'hidden' : 'visible' }}>
 
@@ -246,8 +245,8 @@ export default function Home() {
                         <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
                     </header>
                     <div className="w-full flex justify-center mt-4">
-                        <a className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
-                            onClick={toggleFeedbackModal}>?</a>
+                        <button type="button" className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
+                            onClick={toggleFeedbackModal}>?</button>
                     </div>
                 </div>
 
@@ -329,6 +328,5 @@ export default function Home() {
                 </Modal>
                 : null}
         </Page>
-        </>
     );
 };
