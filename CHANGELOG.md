@@ -7,13 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- additional social links: 
-  - facebook
-  - youtube
-  - tiktok
-  - snapchat
-  - twitch
-  - discord
+### Added
+
+- 6 new social link types: Facebook, YouTube, TikTok, Snapchat, Twitch, Discord
 
 ## [0.1.7] - 2026-01-27
 

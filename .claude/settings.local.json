@@ -9,7 +9,9 @@
       "Bash(git commit:*)",
       "Bash(git checkout:*)",
       "Bash(git merge:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue close:*)"
     ]
   }
 }
