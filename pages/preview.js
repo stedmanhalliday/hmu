@@ -5,6 +5,7 @@ import EditPane from "../components/EditPane.js";
 import ConfirmModal from "../components/ConfirmModal.js";
 import SocialLink from "../components/SocialLink.js";
 import TextButton from "../components/TextButton.js";
+import LinksCarousel, { ITEMS_PER_PAGE } from "../components/LinksCarousel.js";
 import styles from "../styles/Preview.module.css";
 import { safeParseVibe } from "../utils/storage.js";
 import logger from "../utils/logger.js";
@@ -473,29 +474,42 @@ export default function Preview() {
         }
     }, [contacts, contactId, router, getContact, home, vCardValues]);
 
-    const filteredLinks =
+    // Build array of link components (contact + social links)
+    const linkComponents = [
+        <SocialLink
+            key="contact"
+            className={!activeLink ?
+                "transition-opacity duration-100"
+                : "opacity-30 transition-opacity duration-100"}
+            type="contact"
+            onClick={showContact}
+        />,
+        ...linkOrder
+            .filter(key => links[key] && links[key].url !== "")
+            .map(key => (
+                <SocialLink key={key}
+                    className={activeLink === key ?
+                        "transition-opacity duration-100"
+                        : "opacity-30 transition-opacity duration-100"}
+                    type={key}
+                    displayName={links[key].displayName}
+                    label={links[key].label}
+                    url={links[key].url}
+                    onClick={toggleActiveLink} />
+            ))
+    ];
+
+    const useCarousel = linkComponents.length > ITEMS_PER_PAGE;
+
+    const filteredLinks = useCarousel ? (
+        <LinksCarousel>
+            {linkComponents}
+        </LinksCarousel>
+    ) : (
         <div className="flex flex-wrap justify-center">
-            <SocialLink
-                className={!activeLink ?
-                    "transition-opacity duration-100"
-                    : "opacity-30 transition-opacity duration-100"}
-                type="contact"
-                onClick={showContact}
-            />
-            {linkOrder
-                .filter(key => links[key] && links[key].url !== "")
-                .map(key => (
-                    <SocialLink key={key}
-                        className={activeLink === key ?
-                            "transition-opacity duration-100"
-                            : "opacity-30 transition-opacity duration-100"}
-                        type={key}
-                        displayName={links[key].displayName}
-                        label={links[key].label}
-                        url={links[key].url}
-                        onClick={toggleActiveLink} />
-                ))}
-        </div>;
+            {linkComponents}
+        </div>
+    );
 
     return (
         <Page className="!p-0 overflow-hidden overscroll-none opacity-0"
