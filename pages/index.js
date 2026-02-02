@@ -244,9 +244,11 @@ export default function Home() {
                             <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
                         </p>
                         <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
-                        <a className="mt-4 w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
-                            onClick={toggleFeedbackModal}>?</a>
                     </header>
+                    <div className="w-full flex justify-center mt-4">
+                        <a className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
+                            onClick={toggleFeedbackModal}>?</a>
+                    </div>
                 </div>
 
                 {/* Group 2: Content (contacts or install) */}
