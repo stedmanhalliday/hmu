@@ -226,7 +226,7 @@ export default function Home() {
     return (
         <>
         {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
-        <a className="fixed z-10 bottom-6 right-6 w-6 h-6 flex items-center justify-center rounded-full
+        <a className="fixed z-10 bottom-8 right-8 w-6 h-6 flex items-center justify-center rounded-full
             bg-purple-200 text-purple-400 cursor-pointer"
             onClick={toggleFeedbackModal}>?</a>
 
