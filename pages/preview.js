@@ -197,9 +197,9 @@ export default function Preview() {
         }));
     }
 
-    const home = () => {
+    const home = useCallback(() => {
         router.push("/");
-    }
+    }, [router]);
 
     const editContact = () => {
         router.push(`/create?id=${contactId}&editing=true`);
@@ -416,7 +416,7 @@ export default function Preview() {
                 return updatedLinks;
             });
         }
-    }, [contacts, contactId, router]);
+    }, [contacts, contactId, router, getContact, home, vCardValues]);
 
     const filteredLinks =
         <div className="flex flex-wrap justify-center">

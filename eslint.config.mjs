@@ -1,5 +1,8 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import nextPlugin from '@next/eslint-plugin-next';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
 export default [
   // Ignore patterns
@@ -16,9 +19,14 @@ export default [
   // Base JS recommended rules
   js.configs.recommended,
 
-  // Configuration for all JS files
+  // Configuration for all JS/JSX files
   {
     files: ['**/*.{js,jsx}'],
+    plugins: {
+      '@next/next': nextPlugin,
+      'react': reactPlugin,
+      'react-hooks': reactHooksPlugin,
+    },
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -26,9 +34,7 @@ export default [
         ...globals.browser,
         ...globals.node,
         ...globals.es2021,
-        // Next.js globals
         React: 'readonly',
-        // Google Analytics
         gtag: 'readonly',
       },
       parserOptions: {
@@ -37,12 +43,25 @@ export default [
         },
       },
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
-      // Relaxed rules matching previous config
-      // varsIgnorePattern ignores PascalCase variables (React components) and underscore-prefixed
-      // ESLint can't detect JSX usage, so component imports appear unused
-      'no-unused-vars': ['warn', { 
-        argsIgnorePattern: '^_',
+      // Next.js rules
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      '@next/next/no-img-element': 'off',
+
+      // React hooks rules
+      ...reactHooksPlugin.configs.recommended.rules,
+      // Disable set-state-in-effect - intentional for loading initial state from storage/context
+      'react-hooks/set-state-in-effect': 'off',
+
+      // Custom rules
+      'no-unused-vars': ['warn', {
+        argsIgnorePattern: '^(_|Component$|pageProps$)',
         varsIgnorePattern: '^([A-Z]|_)',
         ignoreRestSiblings: true
       }],
