@@ -327,9 +327,10 @@ export default function Home() {
         </Page>
 
         {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
-        <a className="fixed z-10 bottom-8 right-8 w-6 h-6 flex items-center justify-center rounded-full
-            bg-purple-200 text-purple-400 cursor-pointer"
-            onClick={toggleFeedbackModal}>?</a>
+        <a className="fixed z-10 bottom-4 right-4 w-14 h-14 flex items-center justify-center cursor-pointer"
+            onClick={toggleFeedbackModal}>
+            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400">?</span>
+        </a>
         </>
     );
 };
