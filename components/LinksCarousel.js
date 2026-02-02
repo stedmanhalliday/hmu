@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback } from 'react';
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 8;
 
 /**
  * Chunk an array into pages of specified size.
