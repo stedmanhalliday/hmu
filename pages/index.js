@@ -244,6 +244,8 @@ export default function Home() {
                             <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
                         </p>
                         <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
+                        <a className="mt-4 w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
+                            onClick={toggleFeedbackModal}>?</a>
                     </header>
                 </div>
 
@@ -325,12 +327,6 @@ export default function Home() {
                 </Modal>
                 : null}
         </Page>
-
-        {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
-        <a className="fixed z-10 bottom-4 right-4 w-14 h-14 flex items-center justify-center cursor-pointer"
-            onClick={toggleFeedbackModal}>
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400">?</span>
-        </a>
         </>
     );
 };
