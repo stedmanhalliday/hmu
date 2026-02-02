@@ -225,11 +225,6 @@ export default function Home() {
 
     return (
         <>
-        {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
-        <a className="fixed z-10 bottom-8 right-8 w-6 h-6 flex items-center justify-center rounded-full
-            bg-purple-200 text-purple-400 cursor-pointer"
-            onClick={toggleFeedbackModal}>?</a>
-
         <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
 
@@ -330,6 +325,11 @@ export default function Home() {
                 </Modal>
                 : null}
         </Page>
+
+        {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
+        <a className="fixed z-10 bottom-8 right-8 w-6 h-6 flex items-center justify-center rounded-full
+            bg-purple-200 text-purple-400 cursor-pointer"
+            onClick={toggleFeedbackModal}>?</a>
         </>
     );
 };
