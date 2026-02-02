@@ -103,6 +103,7 @@ export default function Home() {
     };
 
     const [loading, setLoading] = useState(true);
+    const [hasMounted, setHasMounted] = useState(false);
 
     const [isStandalone, setIsStandalone] = useState(false);
     const [os, setOs] = useState(null);
@@ -114,6 +115,10 @@ export default function Home() {
 
     // Create reference to store the DOM element containing the animation
     const el = useRef(null);
+
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
 
     useEffect(() => {
         if (contacts !== null) {
@@ -225,8 +230,8 @@ export default function Home() {
             {/* Main content - 2 groups evenly spaced */}
             <div className="h-screen w-full flex flex-col justify-evenly items-center"
                 style={{
-                    paddingTop: 'max(env(safe-area-inset-top), 1rem)',
-                    paddingBottom: 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)'
+                    paddingTop: hasMounted ? 'max(env(safe-area-inset-top), 1rem)' : '1rem',
+                    paddingBottom: hasMounted ? 'calc(max(env(safe-area-inset-bottom), 1rem) + 2rem)' : '3rem'
                 }}>
 
                 {/* Group 1: Header section (QR + headline + subheader) */}
@@ -287,8 +292,8 @@ export default function Home() {
             <a className="fixed z-10 w-6 h-6 flex items-center justify-center rounded-full
                 bg-purple-200 text-purple-400 cursor-pointer"
                 style={{
-                    bottom: 'max(env(safe-area-inset-bottom), 1rem)',
-                    right: 'max(env(safe-area-inset-right), 1.5rem)'
+                    bottom: hasMounted ? 'max(env(safe-area-inset-bottom), 1rem)' : '1rem',
+                    right: hasMounted ? 'max(env(safe-area-inset-right), 1.5rem)' : '1.5rem'
                 }}
                 onClick={toggleFeedbackModal}>?</a>
             {installModal ? <InstallModal os={os} dismiss={toggleInstallModal} /> : null}
