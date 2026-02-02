@@ -224,6 +224,12 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
+        <>
+        {/* Fixed question mark - bottom right (outside Page to fix iOS hit target) */}
+        <a className="fixed z-10 bottom-4 right-6 w-6 h-6 flex items-center justify-center rounded-full
+            bg-purple-200 text-purple-400 cursor-pointer"
+            onClick={toggleFeedbackModal}>?</a>
+
         <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
             style={loading ? null : { "opacity": 1 }}>
 
@@ -288,10 +294,6 @@ export default function Home() {
                 </div>
             </div>
 
-            {/* Fixed question mark - bottom right */}
-            <a className="fixed z-10 bottom-4 right-6 w-6 h-6 flex items-center justify-center rounded-full
-                bg-purple-200 text-purple-400 cursor-pointer"
-                onClick={toggleFeedbackModal}>?</a>
             {installModal ? <InstallModal os={os} dismiss={toggleInstallModal} /> : null}
             {privacyModal ?
                 <Modal title="Privacy" dismiss={togglePrivacyModal}>
@@ -328,5 +330,6 @@ export default function Home() {
                 </Modal>
                 : null}
         </Page>
+        </>
     );
 };
