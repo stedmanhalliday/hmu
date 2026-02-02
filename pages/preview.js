@@ -60,47 +60,12 @@ export default function Preview() {
     });
 
     const [links, setLinks] = useState({
-        twitter: {
-            label: "X (Twitter)",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://x.com/"
-        },
-        linkedin: {
-            label: "LinkedIn",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://linkedin.com/in/"
-        },
-        github: {
-            label: "GitHub",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://github.com/"
-        },
         instagram: {
             label: "Instagram",
             displayName: "",
             displayNamePrepend: "@",
             url: "",
             urlPrepend: "https://instagram.com/"
-        },
-        facebook: {
-            label: "Facebook",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://facebook.com/"
-        },
-        snapchat: {
-            label: "Snapchat",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://snapchat.com/add/"
         },
         tiktok: {
             label: "TikTok",
@@ -109,20 +74,33 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://tiktok.com/@"
         },
-        youtube: {
-            label: "YouTube",
+        twitter: {
+            label: "X (Twitter)",
             displayName: "",
             displayNamePrepend: "@",
             url: "",
-            // URL is dynamically determined based on input (channel ID vs username)
-            urlPrepend: "https://youtube.com/@"
+            urlPrepend: "https://x.com/"
         },
-        twitch: {
-            label: "Twitch",
+        snapchat: {
+            label: "Snapchat",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://snapchat.com/add/"
+        },
+        facebook: {
+            label: "Facebook",
             displayName: "",
             displayNamePrepend: "",
             url: "",
-            urlPrepend: "https://twitch.tv/"
+            urlPrepend: "https://facebook.com/"
+        },
+        whatsapp: {
+            label: "WhatsApp",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://wa.me/"
         },
         telegram: {
             label: "Telegram",
@@ -139,12 +117,76 @@ export default function Preview() {
             // URL is dynamically determined based on input (user ID vs invite code)
             urlPrepend: "https://discord.gg/"
         },
+        youtube: {
+            label: "YouTube",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            // URL is dynamically determined based on input (channel ID vs username)
+            urlPrepend: "https://youtube.com/@"
+        },
+        twitch: {
+            label: "Twitch",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://twitch.tv/"
+        },
+        spotify: {
+            label: "Spotify",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://open.spotify.com/artist/"
+        },
+        soundcloud: {
+            label: "SoundCloud",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://soundcloud.com/"
+        },
+        applemusic: {
+            label: "Apple Music",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://music.apple.com/artist/"
+        },
+        linkedin: {
+            label: "LinkedIn",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://linkedin.com/in/"
+        },
+        github: {
+            label: "GitHub",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://github.com/"
+        },
         venmo: {
             label: "Venmo",
             displayName: "",
             displayNamePrepend: "@",
             url: "",
             urlPrepend: "https://venmo.com/"
+        },
+        cashapp: {
+            label: "Cash App",
+            displayName: "",
+            displayNamePrepend: "$",
+            url: "",
+            urlPrepend: "https://cash.app/$"
+        },
+        paypal: {
+            label: "PayPal",
+            displayName: "",
+            displayNamePrepend: "@",
+            url: "",
+            urlPrepend: "https://paypal.me/"
         },
         custom: {
             label: "Link",
@@ -404,6 +446,19 @@ export default function Preview() {
                             updatedLinks[key].displayName = value;
                             updatedLinks[key].url = `https://discord.gg/${value}`;
                         }
+                    }
+                    else if (key === "whatsapp" && linkValues[key]) {
+                        // Strip non-digits for wa.me URL, keep original for display
+                        const value = linkValues[key];
+                        const digitsOnly = value.replace(/\D/g, '');
+                        updatedLinks[key].displayName = value;
+                        updatedLinks[key].url = `https://wa.me/${digitsOnly}`;
+                    }
+                    else if (key === "cashapp" && linkValues[key]) {
+                        // Ensure $ prefix for Cash App
+                        const value = linkValues[key].replace(/^\$/, '');
+                        updatedLinks[key].displayName = `$${value}`;
+                        updatedLinks[key].url = `https://cash.app/$${value}`;
                     }
                     else if (linkValues[key]) {
                         updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + linkValues[key];

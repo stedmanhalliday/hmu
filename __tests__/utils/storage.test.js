@@ -273,18 +273,24 @@ describe('storage utilities', () => {
 
     it('should have correct EMPTY_LINK_VALUES structure', () => {
       expect(EMPTY_LINK_VALUES).toEqual({
-        twitter: '',
-        linkedin: '',
-        github: '',
         instagram: '',
-        facebook: '',
-        snapchat: '',
         tiktok: '',
-        youtube: '',
-        twitch: '',
+        twitter: '',
+        snapchat: '',
+        facebook: '',
+        whatsapp: '',
         telegram: '',
         discord: '',
+        youtube: '',
+        twitch: '',
+        spotify: '',
+        soundcloud: '',
+        applemusic: '',
+        linkedin: '',
+        github: '',
         venmo: '',
+        cashapp: '',
+        paypal: '',
         custom: ''
       });
     });

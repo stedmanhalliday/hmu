@@ -162,18 +162,24 @@ export const EMPTY_FORM_VALUES = {
 };
 
 export const EMPTY_LINK_VALUES = {
-  twitter: "",
-  linkedin: "",
-  github: "",
   instagram: "",
-  facebook: "",
-  snapchat: "",
   tiktok: "",
-  youtube: "",
-  twitch: "",
+  twitter: "",
+  snapchat: "",
+  facebook: "",
+  whatsapp: "",
   telegram: "",
   discord: "",
+  youtube: "",
+  twitch: "",
+  spotify: "",
+  soundcloud: "",
+  applemusic: "",
+  linkedin: "",
+  github: "",
   venmo: "",
+  cashapp: "",
+  paypal: "",
   custom: ""
 };
 

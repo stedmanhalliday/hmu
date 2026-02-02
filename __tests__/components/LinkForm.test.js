@@ -220,8 +220,8 @@ describe('LinkForm', () => {
         btn.querySelector('svg') && btn.classList.contains('cursor-grab')
       );
       
-      // Should have 13 drag handles (one for each link type)
-      expect(actualDragHandles.length).toBe(13);
+      // Should have 19 drag handles (one for each link type)
+      expect(actualDragHandles.length).toBe(19);
     });
   });
 

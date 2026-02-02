@@ -82,18 +82,24 @@ export default function LinkForm({ contactId, initialLinkValues }) {
     const { setContact, getContact } = useContext(StorageContext);
 
     const [formfield, setFormfield] = useState({
-        twitter: "",
-        linkedin: "",
-        github: "",
         instagram: "",
-        facebook: "",
-        snapchat: "",
         tiktok: "",
-        youtube: "",
-        twitch: "",
+        twitter: "",
+        snapchat: "",
+        facebook: "",
+        whatsapp: "",
         telegram: "",
         discord: "",
+        youtube: "",
+        twitch: "",
+        spotify: "",
+        soundcloud: "",
+        applemusic: "",
+        linkedin: "",
+        github: "",
         venmo: "",
+        cashapp: "",
+        paypal: "",
         custom: ""
     });
 
@@ -232,18 +238,24 @@ export default function LinkForm({ contactId, initialLinkValues }) {
     useEffect(() => {
         if (initialLinkValues) {
             setFormfield({
-                twitter: initialLinkValues.twitter || "",
-                linkedin: initialLinkValues.linkedin || "",
-                github: initialLinkValues.github || "",
                 instagram: initialLinkValues.instagram || "",
-                facebook: initialLinkValues.facebook || "",
-                snapchat: initialLinkValues.snapchat || "",
                 tiktok: initialLinkValues.tiktok || "",
-                youtube: initialLinkValues.youtube || "",
-                twitch: initialLinkValues.twitch || "",
+                twitter: initialLinkValues.twitter || "",
+                snapchat: initialLinkValues.snapchat || "",
+                facebook: initialLinkValues.facebook || "",
+                whatsapp: initialLinkValues.whatsapp || "",
                 telegram: initialLinkValues.telegram || "",
                 discord: initialLinkValues.discord || "",
+                youtube: initialLinkValues.youtube || "",
+                twitch: initialLinkValues.twitch || "",
+                spotify: initialLinkValues.spotify || "",
+                soundcloud: initialLinkValues.soundcloud || "",
+                applemusic: initialLinkValues.applemusic || "",
+                linkedin: initialLinkValues.linkedin || "",
+                github: initialLinkValues.github || "",
                 venmo: initialLinkValues.venmo || "",
+                cashapp: initialLinkValues.cashapp || "",
+                paypal: initialLinkValues.paypal || "",
                 custom: initialLinkValues.custom || ""
             });
         }
