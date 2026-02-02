@@ -2,6 +2,7 @@
   "name": "nextjs",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "npm run twbuild && next dev",
     "build": "npm run twbuild && next build",
