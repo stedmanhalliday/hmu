@@ -288,6 +288,8 @@ describe('storage utilities', () => {
         applemusic: '',
         linkedin: '',
         github: '',
+        calendly: '',
+        cal: '',
         venmo: '',
         cashapp: '',
         paypal: '',
