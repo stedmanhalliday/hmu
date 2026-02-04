@@ -1,13 +1,14 @@
 import { StorageContext } from "../pages/_app.js";
 import Button from './Button.js';
-import Input from './Input.js';
 import Modal from './Modal.js';
 import TextButton from './TextButton.js';
+import ActiveLinkRow from './ActiveLinkRow.js';
+import PlatformPicker from './PlatformPicker.js';
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState, memo } from 'react';
+import { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import logger from '../utils/logger.js';
-import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY, LINK_LABELS, LINK_PLACEHOLDERS } from '../lib/constants.js';
+import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY } from '../lib/constants.js';
 
 import {
     DndContext,
@@ -22,59 +23,8 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    useSortable,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-
-// Sortable input wrapper component - memoized to prevent unnecessary re-renders
-const SortableInput = memo(function SortableInput({ id, name, label, type, value, placeholder, onChange }) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({ id });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.5 : 1,
-    };
-
-    return (
-        <div ref={setNodeRef} style={style} className="flex items-start gap-2 mb-4 -ml-2">
-            {/* Drag handle */}
-            <button
-                type="button"
-                className="mt-8 p-1 cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 touch-none"
-                {...attributes}
-                {...listeners}
-            >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <circle cx="4" cy="3" r="1.5" />
-                    <circle cx="12" cy="3" r="1.5" />
-                    <circle cx="4" cy="8" r="1.5" />
-                    <circle cx="12" cy="8" r="1.5" />
-                    <circle cx="4" cy="13" r="1.5" />
-                    <circle cx="12" cy="13" r="1.5" />
-                </svg>
-            </button>
-            <div className="flex-1">
-                <Input
-                    name={name}
-                    label={label}
-                    type={type}
-                    value={value}
-                    placeholder={placeholder}
-                    onChange={onChange}
-                />
-            </div>
-        </div>
-    );
-});
 
 export default function LinkForm({ contactId, initialLinkValues }) {
     const router = useRouter();
@@ -105,6 +55,17 @@ export default function LinkForm({ contactId, initialLinkValues }) {
 
     const [modal, setModal] = useState(null);
     const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
+    const [addedKeys, setAddedKeys] = useState(new Set());
+    const [focusKey, setFocusKey] = useState(null);
+    const focusRef = useRef(null);
+
+    // Auto-focus newly added link input
+    useEffect(() => {
+        if (focusKey && focusRef.current) {
+            focusRef.current.focus();
+            setFocusKey(null);
+        }
+    }, [focusKey]);
 
     // Load saved order from localStorage
     useEffect(() => {
@@ -134,6 +95,31 @@ export default function LinkForm({ contactId, initialLinkValues }) {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
+    // Derive active keys (populated or explicitly added) and available platforms
+    const activeKeys = linkOrder.filter(k => formfield[k] || addedKeys.has(k));
+    const availablePlatforms = DEFAULT_LINK_ORDER.filter(k => !activeKeys.includes(k));
+
+    const handleAdd = useCallback((key) => {
+        setAddedKeys(prev => new Set([...prev, key]));
+        // Move key to end of linkOrder
+        setLinkOrder(prev => {
+            const without = prev.filter(k => k !== key);
+            const newOrder = [...without, key];
+            localStorage.setItem(LINK_ORDER_STORAGE_KEY, JSON.stringify(newOrder));
+            return newOrder;
+        });
+        setFocusKey(key);
+    }, []);
+
+    const handleRemove = useCallback((key) => {
+        setFormfield(prev => ({ ...prev, [key]: "" }));
+        setAddedKeys(prev => {
+            const next = new Set(prev);
+            next.delete(key);
+            return next;
+        });
+    }, []);
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -237,27 +223,16 @@ export default function LinkForm({ contactId, initialLinkValues }) {
     // Load initial link values when provided (for editing existing contact)
     useEffect(() => {
         if (initialLinkValues) {
-            setFormfield({
-                instagram: initialLinkValues.instagram || "",
-                tiktok: initialLinkValues.tiktok || "",
-                twitter: initialLinkValues.twitter || "",
-                snapchat: initialLinkValues.snapchat || "",
-                facebook: initialLinkValues.facebook || "",
-                whatsapp: initialLinkValues.whatsapp || "",
-                telegram: initialLinkValues.telegram || "",
-                discord: initialLinkValues.discord || "",
-                youtube: initialLinkValues.youtube || "",
-                twitch: initialLinkValues.twitch || "",
-                spotify: initialLinkValues.spotify || "",
-                soundcloud: initialLinkValues.soundcloud || "",
-                applemusic: initialLinkValues.applemusic || "",
-                linkedin: initialLinkValues.linkedin || "",
-                github: initialLinkValues.github || "",
-                venmo: initialLinkValues.venmo || "",
-                cashapp: initialLinkValues.cashapp || "",
-                paypal: initialLinkValues.paypal || "",
-                custom: initialLinkValues.custom || ""
-            });
+            const values = {};
+            const populated = new Set();
+            for (const key of DEFAULT_LINK_ORDER) {
+                values[key] = initialLinkValues[key] || "";
+                if (initialLinkValues[key]) {
+                    populated.add(key);
+                }
+            }
+            setFormfield(values);
+            setAddedKeys(populated);
         }
     }, [initialLinkValues]);
 
@@ -270,23 +245,33 @@ export default function LinkForm({ contactId, initialLinkValues }) {
                 onDragEnd={handleDragEnd}
             >
                 <SortableContext
-                    items={linkOrder}
+                    items={activeKeys}
                     strategy={verticalListSortingStrategy}
                 >
-                    {linkOrder.map((key) => (
-                        <SortableInput
-                            key={key}
-                            id={key}
-                            name={key}
-                            label={LINK_LABELS[key]}
-                            type="text"
-                            value={formfield[key]}
-                            placeholder={LINK_PLACEHOLDERS[key]}
-                            onChange={handleChange}
-                        />
-                    ))}
+                    {activeKeys.length > 0 ? (
+                        activeKeys.map((key) => (
+                            <ActiveLinkRow
+                                key={key}
+                                id={key}
+                                value={formfield[key]}
+                                onChange={handleChange}
+                                onRemove={handleRemove}
+                                inputRef={focusKey === key ? focusRef : undefined}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-center text-slate-400 text-sm py-6">
+                            Tap a platform below to add your first link
+                        </p>
+                    )}
                 </SortableContext>
             </DndContext>
+
+            <PlatformPicker
+                availablePlatforms={availablePlatforms}
+                onAdd={handleAdd}
+            />
+
             <Button type="submit" className="self-center my-4 shadow-none">Save links</Button>
             <TextButton onClick={cancel} className="self-center">Cancel</TextButton>
             {modal}
