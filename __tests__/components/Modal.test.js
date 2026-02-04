@@ -136,7 +136,7 @@ describe('Modal', () => {
 
       // After useEffect runs, opacity should be 1
       expect(overlay.style.opacity).toBe('1');
-      // After useEffect runs, top should be 0
+      // After useEffect runs, top should be 0 (slides into position)
       expect(modalBox.style.top).toBe('0px');
     });
   });
