@@ -479,8 +479,8 @@ export default function Preview() {
         <SocialLink
             key="contact"
             className={!activeLink ?
-                "transition-opacity duration-[240ms]"
-                : "opacity-30 transition-opacity duration-[240ms]"}
+                ""
+                : "opacity-30"}
             type="contact"
             onClick={showContact}
         />,
@@ -489,8 +489,8 @@ export default function Preview() {
             .map(key => (
                 <SocialLink key={key}
                     className={activeLink === key ?
-                        "transition-opacity duration-[240ms]"
-                        : "opacity-30 transition-opacity duration-[240ms]"}
+                        ""
+                        : "opacity-30"}
                     type={key}
                     displayName={links[key].displayName}
                     label={links[key].label}
