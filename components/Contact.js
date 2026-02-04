@@ -18,7 +18,7 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
     );
 
     const headerElement = (
-        <header className="flex flex-col items-center space-y-4 shrink-0 transition-opacity duration-300"
+        <header className="flex flex-col items-center space-y-4 shrink-0 transition-opacity duration-[240ms]"
             style={style?.opacity === 0
                 ? { ...style, visibility: 'hidden', pointerEvents: 'none' }
                 : style}>
@@ -46,7 +46,7 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
     );
 
     const qrElement = (
-        <div className="p-3 flex items-center justify-center rounded-[24px] transition-opacity duration-300"
+        <div className="p-3 flex items-center justify-center rounded-[24px] transition-opacity duration-[240ms]"
             style={{
                 ...style,
                 ...(style?.opacity === 0 && { visibility: 'hidden', pointerEvents: 'none' }),

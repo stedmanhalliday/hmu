@@ -5,7 +5,7 @@ export default function Page({ className, style, children }) {
         <div>
             <Header></Header>
             <main className={`box-border min-h-screen flex flex-col items-center
-            transition-opacity duration-300 p-8 ${className}`}
+            transition-opacity duration-[240ms] p-8 ${className}`}
                 style={style}>
                 {children}
             </main>

@@ -5,6 +5,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import logger from '../utils/logger.js';
 
 import { createContext, useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { 
   safeGetItem, 
   safeSetItem, 
@@ -73,6 +74,7 @@ function migrateToMultiContact() {
 }
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [contacts, _setContacts] = useState([]);
   const [storageError, setStorageError] = useState(false);
@@ -252,7 +254,9 @@ function MyApp({ Component, pageProps }) {
           </div>
         )}
         <ErrorBoundary>
-          <Component {...pageProps} />
+          <div key={router.pathname} className="page-enter">
+            <Component {...pageProps} />
+          </div>
         </ErrorBoundary>
       </StorageContext.Provider>
   )

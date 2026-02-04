@@ -5,8 +5,8 @@
     text-shadow: rgba(0, 0, 0, 1) 0 0 1rem;
     box-shadow: 0.5rem 0.5rem 0.75rem #cbced1, -0.5rem -0.5rem 0.75rem white;
     background: linear-gradient(-30deg, #7429c6, #c554e7);
-    transition: opacity 0.25s linear, border 0.25s linear, transform 0.1s ease,
-        box-shadow 0.1s ease;
+    transition: opacity 240ms linear, border 240ms linear, transform 240ms ease,
+        box-shadow 240ms ease;
     opacity: 0.85;
 }
 
