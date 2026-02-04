@@ -4,11 +4,13 @@ import Modal from './Modal.js';
 import TextButton from './TextButton.js';
 import ActiveLinkRow from './ActiveLinkRow.js';
 import PlatformPicker from './PlatformPicker.js';
+import MagicMessageForm from './MagicMessageForm.js';
 
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import logger from '../utils/logger.js';
 import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY } from '../lib/constants.js';
+import { parseMagicMessage, magicMessageLabel } from '../lib/magicMessage.js';
 
 import {
     DndContext,
@@ -26,7 +28,7 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-export default function LinkForm({ contactId, initialLinkValues }) {
+export default function LinkForm({ contactId, initialLinkValues, showMagicForm, setShowMagicForm }) {
     const router = useRouter();
 
     const { setContact, getContact } = useContext(StorageContext);
@@ -50,6 +52,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         venmo: "",
         cashapp: "",
         paypal: "",
+        magicmessage: "",
         custom: ""
     });
 
@@ -180,7 +183,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         // Process form values to yield display names
         const processedLinks = Object.fromEntries(
             Object.entries(formfield).map(([key, value]) => {
-                if (key === "custom" || /^https?:\/\//.test(value)) {
+                if (key === "custom" || key === "magicmessage" || /^https?:\/\//.test(value)) {
                     return [key, value];
                 } else {
                     return [key, processDisplayName(value)];
@@ -220,6 +223,27 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         router.push(`/preview?id=${contactId}`);
     }
 
+    const openMagicForm = useCallback(() => {
+        setShowMagicForm(true);
+    }, [setShowMagicForm]);
+
+    const handleMagicSubmit = useCallback((data) => {
+        const jsonValue = JSON.stringify(data);
+        setFormfield(prev => ({ ...prev, magicmessage: jsonValue }));
+        setAddedKeys(prev => new Set([...prev, 'magicmessage']));
+        setLinkOrder(prev => {
+            const without = prev.filter(k => k !== 'magicmessage');
+            const newOrder = [...without, 'magicmessage'];
+            localStorage.setItem(LINK_ORDER_STORAGE_KEY, JSON.stringify(newOrder));
+            return newOrder;
+        });
+        setShowMagicForm(false);
+    }, [setShowMagicForm]);
+
+    const handleMagicCancel = useCallback(() => {
+        setShowMagicForm(false);
+    }, [setShowMagicForm]);
+
     // Load initial link values when provided (for editing existing contact)
     useEffect(() => {
         if (initialLinkValues) {
@@ -236,6 +260,17 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         }
     }, [initialLinkValues]);
 
+    if (showMagicForm) {
+        const initialValues = parseMagicMessage(formfield.magicmessage);
+        return (
+            <MagicMessageForm
+                initialValues={initialValues}
+                onSubmit={handleMagicSubmit}
+                onCancel={handleMagicCancel}
+            />
+        );
+    }
+
     return (
         <form id="linkForm" name="Link form" className="w-full max-w-md flex flex-col px-2"
             onSubmit={handleSubmit}>
@@ -249,16 +284,33 @@ export default function LinkForm({ contactId, initialLinkValues }) {
                     strategy={verticalListSortingStrategy}
                 >
                     {activeKeys.length > 0 ? (
-                        activeKeys.map((key) => (
-                            <ActiveLinkRow
-                                key={key}
-                                id={key}
-                                value={formfield[key]}
-                                onChange={handleChange}
-                                onRemove={handleRemove}
-                                inputRef={focusKey === key ? focusRef : undefined}
-                            />
-                        ))
+                        activeKeys.map((key) => {
+                            if (key === 'magicmessage' && formfield[key]) {
+                                const parsed = parseMagicMessage(formfield[key]);
+                                return (
+                                    <ActiveLinkRow
+                                        key={key}
+                                        id={key}
+                                        label={magicMessageLabel(parsed)}
+                                        value={(parsed.type === 'email' && parsed.subject) ? parsed.subject : parsed.body}
+                                        onChange={handleChange}
+                                        onRemove={handleRemove}
+                                        readOnly
+                                        onEdit={openMagicForm}
+                                    />
+                                );
+                            }
+                            return (
+                                <ActiveLinkRow
+                                    key={key}
+                                    id={key}
+                                    value={formfield[key]}
+                                    onChange={handleChange}
+                                    onRemove={handleRemove}
+                                    inputRef={focusKey === key ? focusRef : undefined}
+                                />
+                            );
+                        })
                     ) : (
                         <p className="text-center text-slate-400 text-sm py-6">
                             Tap a button below to add your first link
@@ -270,6 +322,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
             <PlatformPicker
                 availablePlatforms={availablePlatforms}
                 onAdd={handleAdd}
+                onAddMagicMessage={openMagicForm}
             />
 
             <Button type="submit" className="self-center my-4 shadow-none">Save links</Button>

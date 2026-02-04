@@ -182,6 +182,7 @@ export const EMPTY_LINK_VALUES = {
   venmo: "",
   cashapp: "",
   paypal: "",
+  magicmessage: "",
   custom: ""
 };
 

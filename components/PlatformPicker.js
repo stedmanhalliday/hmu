@@ -1,11 +1,13 @@
 import { SOCIAL_ICONS } from '../lib/socialIcons.js';
 import { LINK_LABELS } from '../lib/constants.js';
+import MagicMessageIcon from './MagicMessageIcon.js';
 
-export default function PlatformPicker({ availablePlatforms, onAdd }) {
-    const platformKeys = availablePlatforms.filter(k => k !== 'custom');
+export default function PlatformPicker({ availablePlatforms, onAdd, onAddMagicMessage }) {
+    const platformKeys = availablePlatforms.filter(k => k !== 'custom' && k !== 'magicmessage');
     const showCustom = availablePlatforms.includes('custom');
+    const showMagicMessage = availablePlatforms.includes('magicmessage');
 
-    if (platformKeys.length === 0 && !showCustom) {
+    if (platformKeys.length === 0 && !showCustom && !showMagicMessage) {
         return null;
     }
 
@@ -47,6 +49,19 @@ export default function PlatformPicker({ availablePlatforms, onAdd }) {
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                     </svg>
                     <span className="uppercase tracking-widest">Custom Link</span>
+                </button>
+            )}
+
+            {showMagicMessage && (
+                <button
+                    type="button"
+                    onClick={onAddMagicMessage}
+                    className="mt-3 w-full py-3 rounded-lg border border-dashed border-slate-300
+                        text-sm text-slate-500 flex items-center justify-center gap-2
+                        active:bg-slate-50 transition-colors"
+                >
+                    <MagicMessageIcon size={16} />
+                    <span className="uppercase tracking-widest">Magic Message</span>
                 </button>
             )}
         </div>
