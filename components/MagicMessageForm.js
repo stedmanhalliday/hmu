@@ -53,7 +53,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
             <div className="flex rounded-lg border border-slate-200 overflow-hidden mb-6">
                 <button
                     type="button"
-                    onClick={() => setType('email')}
+                    onClick={() => { setType('email'); setErrors({}); }}
                     className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
                         ${type === 'email'
                             ? 'bg-slate-800 text-white'
@@ -63,7 +63,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                 </button>
                 <button
                     type="button"
-                    onClick={() => setType('sms')}
+                    onClick={() => { setType('sms'); setErrors({}); }}
                     className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
                         ${type === 'sms'
                             ? 'bg-slate-800 text-white'

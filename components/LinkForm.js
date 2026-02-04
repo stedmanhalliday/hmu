@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import logger from '../utils/logger.js';
 import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY } from '../lib/constants.js';
+import { parseMagicMessage, magicMessageLabel } from '../lib/magicMessage.js';
 
 import {
     DndContext,
@@ -224,7 +225,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
 
     const openMagicForm = useCallback(() => {
         setShowMagicForm(true);
-    }, []);
+    }, [setShowMagicForm]);
 
     const handleMagicSubmit = useCallback((data) => {
         const jsonValue = JSON.stringify(data);
@@ -237,11 +238,11 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
             return newOrder;
         });
         setShowMagicForm(false);
-    }, []);
+    }, [setShowMagicForm]);
 
     const handleMagicCancel = useCallback(() => {
         setShowMagicForm(false);
-    }, []);
+    }, [setShowMagicForm]);
 
     // Load initial link values when provided (for editing existing contact)
     useEffect(() => {
@@ -260,14 +261,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
     }, [initialLinkValues]);
 
     if (showMagicForm) {
-        let initialValues = null;
-        if (formfield.magicmessage) {
-            try {
-                initialValues = JSON.parse(formfield.magicmessage);
-            } catch {
-                // Intentionally empty - start fresh if parse fails
-            }
-        }
+        const initialValues = parseMagicMessage(formfield.magicmessage);
         return (
             <MagicMessageForm
                 initialValues={initialValues}
@@ -292,18 +286,12 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
                     {activeKeys.length > 0 ? (
                         activeKeys.map((key) => {
                             if (key === 'magicmessage' && formfield[key]) {
-                                let parsed;
-                                try {
-                                    parsed = JSON.parse(formfield[key]);
-                                } catch {
-                                    parsed = { type: 'email', body: '' };
-                                }
-                                const magicLabel = `Magic Message (${parsed.type === 'sms' ? 'SMS' : 'Email'})`;
+                                const parsed = parseMagicMessage(formfield[key]);
                                 return (
                                     <ActiveLinkRow
                                         key={key}
                                         id={key}
-                                        label={magicLabel}
+                                        label={magicMessageLabel(parsed)}
                                         value={parsed.body}
                                         onChange={handleChange}
                                         onRemove={handleRemove}
