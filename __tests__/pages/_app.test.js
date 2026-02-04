@@ -2,6 +2,17 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import MyApp, { StorageContext } from '../../pages/_app';
 import { useContext } from 'react';
 
+// Mock next/router (used in _app.js for page transitions)
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    pathname: '/',
+    asPath: '/',
+    events: { on: jest.fn(), off: jest.fn() },
+    push: jest.fn(),
+    replace: jest.fn(),
+  }),
+}));
+
 // Mock the logger
 jest.mock('../../utils/logger.js', () => ({
   log: jest.fn(),
