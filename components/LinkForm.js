@@ -180,7 +180,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
         // Process form values to yield display names
         const processedLinks = Object.fromEntries(
             Object.entries(formfield).map(([key, value]) => {
-                if (key === "custom") {
+                if (key === "custom" || /^https?:\/\//.test(value)) {
                     return [key, value];
                 } else {
                     return [key, processDisplayName(value)];

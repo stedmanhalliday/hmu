@@ -469,17 +469,6 @@ export default function Preview() {
                         updatedLinks[key].displayName = value;
                         updatedLinks[key].url = `https://wa.me/${digitsOnly}`;
                     }
-                    else if ((key === "calendly" || key === "cal") && linkValues[key]) {
-                        // Accept full URLs or username/path
-                        const value = linkValues[key];
-                        if (/^https?:\/\//.test(value)) {
-                            updatedLinks[key].displayName = processURL(value);
-                            updatedLinks[key].url = value;
-                        } else {
-                            updatedLinks[key].displayName = value;
-                            updatedLinks[key].url = prevLinks[key].urlPrepend + value;
-                        }
-                    }
                     else if (key === "cashapp" && linkValues[key]) {
                         // Ensure $ prefix for Cash App
                         const value = linkValues[key].replace(/^\$/, '');
@@ -487,8 +476,14 @@ export default function Preview() {
                         updatedLinks[key].url = `https://cash.app/$${value}`;
                     }
                     else if (linkValues[key]) {
-                        updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + linkValues[key];
-                        updatedLinks[key].url = prevLinks[key].urlPrepend + linkValues[key];
+                        const value = linkValues[key];
+                        if (/^https?:\/\//.test(value)) {
+                            updatedLinks[key].displayName = processURL(value);
+                            updatedLinks[key].url = value;
+                        } else {
+                            updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + value;
+                            updatedLinks[key].url = prevLinks[key].urlPrepend + value;
+                        }
                     } else {
                         updatedLinks[key].displayName = "";
                         updatedLinks[key].url = "";
