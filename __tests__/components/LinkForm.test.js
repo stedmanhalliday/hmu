@@ -101,7 +101,7 @@ describe('LinkForm', () => {
     it('should show placeholder text for username fields', () => {
       renderLinkForm();
 
-      const placeholders = screen.getAllByPlaceholderText('snoopdogg');
+      const placeholders = screen.getAllByPlaceholderText('champagnepapi');
       expect(placeholders.length).toBeGreaterThan(0);
     });
 
