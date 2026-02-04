@@ -479,8 +479,8 @@ export default function Preview() {
         <SocialLink
             key="contact"
             className={!activeLink ?
-                "transition-opacity duration-100"
-                : "opacity-30 transition-opacity duration-100"}
+                "transition-opacity duration-[240ms]"
+                : "opacity-30 transition-opacity duration-[240ms]"}
             type="contact"
             onClick={showContact}
         />,
@@ -489,8 +489,8 @@ export default function Preview() {
             .map(key => (
                 <SocialLink key={key}
                     className={activeLink === key ?
-                        "transition-opacity duration-100"
-                        : "opacity-30 transition-opacity duration-100"}
+                        "transition-opacity duration-[240ms]"
+                        : "opacity-30 transition-opacity duration-[240ms]"}
                     type={key}
                     displayName={links[key].displayName}
                     label={links[key].label}
@@ -545,12 +545,12 @@ export default function Preview() {
 
                 {/* Bottom section - speed dial centered */}
                 <div className="flex-1 w-full flex items-center justify-center">
-                    <div className="z-10 w-full flex justify-center opacity-75 transition-all duration-300"
+                    <div className="z-10 w-full flex justify-center opacity-75 transition-all duration-[240ms]"
                         style={editing ? { opacity: 0 } : null}>
                         {Object.values(links).every(value => value.url === "") ?
                             <TextButton className="px-8 py-5 rounded-full bg-black/10
                                 active:bg-black/[.15] !border-none"
-                                onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                                onClick={editLinks}>+ Add links</TextButton> : filteredLinks}
                     </div>
                 </div>
             </div>

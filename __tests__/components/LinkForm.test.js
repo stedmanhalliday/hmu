@@ -69,26 +69,42 @@ describe('LinkForm', () => {
   });
 
   describe('rendering', () => {
-    it('should render all link input fields', () => {
+    it('should show empty state when no links are populated', () => {
       renderLinkForm();
 
-      // Professional / Tech-Forward
-      expect(screen.getByLabelText(/x \(twitter\)/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/linkedin/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/github/i)).toBeInTheDocument();
-      // Social Media
-      expect(screen.getByLabelText(/instagram/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/facebook/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/snapchat/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/tiktok/i)).toBeInTheDocument();
-      // Video / Streaming
-      expect(screen.getByLabelText(/youtube/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/twitch/i)).toBeInTheDocument();
-      // Community / Utility
-      expect(screen.getByLabelText(/telegram/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/discord/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/venmo/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^link$/i)).toBeInTheDocument();
+      expect(screen.getByText(/tap a platform below to add your first link/i)).toBeInTheDocument();
+    });
+
+    it('should show platform picker with add buttons', () => {
+      renderLinkForm();
+
+      expect(screen.getByRole('button', { name: /add instagram/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /add x \(twitter\)/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /add linkedin/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /add github/i })).toBeInTheDocument();
+    });
+
+    it('should show custom link button in picker', () => {
+      renderLinkForm();
+
+      expect(screen.getByRole('button', { name: /custom link/i })).toBeInTheDocument();
+    });
+
+    it('should render only populated link inputs', () => {
+      const initialValues = {
+        twitter: 'twitteruser',
+        instagram: 'instagramuser',
+      };
+
+      renderLinkForm({ initialLinkValues: initialValues });
+
+      // Populated links should show inputs
+      expect(screen.getByRole('textbox', { name: /x \(twitter\)/i })).toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /instagram/i })).toBeInTheDocument();
+
+      // Empty links should not show inputs
+      expect(screen.queryByRole('textbox', { name: /linkedin/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('textbox', { name: /github/i })).not.toBeInTheDocument();
     });
 
     it('should render submit and cancel buttons', () => {
@@ -97,53 +113,69 @@ describe('LinkForm', () => {
       expect(screen.getByRole('button', { name: /save links/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
     });
+  });
 
-    it('should show placeholder text for username fields', () => {
+  describe('adding and removing links', () => {
+    it('should add a link when platform icon is tapped', () => {
       renderLinkForm();
 
-      const placeholders = screen.getAllByPlaceholderText('champagnepapi');
-      expect(placeholders.length).toBeGreaterThan(0);
+      // No instagram input initially
+      expect(screen.queryByRole('textbox', { name: /instagram/i })).not.toBeInTheDocument();
+
+      // Click the add button
+      fireEvent.click(screen.getByRole('button', { name: /add instagram/i }));
+
+      // Input should appear
+      expect(screen.getByRole('textbox', { name: /instagram/i })).toBeInTheDocument();
+      // Add button should disappear from picker
+      expect(screen.queryByRole('button', { name: /add instagram/i })).not.toBeInTheDocument();
     });
 
-    it('should show placeholder for custom link field', () => {
+    it('should add custom link when custom button is tapped', () => {
       renderLinkForm();
 
-      expect(screen.getByPlaceholderText('https://hmu.world')).toBeInTheDocument();
+      fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
+
+      expect(screen.getByRole('textbox', { name: /^link$/i })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /custom link/i })).not.toBeInTheDocument();
+    });
+
+    it('should remove a link and return it to picker', () => {
+      const initialValues = { instagram: 'testuser' };
+      renderLinkForm({ initialLinkValues: initialValues });
+
+      // Instagram input should be visible
+      expect(screen.getByRole('textbox', { name: /instagram/i })).toBeInTheDocument();
+
+      // Click the remove button
+      fireEvent.click(screen.getByRole('button', { name: /remove instagram/i }));
+
+      // Input should be gone
+      expect(screen.queryByRole('textbox', { name: /instagram/i })).not.toBeInTheDocument();
+      // Platform should reappear in picker
+      expect(screen.getByRole('button', { name: /add instagram/i })).toBeInTheDocument();
     });
   });
 
   describe('form interactions', () => {
-    it('should update twitter field on input', () => {
+    it('should update field value on input', () => {
       renderLinkForm();
 
-      const twitterInput = screen.getByLabelText(/x \(twitter\)/i);
+      // Add twitter first
+      fireEvent.click(screen.getByRole('button', { name: /add x \(twitter\)/i }));
+
+      const twitterInput = screen.getByRole('textbox', { name: /x \(twitter\)/i });
       fireEvent.change(twitterInput, { target: { name: 'twitter', value: 'testuser' } });
 
       expect(twitterInput.value).toBe('testuser');
     });
 
-    it('should update linkedin field on input', () => {
-      renderLinkForm();
-
-      const linkedinInput = screen.getByLabelText(/linkedin/i);
-      fireEvent.change(linkedinInput, { target: { name: 'linkedin', value: 'john-doe' } });
-
-      expect(linkedinInput.value).toBe('john-doe');
-    });
-
-    it('should update github field on input', () => {
-      renderLinkForm();
-
-      const githubInput = screen.getByLabelText(/github/i);
-      fireEvent.change(githubInput, { target: { name: 'github', value: 'octocat' } });
-
-      expect(githubInput.value).toBe('octocat');
-    });
-
     it('should update custom link field on input', () => {
       renderLinkForm();
 
-      const customInput = screen.getByLabelText(/^link$/i);
+      fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
+
+      const customInput = screen.getByRole('textbox', { name: /^link$/i });
       fireEvent.change(customInput, { target: { name: 'custom', value: 'https://mysite.com' } });
 
       expect(customInput.value).toBe('https://mysite.com');
@@ -170,58 +202,48 @@ describe('LinkForm', () => {
 
       renderLinkForm({ initialLinkValues: initialValues });
 
-      expect(screen.getByLabelText(/x \(twitter\)/i).value).toBe('twitteruser');
-      expect(screen.getByLabelText(/linkedin/i).value).toBe('linkedinuser');
-      expect(screen.getByLabelText(/github/i).value).toBe('githubuser');
-      expect(screen.getByLabelText(/instagram/i).value).toBe('instagramuser');
-      expect(screen.getByLabelText(/facebook/i).value).toBe('facebookuser');
-      expect(screen.getByLabelText(/snapchat/i).value).toBe('snapchatuser');
-      expect(screen.getByLabelText(/tiktok/i).value).toBe('tiktokuser');
-      expect(screen.getByLabelText(/youtube/i).value).toBe('youtubeuser');
-      expect(screen.getByLabelText(/twitch/i).value).toBe('twitchuser');
-      expect(screen.getByLabelText(/telegram/i).value).toBe('telegramuser');
-      expect(screen.getByLabelText(/discord/i).value).toBe('discordcode');
-      expect(screen.getByLabelText(/venmo/i).value).toBe('venmouser');
-      expect(screen.getByLabelText(/^link$/i).value).toBe('https://custom.com');
+      expect(screen.getByRole('textbox', { name: /x \(twitter\)/i }).value).toBe('twitteruser');
+      expect(screen.getByRole('textbox', { name: /linkedin/i }).value).toBe('linkedinuser');
+      expect(screen.getByRole('textbox', { name: /github/i }).value).toBe('githubuser');
+      expect(screen.getByRole('textbox', { name: /instagram/i }).value).toBe('instagramuser');
+      expect(screen.getByRole('textbox', { name: /facebook/i }).value).toBe('facebookuser');
+      expect(screen.getByRole('textbox', { name: /snapchat/i }).value).toBe('snapchatuser');
+      expect(screen.getByRole('textbox', { name: /tiktok/i }).value).toBe('tiktokuser');
+      expect(screen.getByRole('textbox', { name: /youtube/i }).value).toBe('youtubeuser');
+      expect(screen.getByRole('textbox', { name: /twitch/i }).value).toBe('twitchuser');
+      expect(screen.getByRole('textbox', { name: /telegram/i }).value).toBe('telegramuser');
+      expect(screen.getByRole('textbox', { name: /discord/i }).value).toBe('discordcode');
+      expect(screen.getByRole('textbox', { name: /venmo/i }).value).toBe('venmouser');
+      expect(screen.getByRole('textbox', { name: /^link$/i }).value).toBe('https://custom.com');
     });
 
-    it('should handle partial initial values', () => {
+    it('should only show inputs for populated initial values', () => {
       const initialValues = {
         twitter: 'onlytwitter',
-        linkedin: '',
-        github: '',
-        instagram: '',
-        facebook: '',
-        snapchat: '',
-        tiktok: '',
-        youtube: '',
-        twitch: '',
-        telegram: '',
-        discord: '',
-        venmo: '',
-        custom: ''
       };
 
       renderLinkForm({ initialLinkValues: initialValues });
 
-      expect(screen.getByLabelText(/x \(twitter\)/i).value).toBe('onlytwitter');
-      expect(screen.getByLabelText(/linkedin/i).value).toBe('');
+      // Twitter should have an input with value
+      expect(screen.getByRole('textbox', { name: /x \(twitter\)/i }).value).toBe('onlytwitter');
+      // LinkedIn should be in the picker, not as an input
+      expect(screen.queryByRole('textbox', { name: /linkedin/i })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /add linkedin/i })).toBeInTheDocument();
     });
   });
 
   describe('drag handles', () => {
-    it('should render drag handles for each input', () => {
-      renderLinkForm();
+    it('should render drag handles only for active links', () => {
+      const initialValues = {
+        instagram: 'instagramuser',
+        twitter: 'twitteruser',
+        github: 'githubuser',
+      };
 
-      // Each sortable input has a drag handle button
-      const dragHandles = screen.getAllByRole('button', { name: '' });
-      // Filter to only the drag handles (they have SVG children)
-      const actualDragHandles = dragHandles.filter(btn => 
-        btn.querySelector('svg') && btn.classList.contains('cursor-grab')
-      );
-      
-      // Should have 19 drag handles (one for each link type)
-      expect(actualDragHandles.length).toBe(19);
+      renderLinkForm({ initialLinkValues: initialValues });
+
+      const dragHandles = screen.getAllByRole('button', { name: /reorder/i });
+      expect(dragHandles.length).toBe(3);
     });
   });
 
@@ -230,7 +252,9 @@ describe('LinkForm', () => {
       mockSetContact.mockReturnValue('test-contact-1');
       renderLinkForm();
 
-      const twitterInput = screen.getByLabelText(/x \(twitter\)/i);
+      // Add twitter and type a value
+      fireEvent.click(screen.getByRole('button', { name: /add x \(twitter\)/i }));
+      const twitterInput = screen.getByRole('textbox', { name: /x \(twitter\)/i });
       fireEvent.change(twitterInput, { target: { name: 'twitter', value: 'testuser' } });
 
       const submitButton = screen.getByRole('button', { name: /save links/i });
@@ -247,7 +271,8 @@ describe('LinkForm', () => {
       mockSetContact.mockReturnValue('test-contact-1');
       renderLinkForm();
 
-      const twitterInput = screen.getByLabelText(/x \(twitter\)/i);
+      fireEvent.click(screen.getByRole('button', { name: /add x \(twitter\)/i }));
+      const twitterInput = screen.getByRole('textbox', { name: /x \(twitter\)/i });
       fireEvent.change(twitterInput, { target: { name: 'twitter', value: 'https://twitter.com/testuser' } });
 
       const submitButton = screen.getByRole('button', { name: /save links/i });
@@ -264,7 +289,8 @@ describe('LinkForm', () => {
       mockSetContact.mockReturnValue('test-contact-1');
       renderLinkForm();
 
-      const customInput = screen.getByLabelText(/^link$/i);
+      fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
+      const customInput = screen.getByRole('textbox', { name: /^link$/i });
       fireEvent.change(customInput, { target: { name: 'custom', value: 'https://mysite.com/page' } });
 
       const submitButton = screen.getByRole('button', { name: /save links/i });

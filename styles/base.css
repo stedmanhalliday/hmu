@@ -4,3 +4,12 @@
     @apply selection:bg-purple-300;
     @apply selection:text-purple-900;
 }
+
+@keyframes pageEnter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.page-enter {
+    animation: pageEnter 240ms ease-out both;
+}

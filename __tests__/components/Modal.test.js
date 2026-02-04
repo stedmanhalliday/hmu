@@ -92,7 +92,7 @@ describe('Modal', () => {
         </Modal>
       );
 
-      const overlay = container.querySelector('.fixed.w-full.h-full');
+      const overlay = container.querySelector('.fixed.inset-0');
       expect(overlay).toBeInTheDocument();
     });
   });
@@ -107,7 +107,7 @@ describe('Modal', () => {
 
       const modalBox = container.querySelector('.bg-white.shadow-2xl');
       expect(modalBox).toBeInTheDocument();
-      expect(modalBox).toHaveClass('fixed');
+      expect(modalBox).toHaveClass('relative');
       expect(modalBox).toHaveClass('rounded-xl');
     });
 
@@ -131,13 +131,13 @@ describe('Modal', () => {
         </Modal>
       );
 
-      const overlay = container.querySelector('.fixed.w-full.h-full');
+      const overlay = container.querySelector('.fixed.inset-0');
       const modalBox = container.querySelector('.bg-white.shadow-2xl');
 
       // After useEffect runs, opacity should be 1
       expect(overlay.style.opacity).toBe('1');
-      // After useEffect runs, top should be 50%
-      expect(modalBox.style.top).toBe('50%');
+      // After useEffect runs, top should be 0 (slides into position)
+      expect(modalBox.style.top).toBe('0px');
     });
   });
 

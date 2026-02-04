@@ -224,8 +224,8 @@ export default function Home() {
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
 
     return (
-        <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100"
-            style={{ visibility: loading ? 'hidden' : 'visible' }}>
+        <Page className="!py-0 overflow-hidden overscroll-none bg-slate-100 opacity-0"
+            style={loading ? null : { opacity: 1 }}>
 
             {/* Main content - 2 groups evenly spaced */}
             <div className="h-screen w-full flex flex-col justify-evenly items-center"
@@ -312,17 +312,17 @@ export default function Home() {
                         <p>Help improve hmu.world by submitting feedback or contributing code.</p>
                         <ol>
                             <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-150
+                                className="text-purple-600 transition-all duration-[240ms]
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
                             <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-150
+                                className="text-purple-600 transition-all duration-[240ms]
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
                             <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-150
+                                className="text-purple-600 transition-all duration-[240ms]
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
                         </ol>
                         <p>Support me with a <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
-                            className="text-purple-600 transition-all duration-150
+                            className="text-purple-600 transition-all duration-[240ms]
                             hover:text-purple-400 focus:text-purple-400 active:text-purple-400">donation.</a></p>
                     </div>
                 </Modal>
