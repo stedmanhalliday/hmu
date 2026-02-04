@@ -169,6 +169,20 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://github.com/"
         },
+        calendly: {
+            label: "Calendly",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://calendly.com/"
+        },
+        cal: {
+            label: "Cal.com",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://cal.com/"
+        },
         venmo: {
             label: "Venmo",
             displayName: "",
@@ -480,8 +494,14 @@ export default function Preview() {
                         updatedLinks[key].url = `https://cash.app/$${value}`;
                     }
                     else if (linkValues[key]) {
-                        updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + linkValues[key];
-                        updatedLinks[key].url = prevLinks[key].urlPrepend + linkValues[key];
+                        const value = linkValues[key];
+                        if (/^https?:\/\//.test(value)) {
+                            updatedLinks[key].displayName = processURL(value);
+                            updatedLinks[key].url = value;
+                        } else {
+                            updatedLinks[key].displayName = prevLinks[key].displayNamePrepend + value;
+                            updatedLinks[key].url = prevLinks[key].urlPrepend + value;
+                        }
                     } else {
                         updatedLinks[key].displayName = "";
                         updatedLinks[key].url = "";
@@ -497,8 +517,8 @@ export default function Preview() {
         <SocialLink
             key="contact"
             className={!activeLink ?
-                "transition-opacity duration-[240ms]"
-                : "opacity-30 transition-opacity duration-[240ms]"}
+                ""
+                : "opacity-30"}
             type="contact"
             onClick={showContact}
         />,
@@ -507,8 +527,8 @@ export default function Preview() {
             .map(key => (
                 <SocialLink key={key}
                     className={activeLink === key ?
-                        "transition-opacity duration-[240ms]"
-                        : "opacity-30 transition-opacity duration-[240ms]"}
+                        ""
+                        : "opacity-30"}
                     type={key}
                     displayName={links[key].displayName}
                     label={links[key].label}

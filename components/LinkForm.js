@@ -183,7 +183,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
         // Process form values to yield display names
         const processedLinks = Object.fromEntries(
             Object.entries(formfield).map(([key, value]) => {
-                if (key === "custom" || key === "magicmessage") {
+                if (key === "custom" || key === "magicmessage" || /^https?:\/\//.test(value)) {
                     return [key, value];
                 } else {
                     return [key, processDisplayName(value)];

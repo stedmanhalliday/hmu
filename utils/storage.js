@@ -177,6 +177,8 @@ export const EMPTY_LINK_VALUES = {
   applemusic: "",
   linkedin: "",
   github: "",
+  calendly: "",
+  cal: "",
   venmo: "",
   cashapp: "",
   paypal: "",
