@@ -267,7 +267,7 @@ describe('LinkForm', () => {
       });
     });
 
-    it('should process URLs to extract usernames', () => {
+    it('should preserve full URLs instead of extracting usernames', () => {
       mockSetContact.mockReturnValue('test-contact-1');
       renderLinkForm();
 
@@ -280,7 +280,7 @@ describe('LinkForm', () => {
 
       expect(mockSetContact).toHaveBeenCalledWith('test-contact-1', {
         linkValues: expect.objectContaining({
-          twitter: 'testuser'
+          twitter: 'https://twitter.com/testuser'
         })
       });
     });
