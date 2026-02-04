@@ -75,9 +75,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
 
             {/* Recipient */}
             <label className="mb-4">
-                <div className="mb-1 text-slate-600">
-                    {type === 'email' ? 'Recipient email' : 'Recipient phone number'}
-                </div>
+                <div className="mb-1 text-slate-600">Send to</div>
                 <input
                     className={`py-2 px-3 w-full max-w-md text-lg border rounded-md text-slate-800
                         placeholder:text-slate-400
@@ -87,7 +85,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                             : 'border-slate-300 focus:border-purple-400'}`}
                     type={type === 'email' ? 'email' : 'tel'}
                     value={recipient}
-                    placeholder={type === 'email' ? 'friend@example.com' : '+16789998212'}
+                    placeholder={type === 'email' ? 'souljaboytellem@example.com' : '+16789998212'}
                     onChange={(e) => setRecipient(e.target.value)}
                     autoCorrect="off"
                     autoCapitalize="off"
@@ -98,9 +96,10 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                 )}
             </label>
 
-            {/* Subject (email only) */}
-            {type === 'email' && (
-                <label className="mb-4">
+            {/* Subject (email only, animated) */}
+            <div className={`overflow-hidden transition-all duration-200 ease-out
+                ${type === 'email' ? 'max-h-24 opacity-100 mb-4' : 'max-h-0 opacity-0 mb-0'}`}>
+                <label>
                     <div className="mb-1 text-slate-600">Subject <span className="text-slate-400">(optional)</span></div>
                     <input
                         className="py-2 px-3 w-full max-w-md text-lg border rounded-md text-slate-800
@@ -109,11 +108,12 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                             focus:shadow-[inset_0_0_0.25rem_rgb(216,180,254)]"
                         type="text"
                         value={subject}
-                        placeholder="Say hello"
+                        placeholder="hmu"
                         onChange={(e) => setSubject(e.target.value)}
+                        tabIndex={type === 'email' ? 0 : -1}
                     />
                 </label>
-            )}
+            </div>
 
             {/* Body */}
             <label className="mb-4">
@@ -127,7 +127,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                             : 'border-slate-300 focus:border-purple-400'}`}
                     rows={3}
                     value={body}
-                    placeholder="Hey, I got your card!"
+                    placeholder="see you later on! 😘"
                     onChange={(e) => setBody(e.target.value)}
                 />
                 {errors.body && (

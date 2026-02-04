@@ -35,7 +35,7 @@ export default function Links() {
                 bg-white shadow-md
                 text-5xl">
                     {showMagicForm ? (
-                        <MagicMessageIcon size={44} fill="#475569" />
+                        <MagicMessageIcon size={44} variant="header" />
                     ) : (
                         <img src={"/emoji/🔗.png"}
                             width={48} height={48}
@@ -46,6 +46,11 @@ export default function Links() {
                     style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>
                     {showMagicForm ? "Magic Message" : "Edit your links"}
                 </h1>
+                {showMagicForm && (
+                    <p className="text-center text-slate-400 text-sm max-w-xs -mt-2">
+                        Generate a QR code that drafts a message for anyone who scans it
+                    </p>
+                )}
             </header>
             <LinkForm
                 contactId={contactId}
