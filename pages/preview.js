@@ -190,7 +190,7 @@ export default function Preview() {
             urlPrepend: "https://paypal.me/"
         },
         custom: {
-            label: "Link",
+            label: "Custom link",
             displayName: "",
             url: ""
         }

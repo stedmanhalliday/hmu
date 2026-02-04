@@ -155,7 +155,7 @@ describe('SocialLink', () => {
     });
 
     it('should render custom type with fallback', () => {
-      render(<SocialLink type="custom" displayName="example.com" label="Link" url="https://example.com" onClick={jest.fn()} />);
+      render(<SocialLink type="custom" displayName="example.com" label="Custom link" url="https://example.com" onClick={jest.fn()} />);
       const icon = screen.getByRole('img');
       expect(icon).toHaveAttribute('alt', 'link');
     });
