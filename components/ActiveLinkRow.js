@@ -16,7 +16,7 @@ const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemov
 
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition: transition?.replace(/(\d+)ms/, '150ms'),
         opacity: isDragging ? 0.5 : 1,
     };
 
