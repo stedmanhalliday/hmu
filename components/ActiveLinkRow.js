@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { SOCIAL_ICONS } from '../lib/socialIcons.js';
 import { LINK_LABELS, LINK_PLACEHOLDERS } from '../lib/constants.js';
 
-const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemove, inputRef }) {
+const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemove, inputRef, label: labelOverride, readOnly, onEdit }) {
     const {
         attributes,
         listeners,
@@ -21,7 +21,7 @@ const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemov
     };
 
     const icon = SOCIAL_ICONS[id] || SOCIAL_ICONS.custom;
-    const label = LINK_LABELS[id] || 'Link';
+    const label = labelOverride || LINK_LABELS[id] || 'Link';
     const placeholder = LINK_PLACEHOLDERS[id] || '';
 
     const handleRemove = useCallback(() => {
@@ -55,20 +55,22 @@ const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemov
             </div>
 
             {/* Label + input stack */}
-            <div className="flex-1 min-w-0">
+            <div className={`flex-1 min-w-0${readOnly && onEdit ? ' cursor-pointer' : ''}`}
+                onClick={readOnly && onEdit ? onEdit : undefined}>
                 <span className="text-xs text-slate-500 leading-none">{label}</span>
                 <input
                     type="text"
                     name={id}
                     value={value}
                     placeholder={placeholder}
-                    onChange={onChange}
+                    onChange={readOnly ? undefined : onChange}
                     ref={inputRef}
                     aria-label={label}
                     autoCorrect="off"
                     autoCapitalize="off"
                     spellCheck="false"
-                    className="block w-full text-base text-slate-800 bg-transparent outline-none placeholder:text-slate-400 leading-tight text-ellipsis"
+                    readOnly={readOnly}
+                    className={`block w-full text-base text-slate-800 bg-transparent outline-none placeholder:text-slate-400 leading-tight text-ellipsis${readOnly ? ' pointer-events-none' : ''}`}
                 />
             </div>
 

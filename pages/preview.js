@@ -189,6 +189,11 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://paypal.me/"
         },
+        magicmessage: {
+            label: "Magic Message",
+            displayName: "",
+            url: ""
+        },
         custom: {
             label: "Custom Link",
             displayName: "",
@@ -419,7 +424,32 @@ export default function Preview() {
             setLinks(prevLinks => {
                 const updatedLinks = { ...prevLinks };
                 for (const key in linkValues) {
-                    if (key === "custom") {
+                    if (key === "magicmessage" && linkValues[key]) {
+                        try {
+                            const parsed = JSON.parse(linkValues[key]);
+                            const typeLabel = parsed.type === 'sms' ? 'SMS' : 'Email';
+                            updatedLinks[key].label = `Magic Message (${typeLabel})`;
+                            updatedLinks[key].displayName = parsed.body.length > 20
+                                ? parsed.body.substring(0, 20) + '...'
+                                : parsed.body;
+                            if (parsed.type === 'email') {
+                                const params = new URLSearchParams();
+                                if (parsed.subject) params.set('subject', parsed.subject);
+                                params.set('body', parsed.body);
+                                const query = params.toString();
+                                updatedLinks[key].url = `mailto:${parsed.recipient}${query ? '?' + query : ''}`;
+                            } else {
+                                const params = new URLSearchParams();
+                                params.set('body', parsed.body);
+                                updatedLinks[key].url = `sms:${parsed.recipient}?${params.toString()}`;
+                            }
+                        } catch {
+                            // Skip magic message if data is corrupted
+                            updatedLinks[key].displayName = "";
+                            updatedLinks[key].url = "";
+                        }
+                    }
+                    else if (key === "custom") {
                         updatedLinks[key].displayName = processURL(linkValues[key]);
                         updatedLinks[key].url = linkValues[key];
                     }
