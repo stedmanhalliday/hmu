@@ -49,11 +49,14 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
 
     return (
         <form className="w-full max-w-md flex flex-col px-2" onSubmit={handleSubmit}>
+            <img src="/assets/magic-message-3D.webp" alt="Magic Message"
+                className="w-16 h-16 self-center mb-6" />
+
             {/* Segmented Toggle */}
             <div className="flex rounded-lg border border-slate-200 overflow-hidden mb-6">
                 <button
                     type="button"
-                    onClick={() => { setType('email'); setErrors({}); }}
+                    onClick={() => { setType('email'); setRecipient(''); setErrors({}); }}
                     className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
                         ${type === 'email'
                             ? 'bg-slate-800 text-white'
@@ -63,7 +66,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                 </button>
                 <button
                     type="button"
-                    onClick={() => { setType('sms'); setErrors({}); }}
+                    onClick={() => { setType('sms'); setRecipient(''); setErrors({}); }}
                     className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
                         ${type === 'sms'
                             ? 'bg-slate-800 text-white'
@@ -75,7 +78,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
 
             {/* Recipient */}
             <label className="mb-4">
-                <div className="mb-1 text-slate-600">Send to</div>
+                <div className="mb-1 text-slate-600">{type === 'email' ? 'Send email to' : 'Send SMS to'}</div>
                 <input
                     className={`py-2 px-3 w-full max-w-md text-lg border rounded-md text-slate-800
                         placeholder:text-slate-400
@@ -85,7 +88,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                             : 'border-slate-300 focus:border-purple-400'}`}
                     type={type === 'email' ? 'email' : 'tel'}
                     value={recipient}
-                    placeholder={type === 'email' ? 'souljaboytellem@example.com' : '+16789998212'}
+                    placeholder={type === 'email' ? 'swag@hmu.world' : '+16789998212'}
                     onChange={(e) => setRecipient(e.target.value)}
                     autoCorrect="off"
                     autoCapitalize="off"
@@ -127,7 +130,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                             : 'border-slate-300 focus:border-purple-400'}`}
                     rows={3}
                     value={body}
-                    placeholder="see you later on! 😘"
+                    placeholder="see you later on! ;)"
                     onChange={(e) => setBody(e.target.value)}
                 />
                 {errors.body && (

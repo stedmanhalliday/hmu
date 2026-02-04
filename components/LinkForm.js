@@ -292,7 +292,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
                                         key={key}
                                         id={key}
                                         label={magicMessageLabel(parsed)}
-                                        value={parsed.body}
+                                        value={(parsed.type === 'email' && parsed.subject) ? parsed.subject : parsed.body}
                                         onChange={handleChange}
                                         onRemove={handleRemove}
                                         readOnly

@@ -443,9 +443,10 @@ export default function Preview() {
                         const parsed = parseMagicMessage(linkValues[key]);
                         if (parsed && parsed.recipient) {
                             updatedLinks[key].label = magicMessageLabel(parsed);
-                            updatedLinks[key].displayName = parsed.body.length > MAGIC_MESSAGE_PREVIEW_LENGTH
-                                ? parsed.body.substring(0, MAGIC_MESSAGE_PREVIEW_LENGTH) + '\u2026'
-                                : parsed.body;
+                            const previewText = (parsed.type === 'email' && parsed.subject) ? parsed.subject : parsed.body;
+                            updatedLinks[key].displayName = previewText.length > MAGIC_MESSAGE_PREVIEW_LENGTH
+                                ? previewText.substring(0, MAGIC_MESSAGE_PREVIEW_LENGTH) + '\u2026'
+                                : previewText;
                             updatedLinks[key].url = buildMagicMessageUrl(parsed);
                         } else {
                             updatedLinks[key].displayName = "";
