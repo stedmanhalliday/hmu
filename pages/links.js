@@ -1,8 +1,6 @@
 import { StorageContext } from "./_app.js";
 import Page from "../components/Page.js";
 import LinkForm from "../components/LinkForm.js";
-import MagicMessageIcon from "../components/MagicMessageIcon.js";
-
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
@@ -35,7 +33,8 @@ export default function Links() {
                 bg-white shadow-md
                 text-5xl">
                     {showMagicForm ? (
-                        <MagicMessageIcon size={44} variant="header" />
+                        <img src="/assets/magic-message-3D.webp" alt="Magic Message"
+                            className="w-14 h-14" />
                     ) : (
                         <img src={"/emoji/🔗.png"}
                             width={48} height={48}

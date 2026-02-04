@@ -49,9 +49,6 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
 
     return (
         <form className="w-full max-w-md flex flex-col px-2" onSubmit={handleSubmit}>
-            <img src="/assets/magic-message-3D.webp" alt="Magic Message"
-                className="w-16 h-16 self-center mb-6" />
-
             {/* Segmented Toggle */}
             <div className="flex rounded-lg border border-slate-200 overflow-hidden mb-6">
                 <button
