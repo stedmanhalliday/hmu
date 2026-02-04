@@ -136,8 +136,8 @@ describe('LinkForm', () => {
 
       fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
 
-      expect(screen.getByRole('textbox', { name: /^link$/i })).toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: /custom link/i })).not.toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /^custom link$/i })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /^custom link$/i })).not.toBeInTheDocument();
     });
 
     it('should remove a link and return it to picker', () => {
@@ -175,7 +175,7 @@ describe('LinkForm', () => {
 
       fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
 
-      const customInput = screen.getByRole('textbox', { name: /^link$/i });
+      const customInput = screen.getByRole('textbox', { name: /^custom link$/i });
       fireEvent.change(customInput, { target: { name: 'custom', value: 'https://mysite.com' } });
 
       expect(customInput.value).toBe('https://mysite.com');
@@ -214,7 +214,7 @@ describe('LinkForm', () => {
       expect(screen.getByRole('textbox', { name: /telegram/i }).value).toBe('telegramuser');
       expect(screen.getByRole('textbox', { name: /discord/i }).value).toBe('discordcode');
       expect(screen.getByRole('textbox', { name: /venmo/i }).value).toBe('venmouser');
-      expect(screen.getByRole('textbox', { name: /^link$/i }).value).toBe('https://custom.com');
+      expect(screen.getByRole('textbox', { name: /^custom link$/i }).value).toBe('https://custom.com');
     });
 
     it('should only show inputs for populated initial values', () => {
@@ -290,7 +290,7 @@ describe('LinkForm', () => {
       renderLinkForm();
 
       fireEvent.click(screen.getByRole('button', { name: /custom link/i }));
-      const customInput = screen.getByRole('textbox', { name: /^link$/i });
+      const customInput = screen.getByRole('textbox', { name: /^custom link$/i });
       fireEvent.change(customInput, { target: { name: 'custom', value: 'https://mysite.com/page' } });
 
       const submitButton = screen.getByRole('button', { name: /save links/i });
