@@ -68,7 +68,7 @@ const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemov
                     autoCorrect="off"
                     autoCapitalize="off"
                     spellCheck="false"
-                    className="block w-full text-base text-slate-800 bg-transparent outline-none placeholder:text-slate-400 leading-tight"
+                    className="block w-full text-base text-slate-800 bg-transparent outline-none placeholder:text-slate-400 leading-tight text-ellipsis"
                 />
             </div>
 
