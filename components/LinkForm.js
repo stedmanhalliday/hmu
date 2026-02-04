@@ -261,7 +261,7 @@ export default function LinkForm({ contactId, initialLinkValues }) {
                         ))
                     ) : (
                         <p className="text-center text-slate-400 text-sm py-6">
-                            Tap a platform below to add your first link
+                            Tap a button below to add your first link
                         </p>
                     )}
                 </SortableContext>
