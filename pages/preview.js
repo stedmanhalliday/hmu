@@ -550,7 +550,7 @@ export default function Preview() {
                         {Object.values(links).every(value => value.url === "") ?
                             <TextButton className="px-8 py-5 rounded-full bg-black/10
                                 active:bg-black/[.15] !border-none"
-                                onClick={editLinks}>Add links</TextButton> : filteredLinks}
+                                onClick={editLinks}>+ Add links</TextButton> : filteredLinks}
                     </div>
                 </div>
             </div>
