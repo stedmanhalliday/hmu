@@ -168,6 +168,20 @@ export default function Preview() {
             url: "",
             urlPrepend: "https://github.com/"
         },
+        calendly: {
+            label: "Calendly",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://calendly.com/"
+        },
+        cal: {
+            label: "Cal.com",
+            displayName: "",
+            displayNamePrepend: "",
+            url: "",
+            urlPrepend: "https://cal.com/"
+        },
         venmo: {
             label: "Venmo",
             displayName: "",
@@ -454,6 +468,17 @@ export default function Preview() {
                         const digitsOnly = value.replace(/\D/g, '');
                         updatedLinks[key].displayName = value;
                         updatedLinks[key].url = `https://wa.me/${digitsOnly}`;
+                    }
+                    else if ((key === "calendly" || key === "cal") && linkValues[key]) {
+                        // Accept full URLs or username/path
+                        const value = linkValues[key];
+                        if (/^https?:\/\//.test(value)) {
+                            updatedLinks[key].displayName = processURL(value);
+                            updatedLinks[key].url = value;
+                        } else {
+                            updatedLinks[key].displayName = value;
+                            updatedLinks[key].url = prevLinks[key].urlPrepend + value;
+                        }
                     }
                     else if (key === "cashapp" && linkValues[key]) {
                         // Ensure $ prefix for Cash App
