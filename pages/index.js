@@ -247,6 +247,7 @@ export default function Home() {
                     </header>
                     <div className="w-full flex justify-center gap-4 mt-4">
                         <TextButton onClick={toggleContributeModal}>Contribute</TextButton>
+                        <span className="text-slate-400 flex items-center">&bull;</span>
                         <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
                     </div>
                 </div>
