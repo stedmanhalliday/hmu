@@ -13,7 +13,7 @@ export default function PlatformPicker({ availablePlatforms, onAdd, onAddMagicMe
 
     return (
         <div className="mt-6 mb-4">
-            <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">Add a link</p>
+            <p className="text-sm text-slate-500 uppercase tracking-widest mb-3">Add a link</p>
 
             {platformKeys.length > 0 && (
                 <div className="grid grid-cols-6 gap-2 justify-items-center">
