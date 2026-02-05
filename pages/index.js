@@ -111,7 +111,8 @@ export default function Home() {
     const [installPrompt, setInstallPrompt] = useState(null);
     const [installModal, setInstallModal] = useState(false);
     const [privacyModal, setPrivacyModal] = useState(false);
-    const [feedbackModal, setFeedbackModal] = useState(false);
+    const [contributeModal, setContributeModal] = useState(false);
+    const [feedbackOpen, setFeedbackOpen] = useState(false);
 
     // Create reference to store the DOM element containing the animation
     const el = useRef(null);
@@ -218,7 +219,7 @@ export default function Home() {
 
     const toggleInstallModal = () => { setInstallModal(!installModal) }
     const togglePrivacyModal = () => { setPrivacyModal(!privacyModal) }
-    const toggleFeedbackModal = () => { setFeedbackModal(!feedbackModal) }
+    const toggleContributeModal = () => { setContributeModal(!contributeModal); setFeedbackOpen(false) }
 
     // Check if user has any contacts with data
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
@@ -244,9 +245,9 @@ export default function Home() {
                         </p>
                         <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you</p>
                     </header>
-                    <div className="w-full flex justify-center mt-4">
-                        <button type="button" className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
-                            onClick={toggleFeedbackModal}>?</button>
+                    <div className="w-full flex justify-center gap-4 mt-4">
+                        <TextButton onClick={toggleContributeModal}>Contribute</TextButton>
+                        <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
                     </div>
                 </div>
 
@@ -285,8 +286,7 @@ export default function Home() {
                             </div>
                             : canAddContact ? <Button onClick={create}>+ New contact</Button> : null
                         : <div className="flex flex-col items-center">
-                            <Button className="mb-4" onClick={pressInstallButton}>Install app</Button>
-                            <TextButton onClick={togglePrivacyModal}>Privacy</TextButton>
+                            <Button onClick={pressInstallButton}>Install app</Button>
                         </div>
                     }
                 </div>
@@ -306,24 +306,31 @@ export default function Home() {
                     </div>
                 </Modal>
                 : null}
-            {feedbackModal ?
-                <Modal title="Contribute" dismiss={toggleFeedbackModal}>
+            {contributeModal ?
+                <Modal title="Contribute" dismiss={toggleContributeModal}>
                     <div className="text-base text-slate-600 space-y-3">
-                        <p>Help improve hmu.world by submitting feedback or contributing code.</p>
-                        <ol>
-                            <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
-                            <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
-                            <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
-                        </ol>
-                        <p>Support me with a <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
+                        <p>hmu.world is free, open source, and private forever. Help improve it with feedback, code contributions, or <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
                             className="text-purple-600 transition-all duration-[240ms]
-                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">donation.</a></p>
+                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">donations.</a></p>
+                        <button type="button"
+                            className="w-full text-left text-sm uppercase tracking-widest text-slate-600 cursor-pointer flex items-center gap-2"
+                            onClick={() => setFeedbackOpen(!feedbackOpen)}>
+                            <span className={`inline-block transition-transform duration-[240ms] ${feedbackOpen ? 'rotate-90' : ''}`}>&#9656;</span>
+                            Submit feedback
+                        </button>
+                        {feedbackOpen && (
+                            <ol className="ml-5">
+                                <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
+                                    className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
+                                <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
+                                    className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
+                                <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
+                                    className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
+                            </ol>
+                        )}
                     </div>
                 </Modal>
                 : null}
