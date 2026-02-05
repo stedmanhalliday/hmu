@@ -131,7 +131,7 @@ export default function Home() {
         let typed = null;
         import('typed.js').then((Typed) => {
             typed = new Typed.default(el.current, {
-                strings: ["instantly.", "flexibly.", "tactfully."],
+                strings: ["instantly", "flexibly", "tactfully"],
                 startDelay: 5000,
                 backDelay: 5000,
                 typeSpeed: 20,
@@ -240,9 +240,9 @@ export default function Home() {
                     <header className="text-center text-slate-600">
                         <p className="mt-8 mb-6 leading-tight"
                             style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>Share what matters
-                            <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully.</span>
+                            <span ref={el} id="shuffle" className="block h-10 text-purple-600 textGlow">tactfully</span>
                         </p>
-                        <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you.</p>
+                        <p className="text-xl max-w-md leading-normal">Connect faster IRL with personal QR codes for what matters to you</p>
                     </header>
                     <div className="w-full flex justify-center mt-4">
                         <button type="button" className="w-6 h-6 flex items-center justify-center rounded-full bg-purple-200 text-purple-400 cursor-pointer"
