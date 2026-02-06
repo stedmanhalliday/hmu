@@ -11,6 +11,7 @@
  */
 
 import logger from './logger.js';
+import { DEFAULT_LINK_ORDER } from '../lib/constants.js';
 
 // Storage keys used throughout the app
 export const STORAGE_KEYS = {
@@ -33,7 +34,7 @@ export const STORAGE_KEYS = {
  * Uses timestamp + random suffix for uniqueness without external dependencies.
  */
 export function generateContactId() {
-  return `contact-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `contact-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 }
 
 /**
@@ -164,30 +165,9 @@ export const EMPTY_FORM_VALUES = {
   photo: ""
 };
 
-export const EMPTY_LINK_VALUES = {
-  instagram: "",
-  tiktok: "",
-  twitter: "",
-  snapchat: "",
-  facebook: "",
-  whatsapp: "",
-  telegram: "",
-  discord: "",
-  youtube: "",
-  twitch: "",
-  spotify: "",
-  soundcloud: "",
-  applemusic: "",
-  linkedin: "",
-  github: "",
-  calendly: "",
-  cal: "",
-  venmo: "",
-  cashapp: "",
-  paypal: "",
-  magicmessage: "",
-  custom: ""
-};
+export const EMPTY_LINK_VALUES = Object.fromEntries(
+  DEFAULT_LINK_ORDER.map(key => [key, ""])
+);
 
 /**
  * Create a new empty contact with a unique ID.

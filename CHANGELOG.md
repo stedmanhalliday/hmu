@@ -9,14 +9,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Magic Message feature: QR codes that generate email or SMS drafts when scanned (#70)
+- Calendly and Cal.com booking links (#69)
+- Redesigned edit links page with two-zone layout and platform picker grid (#57)
+- Donation prompts triggered by user engagement (#78)
+- Contribute and Privacy footer buttons replacing help trigger (#73, #75)
 - 6 new social link types: Facebook, YouTube, TikTok, Snapchat, Twitch, Discord
 - Links carousel with horizontal swipe and dot indicators when >8 links (#55)
+- Route-level page transition animations with unified 240ms timing (#56)
+- Text ellipsis on link input fields for long URLs and handles (#66)
+- 15 new test files for previously untested components and utilities
 
 ### Changed
 
+- Platform-specific placeholder copy for link fields (#58)
+- Custom link label renamed to 'Custom Link' with link icon (#59, #61, #65)
+- Link form UX: faster transitions, clearer copy, realistic placeholders (#63)
+- Updated 'hmu' references to 'hmu.world' in manifest and header (#60)
+- X link label clarified to 'X (Twitter)' in contribute modal (#77)
+- Polished contribute and privacy modals (#75)
+- Darkened add photo button border for better contrast (#74)
 - Replaced 9 social icons with cleaner SVGs (WhatsApp, Spotify, SoundCloud, Apple Music, GitHub, Facebook, YouTube, Snapchat, Twitch)
 - Optical adjustments for icon sizing (TikTok, SoundCloud, Twitch)
 - Preview layout: contact group moved higher, speed dial centered in bottom section
+- Centralized link metadata (URL prepends, display name prepends) in constants.js
+- Extracted shared DonateButton and ContributeModalContent components
+- Extracted processURL as shared utility
+
+### Fixed
+
+- Full URL parsing preserved across all platforms (#71)
+- PWA zoom disabled via viewport constraints (#76)
+- TextButton not forwarding disabled prop (affected ConfirmModal loading state)
+- MagicMessageForm browser validation overriding custom validation
+- EMPTY_LINK_VALUES missing calendly and cal keys
+- Deprecated `substr` replaced with `substring` in generateContactId
+- Typo: 'lastest' → 'latest' in InstallModal
+- Speed dial button transition delay removed (#68)
+
+### Developer Experience
+
+- 15 new test files covering previously untested components and utilities (~121 new tests, 364 total)
+- Raised coverage thresholds to 43% branches, 54% functions, 53% lines/statements
 
 ## [0.1.8] - 2026-02-01
 

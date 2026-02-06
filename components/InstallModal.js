@@ -18,7 +18,7 @@ function Instructions({ os }) {
                     <li>Open this page in Chrome.</li>
                     <li>Tap the <em className="font-medium uppercase tracking-wide">install app</em> button.</li>
                 </ol>
-                <p>Make sure you&apos;re using the lastest version of Chrome.</p>
+                <p>Make sure you&apos;re using the latest version of Chrome.</p>
             </div>
         );
     } else return (

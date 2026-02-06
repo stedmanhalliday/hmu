@@ -11,6 +11,7 @@
 
 import { safeParseVibe } from '../../utils/storage.js';
 import { DEFAULT_LINK_ORDER } from '../../lib/constants.js';
+import { processURL } from '../../utils/url.js';
 
 // Test vCard generation logic
 describe('Preview Page - vCard Generation', () => {
@@ -58,19 +59,8 @@ describe('Preview Page - vCard Generation', () => {
   });
 });
 
-// Test URL processing logic
+// Test URL processing logic (using extracted utility)
 describe('Preview Page - URL Processing', () => {
-  const processURL = (url) => {
-    if (!url) return "";
-    
-    const domainRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)(?:[^/\n]*)(?:\/.*)?$/i;
-    const matches = url.match(domainRegex);
-    
-    if (matches && matches.length >= 2) {
-      return matches[1];
-    }
-    return url;
-  };
 
   it('should extract domain from full URL', () => {
     expect(processURL('https://www.example.com/path')).toBe('example.com');

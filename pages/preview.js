@@ -8,30 +8,28 @@ import TextButton from "../components/TextButton.js";
 import LinksCarousel, { ITEMS_PER_PAGE } from "../components/LinksCarousel.js";
 import styles from "../styles/Preview.module.css";
 import Modal from "../components/Modal.js";
+import DonateButton from "../components/DonateButton.js";
+import ContributeModalContent from "../components/ContributeModalContent.js";
 import { safeParseVibe, safeGetItem, safeSetItem, STORAGE_KEYS } from "../utils/storage.js";
+import { processURL } from "../utils/url.js";
 import logger from "../utils/logger.js";
 
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
-import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY, MAGIC_MESSAGE_PREVIEW_LENGTH } from '../lib/constants.js';
+import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY, LINK_LABELS, LINK_URL_PREPENDS, LINK_DISPLAY_NAME_PREPENDS, MAGIC_MESSAGE_PREVIEW_LENGTH } from '../lib/constants.js';
 import { parseMagicMessage, buildMagicMessageUrl, magicMessageLabel } from '../lib/magicMessage.js';
 
-const DONATE_URL = "https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604";
-
-const DonateButton = () => (
-    <div className="flex flex-col items-center gap-4 pt-2">
-        <a href={DONATE_URL} target="_blank" rel="noreferrer"
-            className="w-20 h-20 rounded-full buttonFlat
-            flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-8 h-8 fill-white drop-shadow-[0_0_1rem_rgba(0,0,0,1)]">
-                <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/>
-            </svg>
-        </a>
-        <span className="text-sm text-purple-600 uppercase tracking-widest leading-3">
-            Donate
-        </span>
-    </div>
-);
+function createInitialLinks() {
+    return Object.fromEntries(
+        DEFAULT_LINK_ORDER.map(key => [key, {
+            label: LINK_LABELS[key] || 'Link',
+            displayName: "",
+            displayNamePrepend: LINK_DISPLAY_NAME_PREPENDS[key] || "",
+            url: "",
+            urlPrepend: LINK_URL_PREPENDS[key] || "",
+        }])
+    );
+}
 
 export default function Preview() {
     const router = useRouter();
@@ -79,160 +77,7 @@ export default function Preview() {
         src: ""
     });
 
-    const [links, setLinks] = useState({
-        instagram: {
-            label: "Instagram",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://instagram.com/"
-        },
-        tiktok: {
-            label: "TikTok",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://tiktok.com/@"
-        },
-        twitter: {
-            label: "X (Twitter)",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://x.com/"
-        },
-        snapchat: {
-            label: "Snapchat",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://snapchat.com/add/"
-        },
-        facebook: {
-            label: "Facebook",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://facebook.com/"
-        },
-        whatsapp: {
-            label: "WhatsApp",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://wa.me/"
-        },
-        telegram: {
-            label: "Telegram",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://t.me/"
-        },
-        discord: {
-            label: "Discord",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            // URL is dynamically determined based on input (user ID vs invite code)
-            urlPrepend: "https://discord.gg/"
-        },
-        youtube: {
-            label: "YouTube",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            // URL is dynamically determined based on input (channel ID vs username)
-            urlPrepend: "https://youtube.com/@"
-        },
-        twitch: {
-            label: "Twitch",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://twitch.tv/"
-        },
-        spotify: {
-            label: "Spotify",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://open.spotify.com/artist/"
-        },
-        soundcloud: {
-            label: "SoundCloud",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://soundcloud.com/"
-        },
-        applemusic: {
-            label: "Apple Music",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://music.apple.com/artist/"
-        },
-        linkedin: {
-            label: "LinkedIn",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://linkedin.com/in/"
-        },
-        github: {
-            label: "GitHub",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://github.com/"
-        },
-        calendly: {
-            label: "Calendly",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://calendly.com/"
-        },
-        cal: {
-            label: "Cal.com",
-            displayName: "",
-            displayNamePrepend: "",
-            url: "",
-            urlPrepend: "https://cal.com/"
-        },
-        venmo: {
-            label: "Venmo",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://venmo.com/"
-        },
-        cashapp: {
-            label: "Cash App",
-            displayName: "",
-            displayNamePrepend: "$",
-            url: "",
-            urlPrepend: "https://cash.app/$"
-        },
-        paypal: {
-            label: "PayPal",
-            displayName: "",
-            displayNamePrepend: "@",
-            url: "",
-            urlPrepend: "https://paypal.me/"
-        },
-        magicmessage: {
-            label: "Magic Message",
-            displayName: "",
-            url: ""
-        },
-        custom: {
-            label: "Custom Link",
-            displayName: "",
-            url: ""
-        }
-    });
+    const [links, setLinks] = useState(createInitialLinks);
 
     const [activeLink, setActiveLink] = useState("");
 
@@ -247,9 +92,6 @@ export default function Preview() {
     // Delete confirmation modal state
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-
-    // Current contact data (used in useEffect for data loading)
-    const [, setCurrentContact] = useState(null);
 
     const vCardValues = useCallback((formValues) => {
         // Include contact-specific URL in NOTE field so scanned contacts can return to this preview
@@ -369,23 +211,6 @@ export default function Preview() {
         }
     }
 
-    // get domain from URL
-    function processURL(url) {
-        if (!url) return "";
-
-        // Use a regex pattern to match the domain
-        const domainRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)(?:[^/\n]*)(?:\/.*)?$/i;
-        const matches = url.match(domainRegex);
-
-        if (matches && matches.length >= 2) {
-            // The domain is captured in the second group (index 1) of the matches array
-            return matches[1];
-        } else {
-            // Fallback to original URL if parsing fails
-            return url;
-        }
-    }
-
     // Load contact data when contacts or contactId changes
     useEffect(() => {
         if (!contacts || contacts.length === 0) {
@@ -412,7 +237,6 @@ export default function Preview() {
             return;
         }
 
-        setCurrentContact(contactData);
         const formValues = contactData.formValues;
         const linkValues = contactData.linkValues;
 
@@ -691,21 +515,7 @@ export default function Preview() {
             )}
             {donateModal === "contribute" ?
                 <Modal title="Contribute" dismiss={dismissDonateModal}>
-                    <div className="text-base text-slate-600 space-y-3">
-                        <p>hmu.world is free, open source, and private. Help improve it with feedback, code contributions, or donations.</p>
-                        <ul>
-                            <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
-                            <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
-                            <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
-                                className="text-purple-600 transition-all duration-[240ms]
-                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
-                        </ul>
-                        <DonateButton />
-                    </div>
+                    <ContributeModalContent />
                 </Modal>
                 : null}
             {donateModal === "donate" ?

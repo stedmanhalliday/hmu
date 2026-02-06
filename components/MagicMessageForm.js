@@ -48,7 +48,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
     };
 
     return (
-        <form className="w-full max-w-md flex flex-col px-2" onSubmit={handleSubmit}>
+        <form className="w-full max-w-md flex flex-col px-2" onSubmit={handleSubmit} noValidate>
             {/* Segmented Toggle */}
             <div className="flex rounded-lg border border-slate-200 overflow-hidden mb-6">
                 <button
