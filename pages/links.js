@@ -47,7 +47,7 @@ export default function Links() {
                 </h1>
                 {showMagicForm && (
                     <p className="text-center text-slate-400 text-xl max-w-xs -mt-2">
-                        Generate a QR code that drafts a message for anyone who scans it
+                        Draft a ready-made message people can send you just by scanning
                     </p>
                 )}
             </header>
