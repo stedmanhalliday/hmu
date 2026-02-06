@@ -11,7 +11,7 @@
 
 import { safeParseVibe } from '../../utils/storage.js';
 import { DEFAULT_LINK_ORDER } from '../../lib/constants.js';
-import { processURL } from '../../utils/url.js';
+import { processURL, resolvePhoneUrl } from '../../utils/url.js';
 
 // Test vCard generation logic
 describe('Preview Page - vCard Generation', () => {
@@ -148,6 +148,159 @@ describe('Preview Page - Social Link URLs', () => {
     const displayName = linkConfigs.github.displayNamePrepend + username;
     
     expect(displayName).toBe('@johndoe');
+  });
+});
+
+// Test WhatsApp URL generation logic
+describe('Preview Page - WhatsApp URL Generation', () => {
+  const resolveWhatsAppUrl = (value) => resolvePhoneUrl(value, {
+    fullUrlPattern: /^https?:\/\/wa\.me/,
+    phoneBase: 'https://wa.me/',
+    usernameFallback: { displayNamePrepend: '', urlPrepend: 'https://wa.me/' }
+  });
+
+  it('should generate wa.me URL for phone number with + prefix', () => {
+    const result = resolveWhatsAppUrl('+16789998212');
+    expect(result.url).toBe('https://wa.me/16789998212');
+    expect(result.displayName).toBe('+16789998212');
+  });
+
+  it('should generate wa.me URL for plain digits', () => {
+    const result = resolveWhatsAppUrl('16789998212');
+    expect(result.url).toBe('https://wa.me/16789998212');
+    expect(result.displayName).toBe('16789998212');
+  });
+
+  it('should strip formatting from phone numbers', () => {
+    const result = resolveWhatsAppUrl('+1 (678) 999-8212');
+    expect(result.url).toBe('https://wa.me/16789998212');
+    expect(result.displayName).toBe('+1 (678) 999-8212');
+  });
+
+  it('should use full wa.me URL as-is', () => {
+    const result = resolveWhatsAppUrl('https://wa.me/16789998212');
+    expect(result.url).toBe('https://wa.me/16789998212');
+    expect(result.displayName).toBe('wa.me');
+  });
+
+  it('should handle short digit strings via fallback', () => {
+    const result = resolveWhatsAppUrl('12345');
+    expect(result.url).toBe('https://wa.me/12345');
+    expect(result.displayName).toBe('12345');
+  });
+});
+
+// Test Signal URL generation logic
+describe('Preview Page - Signal URL Generation', () => {
+  const resolveSignalUrl = (value) => resolvePhoneUrl(value, {
+    fullUrlPattern: /^https?:\/\/signal\.me/,
+    phoneBase: 'https://signal.me/#p/+',
+    usernameFallback: { displayNamePrepend: '', urlPrepend: 'https://signal.me/#eu/' }
+  });
+
+  it('should generate #p/ URL for phone number with + prefix', () => {
+    const result = resolveSignalUrl('+16789998212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('+16789998212');
+  });
+
+  it('should generate #p/ URL for plain digits', () => {
+    const result = resolveSignalUrl('16789998212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('16789998212');
+  });
+
+  it('should strip dashes and spaces from phone numbers', () => {
+    const result = resolveSignalUrl('+1-678-999-8212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('+1-678-999-8212');
+  });
+
+  it('should strip parentheses from phone numbers', () => {
+    const result = resolveSignalUrl('+1 (678) 999-8212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('+1 (678) 999-8212');
+  });
+
+  it('should use full signal.me URL as-is', () => {
+    const result = resolveSignalUrl('https://signal.me/#p/+16789998212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('signal.me');
+  });
+
+  it('should use full signal.me username URL as-is', () => {
+    const result = resolveSignalUrl('https://signal.me/#eu/abc123token');
+    expect(result.url).toBe('https://signal.me/#eu/abc123token');
+    expect(result.displayName).toBe('signal.me');
+  });
+
+  it('should fall back to #eu/ URL for plain usernames', () => {
+    const result = resolveSignalUrl('myusername.01');
+    expect(result.url).toBe('https://signal.me/#eu/myusername.01');
+    expect(result.displayName).toBe('myusername.01');
+  });
+
+  it('should treat short digit strings as usernames, not phone numbers', () => {
+    const result = resolveSignalUrl('123456');
+    expect(result.url).toBe('https://signal.me/#eu/123456');
+    expect(result.displayName).toBe('123456');
+  });
+
+  it('should strip dots from phone numbers', () => {
+    const result = resolveSignalUrl('+1.678.999.8212');
+    expect(result.url).toBe('https://signal.me/#p/+16789998212');
+    expect(result.displayName).toBe('+1.678.999.8212');
+  });
+
+  it('should treat exactly 7 digits as a phone number', () => {
+    const result = resolveSignalUrl('5551234');
+    expect(result.url).toBe('https://signal.me/#p/+5551234');
+    expect(result.displayName).toBe('5551234');
+  });
+});
+
+// Test Telegram URL generation logic
+describe('Preview Page - Telegram URL Generation', () => {
+  const resolveTelegramUrl = (value) => resolvePhoneUrl(value, {
+    fullUrlPattern: /^https?:\/\/t\.me/,
+    phoneBase: 'https://t.me/+',
+    usernameFallback: { displayNamePrepend: '@', urlPrepend: 'https://t.me/' }
+  });
+
+  it('should generate t.me/+ URL for phone number with + prefix', () => {
+    const result = resolveTelegramUrl('+16789998212');
+    expect(result.url).toBe('https://t.me/+16789998212');
+    expect(result.displayName).toBe('+16789998212');
+  });
+
+  it('should generate t.me/+ URL for plain digits', () => {
+    const result = resolveTelegramUrl('16789998212');
+    expect(result.url).toBe('https://t.me/+16789998212');
+    expect(result.displayName).toBe('16789998212');
+  });
+
+  it('should strip formatting from phone numbers', () => {
+    const result = resolveTelegramUrl('+1 (678) 999-8212');
+    expect(result.url).toBe('https://t.me/+16789998212');
+    expect(result.displayName).toBe('+1 (678) 999-8212');
+  });
+
+  it('should use full t.me URL as-is', () => {
+    const result = resolveTelegramUrl('https://t.me/satoshi');
+    expect(result.url).toBe('https://t.me/satoshi');
+    expect(result.displayName).toBe('t.me');
+  });
+
+  it('should generate t.me URL with @ display for usernames', () => {
+    const result = resolveTelegramUrl('satoshi');
+    expect(result.url).toBe('https://t.me/satoshi');
+    expect(result.displayName).toBe('@satoshi');
+  });
+
+  it('should treat short digit strings as usernames, not phone numbers', () => {
+    const result = resolveTelegramUrl('123456');
+    expect(result.url).toBe('https://t.me/123456');
+    expect(result.displayName).toBe('@123456');
   });
 });
 

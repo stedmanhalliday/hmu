@@ -13,15 +13,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Calendly and Cal.com booking links (#69)
 - Redesigned edit links page with two-zone layout and platform picker grid (#57)
 - Donation prompts triggered by user engagement (#78)
+- Signal messaging platform support with phone number and username URL handling (#81)
+- Telegram phone number support (phone numbers generate `t.me/+` links)
+- `useDonatePrompt` custom hook extracted from preview page
+- `resolvePhoneUrl` shared utility for phone number and URL detection across Signal, Telegram, and WhatsApp
+- `DONATE_PROMPT_COOLDOWN_MS` named constant for donation prompt cooldown
 - Contribute and Privacy footer buttons replacing help trigger (#73, #75)
 - 6 new social link types: Facebook, YouTube, TikTok, Snapchat, Twitch, Discord
 - Links carousel with horizontal swipe and dot indicators when >8 links (#55)
 - Route-level page transition animations with unified 240ms timing (#56)
 - Text ellipsis on link input fields for long URLs and handles (#66)
 - 15 new test files for previously untested components and utilities
+- 40+ new tests for URL generation, donate prompt hook, and shared utilities
 
 ### Changed
 
+- Replaced Signal icon with official brand mark from Simple Icons
+- WhatsApp, Signal, and Telegram share `resolvePhoneUrl` for consistent phone/URL handling
+- WhatsApp now accepts full `wa.me` URLs in addition to phone numbers
+- Placeholder consistency: ` / ` delimiter replaces "or", removed `@` from YouTube placeholder
+- Segmented control border updated to match form input borders (#80)
+- LinkForm initial state uses `EMPTY_LINK_VALUES` from storage.js to prevent drift with new platforms
+- Improved edit links empty state copy (#82)
+- Improved Magic Message subtitle copy (#84)
 - Platform-specific placeholder copy for link fields (#58)
 - Custom link label renamed to 'Custom Link' with link icon (#59, #61, #65)
 - Link form UX: faster transitions, clearer copy, realistic placeholders (#63)
@@ -38,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Modal z-index set to `z-40` to appear above nav and speed dial buttons (#79)
+- Rapid speed dial taps no longer suppress donation prompts indefinitely
+- Donation prompts prevented from both showing in the same 24-hour period (#83)
 - Full URL parsing preserved across all platforms (#71)
 - PWA zoom disabled via viewport constraints (#76)
 - TextButton not forwarding disabled prop (affected ConfirmModal loading state)
@@ -50,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Developer Experience
 
 - 15 new test files covering previously untested components and utilities (~121 new tests, 364 total)
+- ~413 total tests (up from ~364)
 - Raised coverage thresholds to 43% branches, 54% functions, 53% lines/statements
 
 ## [0.1.8] - 2026-02-01

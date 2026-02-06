@@ -15,3 +15,26 @@ export function processURL(url) {
     }
     return url;
 }
+
+/**
+ * Resolve a user input value to a display name and URL, handling full URLs,
+ * phone numbers, and plain usernames.
+ *
+ * @param {string} value - Raw user input (URL, phone number, or username)
+ * @param {{ fullUrlPattern: RegExp, phoneBase: string, usernameFallback: { displayNamePrepend: string, urlPrepend: string } }} config
+ * @returns {{ displayName: string, url: string }}
+ */
+export function resolvePhoneUrl(value, { fullUrlPattern, phoneBase, usernameFallback }) {
+    if (fullUrlPattern.test(value)) {
+        return { displayName: processURL(value), url: value };
+    }
+    const stripped = value.replace(/[\s\-\(\)\.]/g, '');
+    if (/^\+?\d{7,15}$/.test(stripped)) {
+        const digits = stripped.replace(/\D/g, '');
+        return { displayName: value, url: `${phoneBase}${digits}` };
+    }
+    return {
+        displayName: usernameFallback.displayNamePrepend + value,
+        url: usernameFallback.urlPrepend + value
+    };
+}

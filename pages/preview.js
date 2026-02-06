@@ -11,8 +11,9 @@ import Modal from "../components/Modal.js";
 import DonateButton from "../components/DonateButton.js";
 import ContributeModalContent from "../components/ContributeModalContent.js";
 import { safeParseVibe, safeGetItem, safeSetItem, STORAGE_KEYS } from "../utils/storage.js";
-import { processURL } from "../utils/url.js";
+import { processURL, resolvePhoneUrl } from "../utils/url.js";
 import logger from "../utils/logger.js";
+import { useDonatePrompt } from "../hooks/useDonatePrompt.js";
 
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
@@ -85,9 +86,9 @@ export default function Preview() {
 
     const [editing, setEditing] = useState(false);
 
-    // Donation prompt state
-    const [donateModal, setDonateModal] = useState(null); // "contribute" | "donate" | null
     const [tapCount, setTapCount] = useState(() => safeGetItem(STORAGE_KEYS.SPEED_DIAL_TAPS) || 0);
+
+    const { donateModal, dismissDonateModal } = useDonatePrompt({ loading, contacts, tapCount });
 
     // Delete confirmation modal state
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -332,11 +333,31 @@ export default function Preview() {
                         }
                     }
                     else if (key === "whatsapp" && linkValues[key]) {
-                        // Strip non-digits for wa.me URL, keep original for display
-                        const value = linkValues[key];
-                        const digitsOnly = value.replace(/\D/g, '');
-                        updatedLinks[key].displayName = value;
-                        updatedLinks[key].url = `https://wa.me/${digitsOnly}`;
+                        const resolved = resolvePhoneUrl(linkValues[key], {
+                            fullUrlPattern: /^https?:\/\/wa\.me/,
+                            phoneBase: 'https://wa.me/',
+                            usernameFallback: { displayNamePrepend: '', urlPrepend: 'https://wa.me/' }
+                        });
+                        updatedLinks[key].displayName = resolved.displayName;
+                        updatedLinks[key].url = resolved.url;
+                    }
+                    else if (key === "signal" && linkValues[key]) {
+                        const resolved = resolvePhoneUrl(linkValues[key], {
+                            fullUrlPattern: /^https?:\/\/signal\.me/,
+                            phoneBase: 'https://signal.me/#p/+',
+                            usernameFallback: { displayNamePrepend: '', urlPrepend: prevLinks[key].urlPrepend }
+                        });
+                        updatedLinks[key].displayName = resolved.displayName;
+                        updatedLinks[key].url = resolved.url;
+                    }
+                    else if (key === "telegram" && linkValues[key]) {
+                        const resolved = resolvePhoneUrl(linkValues[key], {
+                            fullUrlPattern: /^https?:\/\/t\.me/,
+                            phoneBase: 'https://t.me/+',
+                            usernameFallback: { displayNamePrepend: prevLinks[key].displayNamePrepend, urlPrepend: prevLinks[key].urlPrepend }
+                        });
+                        updatedLinks[key].displayName = resolved.displayName;
+                        updatedLinks[key].url = resolved.url;
                     }
                     else if (key === "cashapp" && linkValues[key]) {
                         // Ensure $ prefix for Cash App
@@ -362,58 +383,6 @@ export default function Preview() {
             });
         }
     }, [contacts, contactId, router, getContact, home, vCardValues]);
-
-    // Auto-trigger donation prompts based on value-derived signals
-    useEffect(() => {
-        if (loading || !contacts || contacts.length === 0) return;
-
-        // Don't show another prompt within 24h of the last one
-        const lastShown = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT);
-        if (lastShown && Date.now() - lastShown < 24 * 60 * 60 * 1000) return;
-
-        const prompt1Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN);
-        const prompt2Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN);
-
-        if (prompt1Seen && prompt2Seen) return;
-
-        const anyContactHasLinks = (min) => contacts.some(c => {
-            if (!c.linkValues) return false;
-            return Object.values(c.linkValues).filter(v => v && v !== "").length >= min;
-        });
-
-        const anyPowerFeature = contacts.some(c =>
-            c.linkValues && (c.linkValues.custom || c.linkValues.magicmessage)
-        );
-
-        // Prompt 1: has links + used speed dial
-        if (!prompt1Seen) {
-            if (anyContactHasLinks(1) && tapCount >= 2) {
-                const timer = setTimeout(() => {
-                    setDonateModal("contribute");
-                    safeSetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN, true);
-                    safeSetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT, Date.now());
-                }, 2000);
-                return () => clearTimeout(timer);
-            }
-            return;
-        }
-
-        // Prompt 2: deeper engagement (only reachable when prompt1Seen && !prompt2Seen)
-        const qualifies = contacts.length >= 2
-            || anyContactHasLinks(4)
-            || anyPowerFeature
-            || tapCount >= 8;
-        if (qualifies) {
-            const timer = setTimeout(() => {
-                setDonateModal("donate");
-                safeSetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN, true);
-                safeSetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT, Date.now());
-            }, 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [loading, contacts, tapCount]);
-
-    const dismissDonateModal = () => setDonateModal(null);
 
     // Build array of link components (contact + social links)
     const linkComponents = [

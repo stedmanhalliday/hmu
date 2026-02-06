@@ -2,6 +2,7 @@ import {
     DEFAULT_LINK_ORDER,
     LINK_ORDER_STORAGE_KEY,
     MAGIC_MESSAGE_PREVIEW_LENGTH,
+    DONATE_PROMPT_COOLDOWN_MS,
     LINK_LABELS,
     LINK_PLACEHOLDERS,
     LINK_URL_PREPENDS,
@@ -84,6 +85,10 @@ describe('constants', () => {
         it('should have a magic message preview length', () => {
             expect(typeof MAGIC_MESSAGE_PREVIEW_LENGTH).toBe('number');
             expect(MAGIC_MESSAGE_PREVIEW_LENGTH).toBeGreaterThan(0);
+        });
+
+        it('should have a donate prompt cooldown of 24 hours', () => {
+            expect(DONATE_PROMPT_COOLDOWN_MS).toBe(24 * 60 * 60 * 1000);
         });
     });
 });

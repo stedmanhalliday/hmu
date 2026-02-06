@@ -9,6 +9,7 @@ import MagicMessageForm from './MagicMessageForm.js';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import logger from '../utils/logger.js';
+import { EMPTY_LINK_VALUES } from '../utils/storage.js';
 import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY } from '../lib/constants.js';
 import { parseMagicMessage, magicMessageLabel } from '../lib/magicMessage.js';
 
@@ -33,29 +34,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
 
     const { setContact, getContact } = useContext(StorageContext);
 
-    const [formfield, setFormfield] = useState({
-        instagram: "",
-        tiktok: "",
-        twitter: "",
-        snapchat: "",
-        facebook: "",
-        whatsapp: "",
-        signal: "",
-        telegram: "",
-        discord: "",
-        youtube: "",
-        twitch: "",
-        spotify: "",
-        soundcloud: "",
-        applemusic: "",
-        linkedin: "",
-        github: "",
-        venmo: "",
-        cashapp: "",
-        paypal: "",
-        magicmessage: "",
-        custom: ""
-    });
+    const [formfield, setFormfield] = useState({ ...EMPTY_LINK_VALUES });
 
     const [modal, setModal] = useState(null);
     const [linkOrder, setLinkOrder] = useState(DEFAULT_LINK_ORDER);
