@@ -72,7 +72,7 @@ describe('LinkForm', () => {
     it('should show empty state when no links are populated', () => {
       renderLinkForm();
 
-      expect(screen.getByText(/tap a button below to add your first link/i)).toBeInTheDocument();
+      expect(screen.getByText(/add the links you want to share/i)).toBeInTheDocument();
     });
 
     it('should show platform picker with add buttons', () => {
