@@ -314,7 +314,7 @@ export default function Home() {
                             <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
                                 className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
-                            <li>X: <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
+                            <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
                                 className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
                             <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
