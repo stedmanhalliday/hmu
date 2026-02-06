@@ -260,6 +260,7 @@ describe('storage utilities', () => {
       expect(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE).toBe('CONTACTS_MIGRATION_COMPLETE');
       expect(STORAGE_KEYS.DONATE_PROMPT_1_SEEN).toBe('donatePrompt1Seen');
       expect(STORAGE_KEYS.DONATE_PROMPT_2_SEEN).toBe('donatePrompt2Seen');
+      expect(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT).toBe('donatePromptLastShownAt');
       expect(STORAGE_KEYS.SPEED_DIAL_TAPS).toBe('speedDialTaps');
     });
 

@@ -26,6 +26,7 @@ export const STORAGE_KEYS = {
   CONTACTS_MIGRATION_COMPLETE: 'CONTACTS_MIGRATION_COMPLETE',
   DONATE_PROMPT_1_SEEN: 'donatePrompt1Seen',
   DONATE_PROMPT_2_SEEN: 'donatePrompt2Seen',
+  DONATE_PROMPT_LAST_SHOWN_AT: 'donatePromptLastShownAt',
   SPEED_DIAL_TAPS: 'speedDialTaps',
 };
 
