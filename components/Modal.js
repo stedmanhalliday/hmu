@@ -22,7 +22,7 @@ export default function Modal({ title, children, dismiss }) {
     }, [])
 
     return (
-        <div ref={shim} className="fixed inset-0 bg-black/[.15] opacity-0 transition-all duration-[240ms] flex items-center justify-center" onClick={dismiss}>
+        <div ref={shim} className="fixed inset-0 bg-black/[.15] opacity-0 transition-all duration-[240ms] flex items-center justify-center z-40" onClick={dismiss}>
             <div ref={modal} onClick={(e) => e.stopPropagation()} className="relative top-[-5%]
             w-full max-w-[23rem] px-8 pt-6 pb-4 rounded-xl flex flex-col
             bg-white shadow-2xl transition-all duration-[240ms]">
