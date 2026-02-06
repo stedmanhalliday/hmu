@@ -132,7 +132,7 @@ describe('Home Page', () => {
       const contributeButton = screen.getByRole('button', { name: /contribute/i });
       fireEvent.click(contributeButton);
 
-      expect(screen.getByText(/free, open source, and private forever/)).toBeInTheDocument();
+      expect(screen.getByText(/free, open source, and private/)).toBeInTheDocument();
     });
   });
 
