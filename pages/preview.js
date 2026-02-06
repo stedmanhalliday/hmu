@@ -367,6 +367,10 @@ export default function Preview() {
     useEffect(() => {
         if (loading || !contacts || contacts.length === 0) return;
 
+        // Don't show another prompt within 24h of the last one
+        const lastShown = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT);
+        if (lastShown && Date.now() - lastShown < 24 * 60 * 60 * 1000) return;
+
         const prompt1Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN);
         const prompt2Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN);
 
@@ -387,6 +391,7 @@ export default function Preview() {
                 const timer = setTimeout(() => {
                     setDonateModal("contribute");
                     safeSetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN, true);
+                    safeSetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT, Date.now());
                 }, 2000);
                 return () => clearTimeout(timer);
             }
@@ -402,6 +407,7 @@ export default function Preview() {
             const timer = setTimeout(() => {
                 setDonateModal("donate");
                 safeSetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN, true);
+                safeSetItem(STORAGE_KEYS.DONATE_PROMPT_LAST_SHOWN_AT, Date.now());
             }, 2000);
             return () => clearTimeout(timer);
         }
