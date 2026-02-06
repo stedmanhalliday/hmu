@@ -13,7 +13,7 @@ describe('constants', () => {
         it('should contain all expected social platforms', () => {
             const expected = [
                 'instagram', 'tiktok', 'twitter', 'snapchat', 'facebook',
-                'whatsapp', 'telegram', 'discord', 'youtube', 'twitch',
+                'whatsapp', 'signal', 'telegram', 'discord', 'youtube', 'twitch',
                 'spotify', 'soundcloud', 'applemusic',
                 'linkedin', 'github', 'calendly', 'cal',
                 'venmo', 'cashapp', 'paypal',

@@ -282,6 +282,7 @@ describe('storage utilities', () => {
         snapchat: '',
         facebook: '',
         whatsapp: '',
+        signal: '',
         telegram: '',
         discord: '',
         youtube: '',
