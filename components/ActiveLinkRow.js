@@ -57,7 +57,7 @@ const ActiveLinkRow = memo(function ActiveLinkRow({ id, value, onChange, onRemov
             {/* Label + input stack */}
             <div className={`flex-1 min-w-0${readOnly && onEdit ? ' cursor-pointer' : ''}`}
                 onClick={readOnly && onEdit ? onEdit : undefined}>
-                <span className="text-slate-600 leading-none">{label}</span>
+                <span className="text-slate-500 leading-none">{label}</span>
                 <input
                     type="text"
                     name={id}
