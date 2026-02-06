@@ -28,7 +28,7 @@ export function resolvePhoneUrl(value, { fullUrlPattern, phoneBase, usernameFall
     if (fullUrlPattern.test(value)) {
         return { displayName: processURL(value), url: value };
     }
-    const stripped = value.replace(/[\s\-\(\)\.]/g, '');
+    const stripped = value.replace(/[\s\-().]/g, '');
     if (/^\+?\d{7,15}$/.test(stripped)) {
         const digits = stripped.replace(/\D/g, '');
         return { displayName: value, url: `${phoneBase}${digits}` };

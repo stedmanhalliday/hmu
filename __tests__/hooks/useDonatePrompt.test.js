@@ -174,7 +174,7 @@ describe('useDonatePrompt', () => {
   });
 
   it('should persist timestamp when showing prompt', () => {
-    const { result } = renderHook(() =>
+    renderHook(() =>
       useDonatePrompt({ loading: false, contacts: [contactWithLinks], tapCount: 2 })
     );
 
