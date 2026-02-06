@@ -313,7 +313,7 @@ export default function LinkForm({ contactId, initialLinkValues, showMagicForm, 
                         })
                     ) : (
                         <p className="text-center text-slate-400 text-xl py-6">
-                            Tap a button below to add your first link
+                            Add the links you want to share
                         </p>
                     )}
                 </SortableContext>
