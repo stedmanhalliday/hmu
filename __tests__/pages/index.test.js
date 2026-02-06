@@ -97,9 +97,9 @@ describe('Home Page', () => {
       expect(screen.getByRole('button', { name: /privacy/i })).toBeInTheDocument();
     });
 
-    it('should render the question mark help button', () => {
+    it('should render the Contribute button', () => {
       renderHome();
-      expect(screen.getByText('?')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /contribute/i })).toBeInTheDocument();
     });
   });
 
@@ -126,14 +126,13 @@ describe('Home Page', () => {
       expect(screen.queryByText(/doesn't keep your personal information/)).not.toBeInTheDocument();
     });
 
-    it('should show feedback modal when ? button is clicked', () => {
+    it('should show contribute modal when Contribute button is clicked', () => {
       renderHome();
-      
-      const helpButton = screen.getByText('?');
-      fireEvent.click(helpButton);
 
-      expect(screen.getByText('Contribute')).toBeInTheDocument();
-      expect(screen.getByText(/Help improve hmu.world/)).toBeInTheDocument();
+      const contributeButton = screen.getByRole('button', { name: /contribute/i });
+      fireEvent.click(contributeButton);
+
+      expect(screen.getByText(/free, open source, and private forever/)).toBeInTheDocument();
     });
   });
 
