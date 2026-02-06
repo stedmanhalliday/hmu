@@ -218,7 +218,7 @@ export default function Home() {
 
     const toggleInstallModal = () => { setInstallModal(!installModal) }
     const togglePrivacyModal = () => { setPrivacyModal(!privacyModal) }
-    const toggleContributeModal = () => { setContributeModal(!contributeModal); setFeedbackOpen(false) }
+    const toggleContributeModal = () => { setContributeModal(!contributeModal) }
 
     // Check if user has any contacts with data
     const hasContacts = contacts && contacts.length > 0 && contacts.some(c => c.formValues?.name && c.formValues?.vibe);
