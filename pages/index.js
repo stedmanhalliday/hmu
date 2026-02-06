@@ -112,7 +112,6 @@ export default function Home() {
     const [installModal, setInstallModal] = useState(false);
     const [privacyModal, setPrivacyModal] = useState(false);
     const [contributeModal, setContributeModal] = useState(false);
-    const [feedbackOpen, setFeedbackOpen] = useState(false);
 
     // Create reference to store the DOM element containing the animation
     const el = useRef(null);
@@ -311,25 +310,17 @@ export default function Home() {
                 <Modal title="Contribute" dismiss={toggleContributeModal}>
                     <div className="text-base text-slate-600 space-y-3">
                         <p>hmu.world is free, open source, and private. Help improve it with feedback, code contributions, or donations.</p>
-                        <button type="button"
-                            className="w-full text-left text-sm uppercase tracking-widest text-slate-600 cursor-pointer flex items-center gap-2"
-                            onClick={() => setFeedbackOpen(!feedbackOpen)}>
-                            <span className={`inline-block text-2xl leading-none transition-transform duration-[240ms] ${feedbackOpen ? 'rotate-90' : ''}`}>&#9656;</span>
-                            Submit feedback
-                        </button>
-                        <div className={`grid transition-[grid-template-rows] duration-[240ms] ease-out ${feedbackOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                            <ol className="ml-8 overflow-hidden">
-                                <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
-                                    className="text-purple-600 transition-all duration-[240ms]
+                        <ul>
+                            <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
-                                <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
-                                    className="text-purple-600 transition-all duration-[240ms]
+                            <li>X: <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
-                                <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
-                                    className="text-purple-600 transition-all duration-[240ms]
+                            <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
-                            </ol>
-                        </div>
+                        </ul>
                         <div className="flex flex-col items-center gap-4 pt-2">
                             <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
                                 className="w-20 h-20 rounded-full buttonFlat
