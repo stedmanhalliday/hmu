@@ -258,6 +258,9 @@ describe('storage utilities', () => {
       expect(STORAGE_KEYS.CONVERTED).toBe('converted');
       expect(STORAGE_KEYS.MIGRATION_COMPLETE).toBe('MIGRATION_COMPLETE');
       expect(STORAGE_KEYS.CONTACTS_MIGRATION_COMPLETE).toBe('CONTACTS_MIGRATION_COMPLETE');
+      expect(STORAGE_KEYS.DONATE_PROMPT_1_SEEN).toBe('donatePrompt1Seen');
+      expect(STORAGE_KEYS.DONATE_PROMPT_2_SEEN).toBe('donatePrompt2Seen');
+      expect(STORAGE_KEYS.SPEED_DIAL_TAPS).toBe('speedDialTaps');
     });
 
     it('should have correct EMPTY_FORM_VALUES structure', () => {

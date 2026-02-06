@@ -7,13 +7,31 @@ import SocialLink from "../components/SocialLink.js";
 import TextButton from "../components/TextButton.js";
 import LinksCarousel, { ITEMS_PER_PAGE } from "../components/LinksCarousel.js";
 import styles from "../styles/Preview.module.css";
-import { safeParseVibe } from "../utils/storage.js";
+import Modal from "../components/Modal.js";
+import { safeParseVibe, safeGetItem, safeSetItem, STORAGE_KEYS } from "../utils/storage.js";
 import logger from "../utils/logger.js";
 
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { DEFAULT_LINK_ORDER, LINK_ORDER_STORAGE_KEY, MAGIC_MESSAGE_PREVIEW_LENGTH } from '../lib/constants.js';
 import { parseMagicMessage, buildMagicMessageUrl, magicMessageLabel } from '../lib/magicMessage.js';
+
+const DONATE_URL = "https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604";
+
+const DonateButton = () => (
+    <div className="flex flex-col items-center gap-4 pt-2">
+        <a href={DONATE_URL} target="_blank" rel="noreferrer"
+            className="w-20 h-20 rounded-full buttonFlat
+            flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-8 h-8 fill-white drop-shadow-[0_0_1rem_rgba(0,0,0,1)]">
+                <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/>
+            </svg>
+        </a>
+        <span className="text-sm text-purple-600 uppercase tracking-widest leading-3">
+            Donate
+        </span>
+    </div>
+);
 
 export default function Preview() {
     const router = useRouter();
@@ -222,6 +240,10 @@ export default function Preview() {
 
     const [editing, setEditing] = useState(false);
 
+    // Donation prompt state
+    const [donateModal, setDonateModal] = useState(null); // "contribute" | "donate" | null
+    const [tapCount, setTapCount] = useState(() => safeGetItem(STORAGE_KEYS.SPEED_DIAL_TAPS) || 0);
+
     // Delete confirmation modal state
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -316,6 +338,10 @@ export default function Preview() {
             showContact()
         } else {
             setActiveLink(type);
+            // Track speed dial usage for donation prompt
+            const newTaps = tapCount + 1;
+            setTapCount(newTaps);
+            safeSetItem(STORAGE_KEYS.SPEED_DIAL_TAPS, newTaps);
             getQRCode().then((QRCode) => {
                 QRCode.toDataURL(url,
                     {
@@ -513,6 +539,52 @@ export default function Preview() {
         }
     }, [contacts, contactId, router, getContact, home, vCardValues]);
 
+    // Auto-trigger donation prompts based on value-derived signals
+    useEffect(() => {
+        if (loading || !contacts || contacts.length === 0) return;
+
+        const prompt1Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN);
+        const prompt2Seen = safeGetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN);
+
+        if (prompt1Seen && prompt2Seen) return;
+
+        const anyContactHasLinks = (min) => contacts.some(c => {
+            if (!c.linkValues) return false;
+            return Object.values(c.linkValues).filter(v => v && v !== "").length >= min;
+        });
+
+        const anyPowerFeature = contacts.some(c =>
+            c.linkValues && (c.linkValues.custom || c.linkValues.magicmessage)
+        );
+
+        // Prompt 1: has links + used speed dial
+        if (!prompt1Seen) {
+            if (anyContactHasLinks(1) && tapCount >= 2) {
+                const timer = setTimeout(() => {
+                    setDonateModal("contribute");
+                    safeSetItem(STORAGE_KEYS.DONATE_PROMPT_1_SEEN, true);
+                }, 2000);
+                return () => clearTimeout(timer);
+            }
+            return;
+        }
+
+        // Prompt 2: deeper engagement (only reachable when prompt1Seen && !prompt2Seen)
+        const qualifies = contacts.length >= 2
+            || anyContactHasLinks(4)
+            || anyPowerFeature
+            || tapCount >= 8;
+        if (qualifies) {
+            const timer = setTimeout(() => {
+                setDonateModal("donate");
+                safeSetItem(STORAGE_KEYS.DONATE_PROMPT_2_SEEN, true);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [loading, contacts, tapCount]);
+
+    const dismissDonateModal = () => setDonateModal(null);
+
     // Build array of link components (contact + social links)
     const linkComponents = [
         <SocialLink
@@ -617,6 +689,34 @@ export default function Preview() {
                     </p>
                 </ConfirmModal>
             )}
+            {donateModal === "contribute" ?
+                <Modal title="Contribute" dismiss={dismissDonateModal}>
+                    <div className="text-base text-slate-600 space-y-3">
+                        <p>hmu.world is free, open source, and private. Help improve it with feedback, code contributions, or donations.</p>
+                        <ul>
+                            <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
+                            <li>X (Twitter): <a href="https://x.com/stedmanhalliday" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">@stedmanhalliday</a></li>
+                            <li>GitHub: <a href="https://github.com/stedmanhalliday/hmu" target="_blank" rel="noreferrer"
+                                className="text-purple-600 transition-all duration-[240ms]
+                                hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
+                        </ul>
+                        <DonateButton />
+                    </div>
+                </Modal>
+                : null}
+            {donateModal === "donate" ?
+                <Modal title="Donate" dismiss={dismissDonateModal}>
+                    <div className="text-base text-slate-600 space-y-3">
+                        <p>hmu.world is free, open source, and private. Please consider donating.</p>
+                        <p className="text-sm text-slate-400 italic">This is the last time we&apos;ll ask, we promise.</p>
+                        <DonateButton />
+                    </div>
+                </Modal>
+                : null}
         </Page>
     );
 };
