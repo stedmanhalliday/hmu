@@ -297,7 +297,7 @@ export default function Home() {
             {privacyModal ?
                 <Modal title="Privacy" dismiss={togglePrivacyModal}>
                     <div className="text-base text-slate-600 space-y-3">
-                        <p>{`hmu.world doesn't keep your personal information. Basic metrics are tracked with Google Analytics. Any personal data that the app uses is stored locally on your mobile device.`}</p>
+                        <p>{`hmu.world doesn't keep your personal information. Basic usage metrics are tracked with Google Analytics. Any personal data that the app uses is stored locally on your mobile device.`}</p>
                         <p>{`If you'd like to delete your data:`}</p>
                         <ol className="ml-5 list-decimal space-y-3">
                             <li>Open the site settings for <span className="text-purple-600">hmu.world</span> on your mobile device.</li>
@@ -310,17 +310,15 @@ export default function Home() {
             {contributeModal ?
                 <Modal title="Contribute" dismiss={toggleContributeModal}>
                     <div className="text-base text-slate-600 space-y-3">
-                        <p>hmu.world is free, open source, and private forever. Help improve it with feedback, code contributions, or <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
-                            className="text-purple-600 transition-all duration-[240ms]
-                            hover:text-purple-400 focus:text-purple-400 active:text-purple-400">donations.</a></p>
+                        <p>hmu.world is free, open source, and private. Help improve it with feedback, code contributions, or donations.</p>
                         <button type="button"
                             className="w-full text-left text-sm uppercase tracking-widest text-slate-600 cursor-pointer flex items-center gap-2"
                             onClick={() => setFeedbackOpen(!feedbackOpen)}>
-                            <span className={`inline-block transition-transform duration-[240ms] ${feedbackOpen ? 'rotate-90' : ''}`}>&#9656;</span>
+                            <span className={`inline-block text-lg transition-transform duration-[240ms] ${feedbackOpen ? 'rotate-90' : ''}`}>&#9656;</span>
                             Submit feedback
                         </button>
                         {feedbackOpen && (
-                            <ol className="ml-5">
+                            <ol className="ml-6">
                                 <li>Email: <a href="mailto:sup@hmu.world?subject=hmu.world%20Feedback" target="_blank" rel="noreferrer"
                                     className="text-purple-600 transition-all duration-[240ms]
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">sup@hmu.world</a></li>
@@ -332,6 +330,19 @@ export default function Home() {
                                 hover:text-purple-400 focus:text-purple-400 active:text-purple-400">stedmanhalliday/hmu</a></li>
                             </ol>
                         )}
+                        <div className="flex flex-col items-center gap-4 pt-2">
+                            <a href="https://buy.stripe.com/9B6aEX3vwcfr1cxbeS9R604" target="_blank" rel="noreferrer"
+                                className="w-20 h-20 rounded-full button
+                                flex items-center justify-center
+                                active:scale-[.98] transition-all duration-[240ms]">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-8 h-8 fill-white drop-shadow-[0_0_1rem_rgba(0,0,0,1)]">
+                                    <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/>
+                                </svg>
+                            </a>
+                            <span className="text-sm text-purple-600 uppercase tracking-widest leading-3">
+                                Donate
+                            </span>
+                        </div>
                     </div>
                 </Modal>
                 : null}
