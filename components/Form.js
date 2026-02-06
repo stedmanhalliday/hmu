@@ -275,7 +275,7 @@ export default function Form({ contactId, initialFormValues, handleChange: onVib
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={photoLoading}
-                    className="w-full py-3 rounded-lg border border-dashed border-slate-300
+                    className="w-full py-3 rounded-lg border border-dashed border-slate-400
                         text-sm text-slate-500 flex items-center justify-center gap-2
                         active:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed
                         transition-colors"
