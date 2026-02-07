@@ -17,7 +17,7 @@ describe('constants', () => {
                 'whatsapp', 'signal', 'telegram', 'discord', 'youtube', 'twitch',
                 'spotify', 'soundcloud', 'applemusic',
                 'linkedin', 'github', 'calendly', 'cal',
-                'venmo', 'cashapp', 'paypal',
+                'venmo', 'cashapp', 'paypal', 'stripe',
                 'magicmessage', 'custom'
             ];
             expect(DEFAULT_LINK_ORDER).toEqual(expected);

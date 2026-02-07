@@ -365,6 +365,11 @@ export default function Preview() {
                         updatedLinks[key].displayName = `$${value}`;
                         updatedLinks[key].url = `https://cash.app/$${value}`;
                     }
+                    else if (key === "stripe" && linkValues[key]) {
+                        const value = linkValues[key];
+                        updatedLinks[key].displayName = "Stripe";
+                        updatedLinks[key].url = /^https?:\/\//.test(value) ? value : `https://buy.stripe.com/${value}`;
+                    }
                     else if (linkValues[key]) {
                         const value = linkValues[key];
                         if (/^https?:\/\//.test(value)) {
