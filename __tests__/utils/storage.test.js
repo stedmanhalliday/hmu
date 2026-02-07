@@ -298,6 +298,7 @@ describe('storage utilities', () => {
         venmo: '',
         cashapp: '',
         paypal: '',
+        stripe: '',
         magicmessage: '',
         custom: ''
       });
