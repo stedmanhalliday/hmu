@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redesigned edit links page with two-zone layout and platform picker grid (#57)
 - Donation prompts triggered by user engagement (#78)
 - Signal messaging platform support with phone number and username URL handling (#81)
+- Stripe as a user-configurable payment link type with support for full URLs and short identifiers (#85)
 - Telegram phone number support (phone numbers generate `t.me/+` links)
 - `useDonatePrompt` custom hook extracted from preview page
 - `resolvePhoneUrl` shared utility for phone number and URL detection across Signal, Telegram, and WhatsApp
@@ -36,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LinkForm initial state uses `EMPTY_LINK_VALUES` from storage.js to prevent drift with new platforms
 - Improved edit links empty state copy (#82)
 - Improved Magic Message subtitle copy (#84)
+- More consistent homepage vertical spacing (#86)
 - Platform-specific placeholder copy for link fields (#58)
 - Custom link label renamed to 'Custom Link' with link icon (#59, #61, #65)
 - Link form UX: faster transitions, clearer copy, realistic placeholders (#63)
@@ -67,8 +69,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Developer Experience
 
 - 15 new test files covering previously untested components and utilities (~121 new tests, 364 total)
-- ~413 total tests (up from ~364)
-- Raised coverage thresholds to 43% branches, 54% functions, 53% lines/statements
+- ~450 total tests (up from ~413)
+- New test suite for Links page (0% → 100% coverage)
+- Component render tests for Create page (0% → 80% coverage)
+- Form submit, validation, photo removal, and cancel navigation tests (51% → 87% coverage)
+- LinksCarousel scroll handling and page navigation tests (63% → 93% coverage)
+- Raised coverage thresholds to 57% branches, 68% functions, 68% lines/statements
 
 ## [0.1.8] - 2026-02-01
 

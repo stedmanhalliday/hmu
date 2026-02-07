@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import LinksCarousel, { ITEMS_PER_PAGE } from '../../components/LinksCarousel';
 
 describe('LinksCarousel', () => {
@@ -70,6 +70,80 @@ describe('LinksCarousel', () => {
       render(<LinksCarousel>{createItems(ITEMS_PER_PAGE)}</LinksCarousel>);
       const dots = screen.queryAllByRole('button', { name: /go to page/i });
       expect(dots).toHaveLength(0);
+    });
+  });
+
+  describe('scroll handling', () => {
+    it('should highlight first page dot by default', () => {
+      render(<LinksCarousel>{createItems(12)}</LinksCarousel>);
+
+      const dots = screen.getAllByRole('button', { name: /go to page/i });
+      expect(dots[0].className).toContain('bg-black/60');
+      expect(dots[1].className).toContain('bg-black/20');
+    });
+
+    it('should update active page dot on scroll', () => {
+      const { container } = render(<LinksCarousel>{createItems(12)}</LinksCarousel>);
+
+      const scrollContainer = container.querySelector('.overflow-x-auto');
+
+      // Simulate scrolling to the second page
+      Object.defineProperty(scrollContainer, 'scrollLeft', { value: 375, configurable: true });
+      Object.defineProperty(scrollContainer, 'clientWidth', { value: 375, configurable: true });
+      fireEvent.scroll(scrollContainer);
+
+      const dots = screen.getAllByRole('button', { name: /go to page/i });
+      expect(dots[0].className).toContain('bg-black/20');
+      expect(dots[1].className).toContain('bg-black/60');
+    });
+
+    it('should stay on first page when scrolled partway', () => {
+      const { container } = render(<LinksCarousel>{createItems(12)}</LinksCarousel>);
+
+      const scrollContainer = container.querySelector('.overflow-x-auto');
+
+      // Simulate a small scroll that rounds back to page 0
+      Object.defineProperty(scrollContainer, 'scrollLeft', { value: 100, configurable: true });
+      Object.defineProperty(scrollContainer, 'clientWidth', { value: 375, configurable: true });
+      fireEvent.scroll(scrollContainer);
+
+      const dots = screen.getAllByRole('button', { name: /go to page/i });
+      expect(dots[0].className).toContain('bg-black/60');
+      expect(dots[1].className).toContain('bg-black/20');
+    });
+  });
+
+  describe('goToPage', () => {
+    it('should scroll to correct offset when page dot is clicked', () => {
+      const { container } = render(<LinksCarousel>{createItems(12)}</LinksCarousel>);
+
+      const scrollContainer = container.querySelector('.overflow-x-auto');
+      Object.defineProperty(scrollContainer, 'clientWidth', { value: 375, configurable: true });
+      scrollContainer.scrollTo = jest.fn();
+
+      const dots = screen.getAllByRole('button', { name: /go to page/i });
+      fireEvent.click(dots[1]);
+
+      expect(scrollContainer.scrollTo).toHaveBeenCalledWith({
+        left: 375,
+        behavior: 'smooth'
+      });
+    });
+
+    it('should scroll to first page when first dot is clicked', () => {
+      const { container } = render(<LinksCarousel>{createItems(12)}</LinksCarousel>);
+
+      const scrollContainer = container.querySelector('.overflow-x-auto');
+      Object.defineProperty(scrollContainer, 'clientWidth', { value: 400, configurable: true });
+      scrollContainer.scrollTo = jest.fn();
+
+      const dots = screen.getAllByRole('button', { name: /go to page/i });
+      fireEvent.click(dots[0]);
+
+      expect(scrollContainer.scrollTo).toHaveBeenCalledWith({
+        left: 0,
+        behavior: 'smooth'
+      });
     });
   });
 });

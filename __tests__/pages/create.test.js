@@ -6,10 +6,46 @@
  * - Complex Form component with many effects and refs
  * - Router query dependencies
  * 
- * These tests focus on the page's core logic without rendering the full component tree.
+ * These tests focus on the page's core logic without rendering the full component tree,
+ * plus component-level render tests with Form mocked out.
  */
 
 import { safeParseVibe } from '../../utils/storage.js';
+import { render, screen } from '@testing-library/react';
+import { StorageContext } from '../../pages/_app';
+import Create from '../../pages/create';
+
+// Mock next/router with configurable query
+const mockPush = jest.fn();
+const mockReplace = jest.fn();
+let mockQuery = {};
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: mockReplace,
+    query: mockQuery
+  })
+}));
+
+// Mock the logger
+jest.mock('../../utils/logger.js', () => ({
+  log: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+  info: jest.fn()
+}));
+
+// Capture Form props for assertions
+jest.mock('../../components/Form.js', () => {
+  return function MockForm(props) {
+    return (
+      <div data-testid="form">
+        <span data-testid="form-contact-id">{props.contactId}</span>
+        <span data-testid="form-initial-values">{JSON.stringify(props.initialFormValues)}</span>
+      </div>
+    );
+  };
+});
 
 // Test the vibe parsing logic used by the page
 describe('Create Page - Vibe Parsing', () => {
@@ -87,6 +123,105 @@ describe('Create Page - Routing Logic', () => {
     
     expect(getHeaderText('new')).toBe('Create a new contact');
     expect(getHeaderText('contact-123')).toBe('Edit your contact');
+  });
+});
+
+// Component-level render tests
+describe('Create Page - Component Rendering', () => {
+  const mockGetContact = jest.fn();
+
+  const createMockContext = (overrides = {}) => ({
+    contacts: [],
+    canAddContact: true,
+    getContact: mockGetContact,
+    setContact: jest.fn(),
+    deleteContact: jest.fn(),
+    reorderContacts: jest.fn(),
+    storageError: false,
+    setStorageError: jest.fn(),
+    ...overrides
+  });
+
+  const renderCreate = (contextOverrides = {}) => {
+    return render(
+      <StorageContext.Provider value={createMockContext(contextOverrides)}>
+        <Create />
+      </StorageContext.Provider>
+    );
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    mockQuery = {};
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('should render "Create a new contact" heading for new contact', () => {
+    mockQuery = { id: 'new' };
+    renderCreate();
+    expect(screen.getByText('Create a new contact')).toBeInTheDocument();
+  });
+
+  it('should render "Edit your contact" heading for existing contact', () => {
+    mockQuery = { id: 'contact-123' };
+    mockGetContact.mockReturnValue({
+      id: 'contact-123',
+      formValues: { name: 'Test', phone: '', email: '', url: '', vibe: '', photo: '' },
+      linkValues: {}
+    });
+    renderCreate();
+    expect(screen.getByText('Edit your contact')).toBeInTheDocument();
+  });
+
+  it('should render the Form component', () => {
+    mockQuery = { id: 'new' };
+    renderCreate();
+    expect(screen.getByTestId('form')).toBeInTheDocument();
+  });
+
+  it('should pass contactId from router query to Form', () => {
+    mockQuery = { id: 'contact-456' };
+    mockGetContact.mockReturnValue(null);
+    renderCreate();
+    expect(screen.getByTestId('form-contact-id')).toHaveTextContent('contact-456');
+  });
+
+  it('should pass null initialFormValues for new contact', () => {
+    mockQuery = { id: 'new' };
+    renderCreate();
+    expect(screen.getByTestId('form-initial-values')).toHaveTextContent('null');
+  });
+
+  it('should pass initialFormValues from contact data for existing contact', () => {
+    const formValues = { name: 'John', phone: '+1234567890', email: '', url: '', vibe: '', photo: '' };
+    mockQuery = { id: 'contact-789' };
+    mockGetContact.mockReturnValue({
+      id: 'contact-789',
+      formValues,
+      linkValues: {}
+    });
+
+    renderCreate();
+
+    expect(mockGetContact).toHaveBeenCalledWith('contact-789');
+    expect(screen.getByTestId('form-initial-values')).toHaveTextContent(JSON.stringify(formValues));
+  });
+
+  it('should redirect to home when creating new contact at max limit', () => {
+    mockQuery = { id: 'new' };
+    renderCreate({ canAddContact: false });
+    expect(mockReplace).toHaveBeenCalledWith('/');
+  });
+
+  it('should render default emoji when no vibe is set', () => {
+    mockQuery = { id: 'new' };
+    renderCreate();
+    const emojiImg = screen.getByAltText('👤');
+    expect(emojiImg).toBeInTheDocument();
   });
 });
 

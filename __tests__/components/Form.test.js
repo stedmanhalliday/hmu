@@ -2,11 +2,13 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { StorageContext } from '../../pages/_app';
 import Form from '../../components/Form';
 
-// Mock next/router
+// Mock next/router with configurable query
+const mockPush = jest.fn();
+let mockRouterQuery = {};
 jest.mock('next/router', () => ({
   useRouter: () => ({
-    push: jest.fn(),
-    query: {}
+    push: mockPush,
+    query: mockRouterQuery
   })
 }));
 
@@ -16,6 +18,18 @@ jest.mock('../../utils/logger.js', () => ({
   warn: jest.fn(),
   error: jest.fn(),
   info: jest.fn()
+}));
+
+// Mock storage utilities used by submit handler
+jest.mock('../../utils/storage.js', () => ({
+  ...jest.requireActual('../../utils/storage.js'),
+  safeGetItem: jest.fn(() => null),
+  safeSetItem: jest.fn(() => true),
+}));
+
+// Mock image resize for photo handling
+jest.mock('../../utils/image.js', () => ({
+  resizeImage: jest.fn(() => Promise.resolve('data:image/jpeg;base64,mockBase64'))
 }));
 
 // Mock gtag
@@ -50,6 +64,7 @@ describe('Form', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRouterQuery = {};
   });
 
   describe('rendering', () => {
@@ -206,6 +221,167 @@ describe('Form', () => {
 
       expect(screen.getByRole('button', { name: /change/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /remove/i })).toBeInTheDocument();
+    });
+  });
+
+  describe('photo removal', () => {
+    it('should clear photo and call onPhotoChange when Remove is clicked', () => {
+      const mockPhotoChange = jest.fn();
+      const initialValues = {
+        name: 'Test',
+        phone: '+1234567890',
+        email: '',
+        url: '',
+        vibe: '',
+        photo: 'data:image/jpeg;base64,/9j/4AAQ'
+      };
+
+      renderForm({ initialFormValues: initialValues, onPhotoChange: mockPhotoChange });
+
+      // Photo preview and remove button should be visible
+      expect(screen.getByRole('button', { name: /remove/i })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole('button', { name: /remove/i }));
+
+      // Photo should be cleared - button should say "Add Photo" again
+      expect(screen.getByRole('button', { name: /add photo/i })).toBeInTheDocument();
+      expect(mockPhotoChange).toHaveBeenCalledWith('');
+    });
+  });
+
+  describe('URL validation', () => {
+    it('should accept a valid URL with protocol', () => {
+      renderForm();
+
+      const urlInput = screen.getByLabelText(/website/i);
+      fireEvent.change(urlInput, { target: { name: 'url', value: 'https://example.com' } });
+      fireEvent.blur(urlInput);
+
+      expect(screen.queryByText('Enter a valid URL')).not.toBeInTheDocument();
+    });
+
+    it('should accept a URL without protocol', () => {
+      renderForm();
+
+      const urlInput = screen.getByLabelText(/website/i);
+      fireEvent.change(urlInput, { target: { name: 'url', value: 'example.com/page' } });
+      fireEvent.blur(urlInput);
+
+      expect(screen.queryByText('Enter a valid URL')).not.toBeInTheDocument();
+    });
+
+    it('should show error for an invalid URL', () => {
+      renderForm();
+
+      const urlInput = screen.getByLabelText(/website/i);
+      fireEvent.change(urlInput, { target: { name: 'url', value: 'not a url!!!' } });
+      fireEvent.blur(urlInput);
+
+      expect(screen.getByText('Enter a valid URL')).toBeInTheDocument();
+    });
+
+    it('should not validate when URL is empty', () => {
+      renderForm();
+
+      const urlInput = screen.getByLabelText(/website/i);
+      fireEvent.change(urlInput, { target: { name: 'url', value: '' } });
+      fireEvent.blur(urlInput);
+
+      expect(screen.queryByText('Enter a valid URL')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('form submission', () => {
+    it('should save contact and navigate to preview on valid submit', () => {
+      mockSetContact.mockReturnValue('contact-123');
+      renderForm({ contactId: 'contact-123' });
+
+      // Fill in required fields
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { name: 'name', value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText(/phone/i), { target: { name: 'phone', value: '+1234567890' } });
+
+      fireEvent.click(screen.getByRole('button', { name: /save contact/i }));
+
+      expect(mockSetContact).toHaveBeenCalledWith('contact-123', {
+        formValues: expect.objectContaining({
+          name: 'John Doe',
+          phone: '+1234567890',
+        })
+      });
+      expect(mockPush).toHaveBeenCalledWith('/preview?id=contact-123');
+    });
+
+    it('should show validation error when name is empty on submit', () => {
+      renderForm();
+
+      // Fill only phone (no name)
+      fireEvent.change(screen.getByLabelText(/phone/i), { target: { name: 'phone', value: '+1234567890' } });
+
+      // Use fireEvent.submit to bypass native HTML5 required validation
+      fireEvent.submit(screen.getByRole('button', { name: /save contact/i }).closest('form'));
+
+      expect(screen.getByText('Name is required')).toBeInTheDocument();
+      expect(mockSetContact).not.toHaveBeenCalled();
+    });
+
+    it('should show modal when no contact info is provided', () => {
+      renderForm();
+
+      // Fill only name (no phone, email, or url)
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { name: 'name', value: 'John Doe' } });
+
+      fireEvent.click(screen.getByRole('button', { name: /save contact/i }));
+
+      expect(screen.getByText(/at least one way to contact you/)).toBeInTheDocument();
+      expect(mockSetContact).not.toHaveBeenCalled();
+    });
+
+    it('should show limit reached modal when setContact returns null', () => {
+      mockSetContact.mockReturnValue(null);
+      renderForm({ contactId: 'new' });
+
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { name: 'name', value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { name: 'email', value: 'john@example.com' } });
+
+      fireEvent.click(screen.getByRole('button', { name: /save contact/i }));
+
+      expect(mockSetContact).toHaveBeenCalled();
+      expect(screen.getByText(/maximum number of contacts/)).toBeInTheDocument();
+      expect(mockPush).not.toHaveBeenCalled();
+    });
+
+    it('should not submit when there are field validation errors', () => {
+      renderForm();
+
+      // Fill name and invalid email
+      fireEvent.change(screen.getByLabelText(/name/i), { target: { name: 'name', value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { name: 'email', value: 'bad-email' } });
+
+      // Use fireEvent.submit to bypass native HTML5 email type validation
+      fireEvent.submit(screen.getByRole('button', { name: /save contact/i }).closest('form'));
+
+      expect(screen.getByText('Enter a valid email address')).toBeInTheDocument();
+      expect(mockSetContact).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('cancel behavior', () => {
+    it('should navigate to preview when cancelling during edit', () => {
+      mockRouterQuery = { editing: 'true' };
+      renderForm({ contactId: 'contact-123' });
+
+      fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+      expect(mockPush).toHaveBeenCalledWith('/preview?id=contact-123');
+    });
+
+    it('should navigate to home when cancelling without editing', () => {
+      renderForm({ contactId: 'new' });
+
+      fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+      expect(mockPush).toHaveBeenCalledWith('/');
     });
   });
 });
