@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Puppeteer screenshot capture script (`scripts/capture-screenshots.js`) for automated PWA manifest screenshots (#88)
+- `yarn screenshots` command to capture 5 promotional screenshots at 412×915 @2x
 - Magic Message feature: QR codes that generate email or SMS drafts when scanned (#70)
 - Calendly and Cal.com booking links (#69)
 - Redesigned edit links page with two-zone layout and platform picker grid (#57)
@@ -29,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Manifest screenshots reduced from 7 to 5 focused screens at 412×915 resolution (#88)
+- Homepage screenshot contacts now represent two personas of the same person (Jordan 🔥 / J. Parker 🦄)
+- Segmented control in MagicMessageForm: border radius matches form inputs (`rounded-md`), font weight matches Save/Cancel buttons
 - Replaced Signal icon with official brand mark from Simple Icons
 - WhatsApp, Signal, and Telegram share `resolvePhoneUrl` for consistent phone/URL handling
 - WhatsApp now accepts full `wa.me` URLs in addition to phone numbers
@@ -52,6 +57,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extracted shared DonateButton and ContributeModalContent components
 - Extracted processURL as shared utility
 
+### Removed
+
+- Stale screenshot files (`screen-05.png`, `screen-06.png`)
+
 ### Fixed
 
 - Modal z-index set to `z-40` to appear above nav and speed dial buttons (#79)
@@ -68,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Developer Experience
 
+- Added `puppeteer` as dev dependency for automated screenshot capture
 - 15 new test files covering previously untested components and utilities (~121 new tests, 364 total)
 - ~450 total tests (up from ~413)
 - New test suite for Links page (0% → 100% coverage)

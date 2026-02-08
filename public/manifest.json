@@ -38,37 +38,27 @@
         {
             "src": "/screenshots/screen-00.png",
             "type": "image/png",
-            "sizes": "498x1080"
+            "sizes": "412x915"
         },
         {
             "src": "/screenshots/screen-01.png",
             "type": "image/png",
-            "sizes": "498x1080"
+            "sizes": "412x915"
         },
         {
             "src": "/screenshots/screen-02.png",
             "type": "image/png",
-            "sizes": "498x1080"
+            "sizes": "412x915"
         },
         {
             "src": "/screenshots/screen-03.png",
             "type": "image/png",
-            "sizes": "498x1080"
+            "sizes": "412x915"
         },
         {
             "src": "/screenshots/screen-04.png",
             "type": "image/png",
-            "sizes": "498x1080"
-        },
-        {
-            "src": "/screenshots/screen-05.png",
-            "type": "image/png",
-            "sizes": "498x1080"
-        },
-        {
-            "src": "/screenshots/screen-06.png",
-            "type": "image/png",
-            "sizes": "498x1080"
+            "sizes": "412x915"
         }
     ],
     "shortcuts": [

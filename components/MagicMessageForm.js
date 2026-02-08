@@ -50,11 +50,11 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
     return (
         <form className="w-full max-w-md flex flex-col px-2" onSubmit={handleSubmit} noValidate>
             {/* Segmented Toggle */}
-            <div className="flex rounded-lg border border-slate-300 overflow-hidden mb-6">
+            <div className="flex rounded-md border border-slate-300 overflow-hidden mb-6">
                 <button
                     type="button"
                     onClick={() => { setType('email'); setRecipient(''); setErrors({}); }}
-                    className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
+                    className={`flex-1 py-3 text-sm uppercase tracking-widest transition-colors
                         ${type === 'email'
                             ? 'bg-slate-800 text-white'
                             : 'bg-white text-slate-500 active:bg-slate-50'}`}
@@ -64,7 +64,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                 <button
                     type="button"
                     onClick={() => { setType('sms'); setRecipient(''); setErrors({}); }}
-                    className={`flex-1 py-3 text-sm uppercase tracking-widest font-medium transition-colors
+                    className={`flex-1 py-3 text-sm uppercase tracking-widest transition-colors
                         ${type === 'sms'
                             ? 'bg-slate-800 text-white'
                             : 'bg-white text-slate-500 active:bg-slate-50'}`}
