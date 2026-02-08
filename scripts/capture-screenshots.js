@@ -113,12 +113,15 @@ async function openPage(browser, storageData, standalone) {
     const page = await browser.newPage();
     await page.setViewport(VIEWPORT);
 
-    // Stub analytics and seed localStorage before page scripts run
+    // Stub analytics, seed localStorage, and hide Next.js dev overlay
     await page.evaluateOnNewDocument((data) => {
         window.gtag = () => {};
         for (const [key, value] of Object.entries(data)) {
             localStorage.setItem(key, value);
         }
+        const style = document.createElement('style');
+        style.textContent = 'nextjs-portal { display: none !important; }';
+        document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style));
     }, storageData);
 
     if (standalone) {

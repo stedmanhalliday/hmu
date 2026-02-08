@@ -38,27 +38,27 @@
         {
             "src": "/screenshots/screen-00.png",
             "type": "image/png",
-            "sizes": "412x915"
+            "sizes": "824x1830"
         },
         {
             "src": "/screenshots/screen-01.png",
             "type": "image/png",
-            "sizes": "412x915"
+            "sizes": "824x1830"
         },
         {
             "src": "/screenshots/screen-02.png",
             "type": "image/png",
-            "sizes": "412x915"
+            "sizes": "824x1830"
         },
         {
             "src": "/screenshots/screen-03.png",
             "type": "image/png",
-            "sizes": "412x915"
+            "sizes": "824x1830"
         },
         {
             "src": "/screenshots/screen-04.png",
             "type": "image/png",
-            "sizes": "412x915"
+            "sizes": "824x1830"
         }
     ],
     "shortcuts": [

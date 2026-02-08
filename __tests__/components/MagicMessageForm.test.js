@@ -25,7 +25,7 @@ describe('MagicMessageForm', () => {
 
     it('should render message textarea', () => {
       render(<MagicMessageForm {...defaultProps} />);
-      expect(screen.getByText(/message/i)).toBeInTheDocument();
+      expect(screen.getByText('Message')).toBeInTheDocument();
     });
 
     it('should render save and cancel buttons', () => {

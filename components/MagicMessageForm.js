@@ -135,7 +135,7 @@ export default function MagicMessageForm({ initialValues, onSubmit, onCancel }) 
                 )}
             </label>
 
-            <Button type="submit" className="self-center my-4 shadow-none">Save</Button>
+            <Button type="submit" className="self-center my-4 shadow-none">Save Message</Button>
             <TextButton type="button" onClick={onCancel} className="self-center">Cancel</TextButton>
         </form>
     );
