@@ -4,8 +4,8 @@ function Instructions({ os }) {
     if (os === "ios") {
         return (
             <div className="text-base text-slate-600 space-y-3">
-                <div className="relative rounded-lg overflow-hidden bg-slate-100 border border-black/[.16]">
-                    <div className="absolute inset-0 bg-black/[.08] pointer-events-none z-10" />
+                <div className="relative rounded-lg overflow-hidden bg-slate-100 border border-slate-300">
+                    <div className="absolute inset-0 bg-white/[.08] pointer-events-none z-10" />
                     <video
                         className="w-full max-h-[16rem] object-contain"
                         src="/assets/pwa-install-ios.mp4"
