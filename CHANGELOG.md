@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- PWA install instruction video in iOS install modal — looping, muted demo above text instructions (#89)
 - Puppeteer screenshot capture script (`scripts/capture-screenshots.js`) for automated PWA manifest screenshots (#88)
 - `yarn screenshots` command to capture 5 promotional screenshots at 412×915 @2x
 - Magic Message feature: QR codes that generate email or SMS drafts when scanned (#70)
@@ -79,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `puppeteer` as dev dependency for automated screenshot capture
 - 15 new test files covering previously untested components and utilities (~121 new tests, 364 total)
+- Install modal tests for video presence on iOS and absence on other platforms (#89)
 - ~450 total tests (up from ~413)
 - New test suite for Links page (0% → 100% coverage)
 - Component render tests for Create page (0% → 80% coverage)
