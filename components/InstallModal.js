@@ -4,6 +4,17 @@ function Instructions({ os }) {
     if (os === "ios") {
         return (
             <div className="text-base text-slate-600 space-y-3">
+                <div className="relative rounded-lg overflow-hidden bg-slate-100 border border-black/[.16]">
+                    <div className="absolute inset-0 bg-black/[.08] pointer-events-none z-10" />
+                    <video
+                        className="w-full max-h-[16rem] object-contain"
+                        src="/assets/pwa-install-ios.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                    />
+                </div>
                 <ol className="ml-5 list-decimal space-y-3">
                     <li>Tap the <em className="relative font-medium uppercase tracking-wide pl-5 ml-1 mr-0.5 safariShare">share</em> icon in Safari or Chrome.</li>
                     <li>Tap the <em className="font-medium uppercase tracking-wide">Add to home screen</em> option to install.</li>

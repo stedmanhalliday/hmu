@@ -23,6 +23,21 @@ describe('InstallModal', () => {
       render(<InstallModal os="ios" dismiss={mockDismiss} />);
       expect(screen.getByText(/having trouble/i)).toBeInTheDocument();
     });
+
+    it('should show install video', () => {
+      const { container } = render(<InstallModal os="ios" dismiss={mockDismiss} />);
+      const video = container.querySelector('video');
+      expect(video).toBeInTheDocument();
+      expect(video).toHaveAttribute('src', '/assets/pwa-install-ios.mp4');
+    });
+  });
+
+  it('should not show video for non-iOS', () => {
+    const { container: androidContainer } = render(<InstallModal os="android" dismiss={mockDismiss} />);
+    expect(androidContainer.querySelector('video')).not.toBeInTheDocument();
+
+    const { container: genericContainer } = render(<InstallModal os={null} dismiss={mockDismiss} />);
+    expect(genericContainer.querySelector('video')).not.toBeInTheDocument();
   });
 
   describe('Android instructions', () => {
