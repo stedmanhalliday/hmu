@@ -13,6 +13,7 @@ export default [
       'out/**',
       'dist/**',
       'public/**',
+      'coverage/**',
     ],
   },
 
