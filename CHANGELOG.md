@@ -78,6 +78,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Typo: 'lastest' → 'latest' in InstallModal
 - Speed dial button transition delay removed (#68)
 
+### Security
+
+- Resolved Dependabot alerts: patched `ajv` (ReDoS) and `minimatch` (ReDoS) via yarn resolutions
+
 ### Developer Experience
 
 - Added `puppeteer` as dev dependency for automated screenshot capture
