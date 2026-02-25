@@ -34,13 +34,28 @@ function Contact({ src, displayName, vibe, label, style, activeLink, url, photo 
                 )}
             </div>
             <div className="text-center w-80">
-                <h1 className="leading-tight max-w-sm text-slate-800 truncate"
-                    style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{displayName}</h1>
-                <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
-                    <img src={imageAttributes.src} alt={imageAttributes.alt}
-                        width={18} height={18} className="h-[18px] opacity-60" />
-                    <span>{label}</span>
-                </div>
+                {url ? (
+                    <a href={url} target="_blank" rel="noopener noreferrer"
+                        className="block active:opacity-70 transition-opacity">
+                        <h1 className="leading-tight max-w-sm text-slate-800 truncate"
+                            style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{displayName}</h1>
+                        <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
+                            <img src={imageAttributes.src} alt={imageAttributes.alt}
+                                width={18} height={18} className="h-[18px] opacity-60" />
+                            <span>{label}</span>
+                        </div>
+                    </a>
+                ) : (
+                    <>
+                        <h1 className="leading-tight max-w-sm text-slate-800 truncate"
+                            style={{ fontSize: 'clamp(1.5rem, 8vw, 2.25rem)' }}>{displayName}</h1>
+                        <div className="mt-2 flex items-center justify-center gap-1.5 text-xl text-slate-600">
+                            <img src={imageAttributes.src} alt={imageAttributes.alt}
+                                width={18} height={18} className="h-[18px] opacity-60" />
+                            <span>{label}</span>
+                        </div>
+                    </>
+                )}
             </div>
         </header>
     );

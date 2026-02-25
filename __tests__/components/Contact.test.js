@@ -65,19 +65,34 @@ describe('Contact', () => {
     });
   });
 
-  describe('QR code container', () => {
-    it('should render QR code without link when no URL', () => {
-      const { container } = render(<Contact {...defaultProps} />);
-      // Should not have anchor tag wrapping QR
-      const qrContainer = container.querySelector('.rounded-\\[24px\\]');
-      expect(qrContainer).toBeInTheDocument();
+  describe('linked elements', () => {
+    it('should not render any links when no URL is provided', () => {
+      render(<Contact {...defaultProps} />);
+      expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
 
-    it('should render QR code with link when URL is provided', () => {
+    it('should link both header and QR code to the URL when provided', () => {
       render(<Contact {...defaultProps} url="https://example.com" />);
-      const link = screen.getByRole('link');
-      expect(link).toHaveAttribute('href', 'https://example.com');
-      expect(link).toHaveAttribute('target', '_blank');
+      const links = screen.getAllByRole('link');
+      expect(links).toHaveLength(2);
+      links.forEach(link => {
+        expect(link).toHaveAttribute('href', 'https://example.com');
+        expect(link).toHaveAttribute('target', '_blank');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      });
+    });
+
+    it('should wrap display name and label in a link when URL is provided', () => {
+      render(<Contact {...defaultProps} url="https://instagram.com/johndoe" label="Instagram" activeLink="instagram" />);
+      const headerLink = screen.getByText('John Doe').closest('a');
+      expect(headerLink).toHaveAttribute('href', 'https://instagram.com/johndoe');
+      expect(screen.getByText('Instagram').closest('a')).toBe(headerLink);
+    });
+
+    it('should not wrap display name in a link when URL is empty', () => {
+      render(<Contact {...defaultProps} />);
+      const heading = screen.getByText('John Doe');
+      expect(heading.closest('a')).toBeNull();
     });
   });
 

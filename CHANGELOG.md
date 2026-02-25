@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Tappable link title and platform label on the preview page, linking to the active link URL (#88)
+
 ## [1.0.0] - 2025-06-25
 
 ### Added
