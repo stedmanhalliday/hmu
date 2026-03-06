@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Tappable link title and platform label on the preview page, linking to the active link URL (#88)
 
+### Removed
+
+- Puppeteer dev dependency and `yarn screenshots` script (screenshots already captured)
+
+### Security
+
+- Resolved Dependabot alerts: patched `rollup` (path traversal), `minimatch` (ReDoS), `basic-ftp` (path traversal), `serialize-javascript` (RCE), and `@tootallnate/once` (control flow) via yarn resolutions
+
 ## [1.0.0] - 2025-06-25
 
 ### Added

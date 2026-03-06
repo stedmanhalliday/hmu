@@ -56,7 +56,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `yarn lint` | Run ESLint |
 | `yarn test` | Run tests |
 | `yarn test:coverage` | Run tests with coverage report |
-| `yarn screenshots` | Capture PWA screenshots with Puppeteer |
 
 ## Contributing
 
